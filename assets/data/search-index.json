@@ -8,7 +8,7 @@
       "context": "Andreas Sollie Steffensen",
       "description": "Personlig nettside med snarveier til Om meg, Prosjekter og Fag.",
       "keywords": ["Digital Infrastruktur og Cybersikkerhet", "NTNU", "fagprosjekter", "labber", "tekniske writeups", "notater", "pensum", "studieressurser"],
-      "url": "index.html",
+      "url": "./",
       "featured": true,
       "priority": 40
     },
@@ -19,7 +19,7 @@
       "context": "Andreas Sollie Steffensen",
       "description": "Kort om hvem jeg er, hva jeg gjør nå, bakgrunnen min og hvilken faglig retning jeg ønsker å utvikle meg innen.",
       "keywords": ["NTNU", "Digital infrastruktur og cybersikkerhet", "nettverk", "operativsystemer", "infrastruktur", "sikkerhet", "Forsvaret", "medier", "visuell design"],
-      "url": "about/index.html",
+      "url": "about/",
       "featured": true,
       "priority": 10
     },
@@ -30,7 +30,7 @@
       "context": "Om meg",
       "description": "Bachelorstudiet ved NTNU og nettsiden som samler fagoversikter, notater og prosjekter.",
       "keywords": ["NTNU", "bachelor", "Digital infrastruktur og cybersikkerhet", "fagoversikter", "notater", "prosjekter"],
-      "url": "about/index.html#akkurat-na",
+      "url": "about/#akkurat-na",
       "priority": 8
     },
     {
@@ -40,7 +40,7 @@
       "context": "Om meg · Erfaring",
       "description": "Ledererfaring fra Forsvaret, arbeidserfaring, Medier og kommunikasjon og engasjement som hovedfadder.",
       "keywords": ["Forsvaret", "lagfører", "vaktkommandør", "ledererfaring", "arbeidserfaring", "Ullern", "Medier og kommunikasjon", "foto", "grafisk design", "layout", "video", "hovedfadder", "BDIGSEC"],
-      "url": "about/index.html#bakgrunn",
+      "url": "about/#bakgrunn",
       "priority": 10
     },
     {
@@ -50,7 +50,7 @@
       "context": "Om meg · Interesser",
       "description": "Nettverk, infrastruktur, cybersikkerhet, operativsystemer, cloud og programmering.",
       "keywords": ["nettverk", "infrastruktur", "cybersikkerhet", "operativsystemer", "cloud", "programmering", "drift", "sikre systemer"],
-      "url": "about/index.html#faglig-retning",
+      "url": "about/#faglig-retning",
       "priority": 15
     },
     {
@@ -60,7 +60,7 @@
       "context": "Portefølje",
       "description": "Arbeid fra studier, egne tekniske prosjekter og tidligere arbeid med medier og design.",
       "keywords": ["portefølje", "BDIGSEC", "medier", "visuell design"],
-      "url": "projects/index.html",
+      "url": "projects/",
       "featured": true,
       "priority": 30
     },
@@ -71,7 +71,7 @@
       "context": "Prosjekter · BDIGSEC · NTNU",
       "description": "Seksjon klargjort for studieprosjekter innen nettverk, cybersikkerhet, Linux, servere, infrastruktur, sky, programmering og databaser.",
       "keywords": ["BDIGSEC", "NTNU", "nettverk", "cybersikkerhet", "Linux", "servere", "infrastruktur", "sky", "programmering", "databaser"],
-      "url": "projects/index.html#bdigsec-heading"
+      "url": "projects/#bdigsec-heading"
     },
     {
       "id": "projects-media-design",
@@ -80,7 +80,7 @@
       "context": "Prosjekter · Tidligere arbeid",
       "description": "Grafisk design, visuelle identiteter, foto, video og medieproduksjon.",
       "keywords": ["grafisk design", "visuelle identiteter", "foto", "video", "medieproduksjon"],
-      "url": "projects/index.html#media-design"
+      "url": "projects/#media-design"
     },
     {
       "id": "project-vogue-hommes",
@@ -89,7 +89,7 @@
       "context": "Redaksjonell design · 2023 · Adobe InDesign",
       "description": "Syvsiders konseptmagasin med omslag, innholdsfortegnelse, editorialoppslag og typografiske artikkelsider.",
       "keywords": ["Vogue", "Vogue Hommes", "Chris Hemsworth", "Christopher Hemsworth", "Chanel", "NYFW", "magasinlayout", "redaksjonell design", "omslag", "innholdsfortegnelse", "editorial", "typografi", "Adobe InDesign", "PDF"],
-      "url": "projects/media-design/vogue-hemsworth-magasin/index.html",
+      "url": "projects/media-design/vogue-hemsworth-magasin/",
       "priority": 15
     },
     {
@@ -99,7 +99,7 @@
       "context": "Plakatdesign · 2023 · Adobe Illustrator",
       "description": "Plakat om forhåndsstemming og valgdeltakelse blant unge voksne.",
       "keywords": ["forhåndsstemming", "valgdeltakelse", "unge voksne", "typografi", "stemmeurne", "fargefelt", "kontrastfarger", "Valgdirektoratet", "Adobe Illustrator"],
-      "url": "projects/media-design/din-stemme-ditt-valg/index.html",
+      "url": "projects/media-design/din-stemme-ditt-valg/",
       "priority": 15
     },
     {
@@ -109,7 +109,7 @@
       "context": "Omslagsdesign · 2022/2023 · Adobe Illustrator",
       "description": "Forsidedesign med bølgende linjegrafikk og en mørk blå og turkis fargepalett.",
       "keywords": ["Ullern VGS", "forside", "omslagsdesign", "linjegrafikk", "bølgelinjer", "mørk blå", "turkis", "Adobe Illustrator"],
-      "url": "projects/media-design/ullern-vgs-forside/index.html",
+      "url": "projects/media-design/ullern-vgs-forside/",
       "priority": 15
     },
     {
@@ -119,7 +119,7 @@
       "context": "Fotografi · 2021 · Lysmaling",
       "description": "Fotografisk serie som kombinerer sportsbevegelse med tegnede lysspor og lang eksponering.",
       "keywords": ["fotografi", "sportsbevegelse", "lysspor", "lang eksponering", "langeksponering", "lysmaling", "Bevegelse", "Luft"],
-      "url": "projects/media-design/tegne-med-lys/index.html",
+      "url": "projects/media-design/tegne-med-lys/",
       "priority": 15
     },
     {
@@ -129,7 +129,7 @@
       "context": "Fotografi · 2023 · Nærbilde",
       "description": "Nærbilde av et blått øye med vekt på irisens struktur, kontrast og refleksjoner.",
       "keywords": ["blått øye", "øye", "iris", "nærbilde", "fotografi", "struktur", "kontrast", "refleksjoner"],
-      "url": "projects/media-design/oye-makrofoto/index.html",
+      "url": "projects/media-design/oye-makrofoto/",
       "priority": 15
     },
     {
@@ -139,7 +139,7 @@
       "context": "Studier",
       "description": "Aktive fag høsten 2026 og tidligere emner fra første studieår.",
       "keywords": ["aktive fag", "tidligere fag", "høst 2026", "DCST2001", "EXPH0300", "IDATT2202", "IT2810", "DCST1001", "DCST1002", "HMS0002", "TDT4109", "TMA4412", "DCST1005", "DCST1006", "IDATT2002", "TDT4100", "fagoversikter", "notater"],
-      "url": "education/index.html",
+      "url": "education/",
       "featured": true,
       "priority": 20
     },
@@ -151,7 +151,7 @@
       "context": "Aktivt fag · Høst 2026",
       "description": "Sammenkobling og sikring av nettverk med routing, ACL-er, trådløse nettverk, WAN/VPN, QoS, overvåking og nettverksvirtualisering.",
       "keywords": ["nettverk", "nettverkssikkerhet", "routing", "ACL", "VPN", "WAN", "trådløse nettverk", "QoS", "overvåking", "nettverksvirtualisering", "sikre nettverksløsninger"],
-      "url": "education/active/dcst2001/index.html",
+      "url": "education/active/dcst2001/",
       "priority": 35
     },
     {
@@ -162,7 +162,7 @@
       "context": "Aktivt fag · Høst 2026",
       "description": "Kritisk tenkning om kunnskap, vitenskap, etikk, teknologi og samfunn, med trening i argumentasjon, kildekritikk og refleksjon.",
       "keywords": ["exphil", "filosofi", "vitenskap", "kunnskap", "etikk", "teknologi", "samfunn", "bærekraft", "argumentasjon", "kildekritikk", "kritisk tenkning"],
-      "url": "education/active/exph0300/index.html",
+      "url": "education/active/exph0300/",
       "priority": 35
     },
     {
@@ -173,7 +173,7 @@
       "context": "Aktivt fag · Høst 2026 · 7,5 studiepoeng",
       "description": "Emnekart som kobler semesterets temaer til pensum, Canvas-quizer, forelesninger, kursressurser og tidligere eksamener.",
       "keywords": ["operativsystemer", "kernel", "system calls", "processes", "prosesser", "threads", "concurrency", "synchronisation", "scheduling", "address translation", "caching", "paging", "virtual memory", "file systems", "security", "system programming", "semesteroversikt", "pensum", "Canvas", "forelesninger", "eksamener"],
-      "url": "education/active/idatt2202/index.html",
+      "url": "education/active/idatt2202/",
       "priority": 40
     },
     {
@@ -184,7 +184,7 @@
       "context": "Aktivt fag · Høst 2026",
       "description": "Prosjektbasert utvikling av moderne webapplikasjoner fra HTML, CSS, JavaScript og TypeScript til React, state, API-er, testing og tilgjengelighet.",
       "keywords": ["webutvikling", "webapplikasjoner", "frontend", "backend", "HTML", "CSS", "JavaScript", "TypeScript", "React", "state management", "HTTP", "REST", "GraphQL", "Git", "testing", "universell utforming", "WCAG", "responsive design", "bærekraft", "kodekvalitet", "utviklingsverktøy", "prosjektarbeid"],
-      "url": "education/active/it2810/index.html",
+      "url": "education/active/it2810/",
       "priority": 35
     },
     {
@@ -195,7 +195,7 @@
       "context": "IT2810 · Webutvikling",
       "description": "HTML og semantikk, CSS med Flexbox og Grid, responsivt design og accessibility.",
       "keywords": ["HTML","semantisk HTML","CSS","selectors","Flexbox","Grid","viewport","media queries","breakpoints","responsive design","universell utforming","accessibility","WCAG"],
-      "url": "education/active/it2810/index.html#webplattform",
+      "url": "education/active/it2810/#webplattform",
       "priority": 20
     },
     {
@@ -206,7 +206,7 @@
       "context": "IT2810 · Webutvikling",
       "description": "Dynamisk og statisk typing, arrow functions, ES modules, array-metoder, immutability og utviklingsverktøy.",
       "keywords": ["JavaScript","TypeScript","type inference","interfaces","union types","arrow functions","ES modules","import","export","destructuring","map","filter","reduce","immutability","Node.js","npm","pnpm","Vite","ESLint"],
-      "url": "education/active/it2810/index.html#javascript-typescript",
+      "url": "education/active/it2810/#javascript-typescript",
       "priority": 20
     },
     {
@@ -217,7 +217,7 @@
       "context": "IT2810 · Webutvikling",
       "description": "Deklarative brukergrensesnitt med JSX, funksjonelle komponenter, props, events og callbacks.",
       "keywords": ["React","JSX","components","funksjonelle komponenter","props","events","callbacks","rendering","deklarativ"],
-      "url": "education/active/it2810/index.html#react",
+      "url": "education/active/it2810/#react",
       "priority": 20
     },
     {
@@ -228,7 +228,7 @@
       "context": "IT2810 · Webutvikling",
       "description": "State-eierskap, useState, useEffect, lifting state up, Context og forskjellen mellom state og Web Storage.",
       "keywords": ["state","dataflyt","useState","useEffect","hooks","lifting state up","Context","useContext","prop drilling","Web Storage","localStorage","sessionStorage","persistence"],
-      "url": "education/active/it2810/index.html#state-dataflyt",
+      "url": "education/active/it2810/#state-dataflyt",
       "priority": 20
     },
     {
@@ -239,7 +239,7 @@
       "context": "IT2810 · Webarkitektur og utviklingspraksis",
       "description": "HTTP/REST og asynkrone data, Git-samarbeid, testing, code review og kvalitet i prosjektarbeidet.",
       "keywords": ["HTTP", "REST", "JSON", "fetch", "Promises", "async data", "Git", "branches", "pull requests", "issues", "code review", "testing", "ESLint", "accessibility", "documentation", "deployment", "AI-assisted development", "KI"],
-      "url": "education/active/it2810/index.html#webarkitektur",
+      "url": "education/active/it2810/#webarkitektur",
       "priority": 18
     },
     {
@@ -250,7 +250,7 @@
       "context": "Høst 2025 · NTNU",
       "description": "Maskinvare, operativsystemer, datanettverk, virtualisering, skytjenester og praktisk systemadministrasjon.",
       "keywords": ["maskinvare", "operativsystemer", "datanettverk", "virtualisering", "skytjenester", "kommandolinje", "tilgangsstyring", "lagring", "sikkerhetskopiering", "feilsøking", "logganalyse"],
-      "url": "education/previous/index.html#tidligere-fag",
+      "url": "education/previous/#tidligere-fag",
       "priority": 12
     },
     {
@@ -261,7 +261,7 @@
       "context": "Høst 2025 · NTNU",
       "description": "Cybersikkerhet, sårbarheter, identitets- og tilgangsstyring, trussel- og risikoanalyse samt team- og prosjektarbeid.",
       "keywords": ["cybersikkerhet", "sårbarheter", "digital infrastruktur", "identitetsstyring", "tilgangsstyring", "trusselanalyse", "risikoanalyse", "teamarbeid", "prosjektarbeid", "opphavsrett"],
-      "url": "education/previous/index.html#tidligere-fag",
+      "url": "education/previous/#tidligere-fag",
       "priority": 12
     },
     {
@@ -272,7 +272,7 @@
       "context": "Høst 2025 · 0 studiepoeng · NTNU",
       "description": "Førstehjelp, hjerte-lunge-redning, hjertestarter, brannvern, slukkearbeid og evakuering.",
       "keywords": ["HMS", "førstehjelp", "HLR", "hjerte-lunge-redning", "hjertestarter", "brannvern", "slukkearbeid", "evakuering", "sikkerhet"],
-      "url": "education/previous/index.html#tidligere-fag",
+      "url": "education/previous/#tidligere-fag",
       "priority": 8
     },
     {
@@ -283,7 +283,7 @@
       "context": "Høst 2025 · NTNU",
       "description": "Datamaskiners oppbygging, digital representasjon, versjonskontroll og prosedyreorientert programmering i Python.",
       "keywords": ["informasjonsteknologi", "Python", "programmering", "algoritmer", "datastrukturer", "filbehandling", "testing", "feilsøking", "versjonskontroll", "digital representasjon"],
-      "url": "education/previous/index.html#tidligere-fag",
+      "url": "education/previous/#tidligere-fag",
       "priority": 12
     },
     {
@@ -294,7 +294,7 @@
       "context": "Høst 2025 · NTNU",
       "description": "Logikk, mengdelære, kombinatorikk, tallteori, kryptologi, rekursjon, induksjon, grafer og formelle språk.",
       "keywords": ["diskret matematikk", "logikk", "mengdelære", "kombinatorikk", "tallteori", "kryptologi", "rekursjon", "induksjon", "relasjoner", "grafer", "trær", "formelle språk", "endelige automater"],
-      "url": "education/previous/index.html#tidligere-fag",
+      "url": "education/previous/#tidligere-fag",
       "priority": 12
     },
     {
@@ -305,7 +305,7 @@
       "context": "Vår 2026 · NTNU",
       "description": "Skyløsninger, katalogtjenester, identitets- og tilgangsstyring, overvåkning, logging og sikker infrastrukturdrift.",
       "keywords": ["infrastruktur", "skyløsninger", "cloud", "katalogtjenester", "identitetsstyring", "tilgangsstyring", "overvåkning", "logging", "migrering", "sikkerhet", "ytelse"],
-      "url": "education/previous/index.html#tidligere-fag",
+      "url": "education/previous/#tidligere-fag",
       "priority": 12
     },
     {
@@ -316,7 +316,7 @@
       "context": "Vår 2026 · NTNU",
       "description": "Lagdelt datakommunikasjon, IP-adressering, Ethernet, TCP/UDP, switching, routing og sentrale nettverkstjenester.",
       "keywords": ["datakommunikasjon", "nettverk", "IP-adressering", "Ethernet", "TCP", "UDP", "switching", "routing", "nettverkstjenester", "konfigurering", "feilsøking"],
-      "url": "education/previous/index.html#tidligere-fag",
+      "url": "education/previous/#tidligere-fag",
       "priority": 12
     },
     {
@@ -327,7 +327,7 @@
       "context": "Vår 2026 · NTNU",
       "description": "Datamodellering, relasjonsdatabaser, SQL, normalisering, integritet, transaksjoner, databasesikkerhet og NoSQL.",
       "keywords": ["databaser", "datamodellering", "relasjonsdatabaser", "SQL", "normalisering", "integritet", "transaksjoner", "databasesikkerhet", "ytelse", "NoSQL"],
-      "url": "education/previous/index.html#tidligere-fag",
+      "url": "education/previous/#tidligere-fag",
       "priority": 12
     },
     {
@@ -338,7 +338,7 @@
       "context": "Vår 2026 · NTNU",
       "description": "Objektorientert programmering i Java, algoritmer, datastrukturer, modularisering, testing, UML og design patterns.",
       "keywords": ["objektorientert programmering", "Java", "algoritmer", "datastrukturer", "modularisering", "gjenbruk", "objektorientert design", "enhetstesting", "feilsøking", "UML", "design patterns"],
-      "url": "education/previous/index.html#tidligere-fag",
+      "url": "education/previous/#tidligere-fag",
       "priority": 12
     },
     {
@@ -349,7 +349,7 @@
       "context": "Operativsystemer · Uke 34 · Ch. 1.1–1.3",
       "description": "Ch. 1.1–1.3 · Quiz 01 · Forelesning: Introduction.",
       "keywords": ["introduction","introduksjon","operating system","operativsystem","Chapter 1","Quiz 01","pensum","Introduction"],
-      "url": "education/active/idatt2202/index.html#introduction",
+      "url": "education/active/idatt2202/#introduction",
       "priority": 15
     },
     {
@@ -360,7 +360,7 @@
       "context": "Operativsystemer · Uke 35 · Ch. 2.1",
       "description": "Ch. 2.1 · Quiz 02.1 · Forelesning: The Kernel Abstraction Part 1.",
       "keywords": ["process","processes","prosesser","process abstraction","kernel","Chapter 2","Quiz 02.1","pensum","The Kernel Abstraction Part 1"],
-      "url": "education/active/idatt2202/index.html#process-abstraction",
+      "url": "education/active/idatt2202/#process-abstraction",
       "priority": 15
     },
     {
@@ -371,7 +371,7 @@
       "context": "Operativsystemer · Uke 35 · Ch. 2.2",
       "description": "Ch. 2.2 · Quiz 02.2 · Forelesning: The Kernel Abstraction Part 1.",
       "keywords": ["dual mode","user mode","kernel mode","kernel","Chapter 2","Quiz 02.2","pensum","The Kernel Abstraction Part 1"],
-      "url": "education/active/idatt2202/index.html#dual-mode",
+      "url": "education/active/idatt2202/#dual-mode",
       "priority": 15
     },
     {
@@ -382,7 +382,7 @@
       "context": "Operativsystemer · Uke 36 · Ch. 2.3",
       "description": "Ch. 2.3 · Quiz 02.3 · Forelesning: The Kernel Abstraction Part 2.",
       "keywords": ["mode transfer","interrupts","exceptions","system calls","kernel","Chapter 2","Quiz 02.3","pensum","The Kernel Abstraction Part 2"],
-      "url": "education/active/idatt2202/index.html#mode-transfers",
+      "url": "education/active/idatt2202/#mode-transfers",
       "priority": 15
     },
     {
@@ -393,7 +393,7 @@
       "context": "Operativsystemer · Uke 36 · Ch. 2.4, 2.6–2.10",
       "description": "Ch. 2.4, 2.6–2.10 · Quiz 02.4 · Forelesning: The Kernel Abstraction Part 2.",
       "keywords": ["safe mode transfer","kernel mechanisms","interrupts","exceptions","signals","kernel","Chapter 2","Quiz 02.4","pensum","The Kernel Abstraction Part 2"],
-      "url": "education/active/idatt2202/index.html#safe-mode-transfer",
+      "url": "education/active/idatt2202/#safe-mode-transfer",
       "priority": 15
     },
     {
@@ -404,7 +404,7 @@
       "context": "Operativsystemer · Uke 37 · Ch. 3",
       "description": "Ch. 3 · Quiz 03 · Forelesning: The Programming Interface.",
       "keywords": ["programming interface","system calls","system programming","fork","exec","wait","file I/O","Chapter 3","Quiz 03","pensum","The Programming Interface"],
-      "url": "education/active/idatt2202/index.html#programming-interface",
+      "url": "education/active/idatt2202/#programming-interface",
       "priority": 15
     },
     {
@@ -415,7 +415,7 @@
       "context": "Operativsystemer · Uke 38 · Ch. 4.1–4.5, 4.8",
       "description": "Ch. 4.1–4.5, 4.8 · Quiz 04 · Forelesning: Concurrency and Threads.",
       "keywords": ["concurrency","threads","tråder","samtidighet","pthreads","Chapter 4","Quiz 04","pensum","Concurrency and Threads"],
-      "url": "education/active/idatt2202/index.html#concurrency",
+      "url": "education/active/idatt2202/#concurrency",
       "priority": 15
     },
     {
@@ -426,7 +426,7 @@
       "context": "Operativsystemer · Uke 39 · Ch. 8.1–8.4",
       "description": "Ch. 8.1–8.4 · Quiz 05 · Forelesning: Memory Management – Address Translation.",
       "keywords": ["address translation","minnehåndtering","memory management","Chapter 8","Quiz 05","pensum","Memory Management – Address Translation"],
-      "url": "education/active/idatt2202/index.html#address-translation",
+      "url": "education/active/idatt2202/#address-translation",
       "priority": 15
     },
     {
@@ -437,7 +437,7 @@
       "context": "Operativsystemer · Uke 40 · Ch. 9.1–9.7",
       "description": "Ch. 9.1–9.7 · Quiz 06 · Forelesning: Memory Management – Caching and Virtual Memory.",
       "keywords": ["virtual memory","caching","paging","cache","memory management","Chapter 9","Quiz 06","pensum","Memory Management – Caching and Virtual Memory"],
-      "url": "education/active/idatt2202/index.html#virtual-memory",
+      "url": "education/active/idatt2202/#virtual-memory",
       "priority": 15
     },
     {
@@ -448,7 +448,7 @@
       "context": "Operativsystemer · Uke 41 · Ch. 5.1–5.8",
       "description": "Ch. 5.1–5.8 · Quiz 07 · Forelesning: Synchronisation.",
       "keywords": ["synchronisation","synchronization","synkronisering","shared objects","locks","semaphores","condition variables","Chapter 5","Quiz 07","pensum","Synchronisation"],
-      "url": "education/active/idatt2202/index.html#synchronisation",
+      "url": "education/active/idatt2202/#synchronisation",
       "priority": 15
     },
     {
@@ -459,7 +459,7 @@
       "context": "Operativsystemer · Uke 42 · Ch. 6.1–6.3, 6.5",
       "description": "Ch. 6.1–6.3, 6.5 · Quiz 08 · Forelesning: Advanced Synchronisation and Deadlocks.",
       "keywords": ["advanced synchronisation","advanced synchronization","deadlock","deadlocks","vranglås","multi-object synchronisation","Chapter 6","Quiz 08","pensum","Advanced Synchronisation and Deadlocks"],
-      "url": "education/active/idatt2202/index.html#deadlocks",
+      "url": "education/active/idatt2202/#deadlocks",
       "priority": 15
     },
     {
@@ -470,7 +470,7 @@
       "context": "Operativsystemer · Uke 43 · Ch. 7.1–7.2",
       "description": "Ch. 7.1–7.2 · Quiz 09 · Forelesning: Scheduling.",
       "keywords": ["scheduling","CPU scheduling","scheduler","Chapter 7","Quiz 09","pensum","Scheduling"],
-      "url": "education/active/idatt2202/index.html#scheduling",
+      "url": "education/active/idatt2202/#scheduling",
       "priority": 15
     },
     {
@@ -481,7 +481,7 @@
       "context": "Operativsystemer · Uke 44 · Ch. 11.1–11.3",
       "description": "Ch. 11.1–11.3 · Quiz 10 · del 1 · Forelesning: Storage Systems. Quiz 10 dekker både uke 44 og 45.",
       "keywords": ["storage systems","file system abstraction","file systems","filesystems","filsystemer","lagring","Chapter 11","Quiz 10 · del 1","pensum","Storage Systems"],
-      "url": "education/active/idatt2202/index.html#storage",
+      "url": "education/active/idatt2202/#storage",
       "priority": 15
     },
     {
@@ -492,7 +492,7 @@
       "context": "Operativsystemer · Uke 45 · Ch. 13.1–13.4",
       "description": "Ch. 13.1–13.4 · Quiz 10 · del 2 · Forelesning: Files and Directories. Quiz 10 dekker både uke 44 og 45.",
       "keywords": ["files","directories","filer","mapper","file systems","filesystems","filsystemer","Chapter 13","Quiz 10 · del 2","pensum","Files and Directories"],
-      "url": "education/active/idatt2202/index.html#files-directories",
+      "url": "education/active/idatt2202/#files-directories",
       "priority": 15
     },
     {
@@ -503,7 +503,7 @@
       "context": "Operativsystemer · Uke 46 · Hailperin Ch. 11 + course material",
       "description": "Hailperin Ch. 11 + course material · Quiz 11 · Forelesning: Security.",
       "keywords": ["security","OS security","operating system security","sikkerhet","Hailperin","Chapter 11","Quiz 11","pensum","Security"],
-      "url": "education/active/idatt2202/index.html#security",
+      "url": "education/active/idatt2202/#security",
       "priority": 15
     },
     {
@@ -514,7 +514,7 @@
       "context": "Canvas-quizer · Uke 34",
       "description": "Pensum: Ch. 1.1–1.3. Oversikt over quizen og dens plass i semesteret.",
       "keywords": ["Quiz 01","Introduction","Ch. 1.1–1.3","Canvas","pensum"],
-      "url": "education/active/idatt2202/index.html#quiz-01",
+      "url": "education/active/idatt2202/#quiz-01",
       "priority": 20
     },
     {
@@ -525,7 +525,7 @@
       "context": "Canvas-quizer · Uke 35",
       "description": "Pensum: Ch. 2.1. Oversikt over quizen og dens plass i semesteret.",
       "keywords": ["Quiz 02.1","Process abstraction","Ch. 2.1","Canvas","pensum"],
-      "url": "education/active/idatt2202/index.html#quiz-02-1",
+      "url": "education/active/idatt2202/#quiz-02-1",
       "priority": 20
     },
     {
@@ -536,7 +536,7 @@
       "context": "Canvas-quizer · Uke 35",
       "description": "Pensum: Ch. 2.2. Oversikt over quizen og dens plass i semesteret.",
       "keywords": ["Quiz 02.2","Dual-mode operation","Ch. 2.2","Canvas","pensum"],
-      "url": "education/active/idatt2202/index.html#quiz-02-2",
+      "url": "education/active/idatt2202/#quiz-02-2",
       "priority": 20
     },
     {
@@ -547,7 +547,7 @@
       "context": "Canvas-quizer · Uke 36",
       "description": "Pensum: Ch. 2.3. Oversikt over quizen og dens plass i semesteret.",
       "keywords": ["Quiz 02.3","Types of mode transfer","Ch. 2.3","Canvas","pensum"],
-      "url": "education/active/idatt2202/index.html#quiz-02-3",
+      "url": "education/active/idatt2202/#quiz-02-3",
       "priority": 20
     },
     {
@@ -558,7 +558,7 @@
       "context": "Canvas-quizer · Uke 36",
       "description": "Pensum: Ch. 2.4, 2.6–2.10. Oversikt over quizen og dens plass i semesteret.",
       "keywords": ["Quiz 02.4","Safe mode transfers, interrupts, exceptions and signals","Ch. 2.4, 2.6–2.10","Canvas","pensum"],
-      "url": "education/active/idatt2202/index.html#quiz-02-4",
+      "url": "education/active/idatt2202/#quiz-02-4",
       "priority": 20
     },
     {
@@ -569,7 +569,7 @@
       "context": "Canvas-quizer · Uke 37",
       "description": "Pensum: Ch. 3. Oversikt over quizen og dens plass i semesteret.",
       "keywords": ["Quiz 03","The programming interface","Ch. 3","Canvas","pensum"],
-      "url": "education/active/idatt2202/index.html#quiz-03",
+      "url": "education/active/idatt2202/#quiz-03",
       "priority": 20
     },
     {
@@ -580,7 +580,7 @@
       "context": "Canvas-quizer · Uke 38",
       "description": "Pensum: Ch. 4.1–4.5, 4.8. Oversikt over quizen og dens plass i semesteret.",
       "keywords": ["Quiz 04","Concurrency","Ch. 4.1–4.5, 4.8","Canvas","pensum"],
-      "url": "education/active/idatt2202/index.html#quiz-04",
+      "url": "education/active/idatt2202/#quiz-04",
       "priority": 20
     },
     {
@@ -591,7 +591,7 @@
       "context": "Canvas-quizer · Uke 39",
       "description": "Pensum: Ch. 8.1–8.4. Oversikt over quizen og dens plass i semesteret.",
       "keywords": ["Quiz 05","Address translation","Ch. 8.1–8.4","Canvas","pensum"],
-      "url": "education/active/idatt2202/index.html#quiz-05",
+      "url": "education/active/idatt2202/#quiz-05",
       "priority": 20
     },
     {
@@ -602,7 +602,7 @@
       "context": "Canvas-quizer · Uke 40",
       "description": "Pensum: Ch. 9.1–9.7. Oversikt over quizen og dens plass i semesteret.",
       "keywords": ["Quiz 06","Paging and cache","Ch. 9.1–9.7","Canvas","pensum"],
-      "url": "education/active/idatt2202/index.html#quiz-06",
+      "url": "education/active/idatt2202/#quiz-06",
       "priority": 20
     },
     {
@@ -613,7 +613,7 @@
       "context": "Canvas-quizer · Uke 41",
       "description": "Pensum: Ch. 5.1–5.8. Oversikt over quizen og dens plass i semesteret.",
       "keywords": ["Quiz 07","Synchronisation","Ch. 5.1–5.8","Canvas","pensum"],
-      "url": "education/active/idatt2202/index.html#quiz-07",
+      "url": "education/active/idatt2202/#quiz-07",
       "priority": 20
     },
     {
@@ -624,7 +624,7 @@
       "context": "Canvas-quizer · Uke 42",
       "description": "Pensum: Ch. 6.1–6.3, 6.5. Oversikt over quizen og dens plass i semesteret.",
       "keywords": ["Quiz 08","Advanced synchronisation","Ch. 6.1–6.3, 6.5","Canvas","pensum"],
-      "url": "education/active/idatt2202/index.html#quiz-08",
+      "url": "education/active/idatt2202/#quiz-08",
       "priority": 20
     },
     {
@@ -635,7 +635,7 @@
       "context": "Canvas-quizer · Uke 43",
       "description": "Pensum: Ch. 7.1–7.2. Oversikt over quizen og dens plass i semesteret.",
       "keywords": ["Quiz 09","Scheduling","Ch. 7.1–7.2","Canvas","pensum"],
-      "url": "education/active/idatt2202/index.html#quiz-09",
+      "url": "education/active/idatt2202/#quiz-09",
       "priority": 20
     },
     {
@@ -646,7 +646,7 @@
       "context": "Canvas-quizer · Uke 44–45",
       "description": "Pensum: Ch. 11.1–11.3 og Ch. 13.1–13.4. Én felles Canvas-quiz for Storage Systems og Files and Directories.",
       "keywords": ["Quiz 10","Storage and filesystems","Ch. 11.1–11.3 og Ch. 13.1–13.4","Canvas","pensum"],
-      "url": "education/active/idatt2202/index.html#quiz-10",
+      "url": "education/active/idatt2202/#quiz-10",
       "priority": 20
     },
     {
@@ -657,7 +657,7 @@
       "context": "Canvas-quizer · Uke 46",
       "description": "Pensum: Hailperin Ch. 11 + course material. Oversikt over quizen og dens plass i semesteret.",
       "keywords": ["Quiz 11","Security","Hailperin Ch. 11 + course material","Canvas","pensum"],
-      "url": "education/active/idatt2202/index.html#quiz-11",
+      "url": "education/active/idatt2202/#quiz-11",
       "priority": 20
     },
     {
@@ -668,7 +668,7 @@
       "context": "Operativsystemer · Emneoversikt",
       "description": "Emnets røde tråd fra introduction og kernel til concurrency, memory, file systems og security.",
       "keywords": ["fagoversikt","course map","emnekart"],
-      "url": "education/active/idatt2202/index.html#faget",
+      "url": "education/active/idatt2202/#faget",
       "priority": 10
     },
     {
@@ -679,7 +679,7 @@
       "context": "Operativsystemer · Emneoversikt",
       "description": "15 kunnskapsområder koblet til uke, pensum, Canvas-quiz og forelesning.",
       "keywords": ["semesterplan","semesteroversikt","uke","tema","pensum","Canvas","forelesning"],
-      "url": "education/active/idatt2202/index.html#semesteroversikt",
+      "url": "education/active/idatt2202/#semesteroversikt",
       "priority": 20
     },
     {
@@ -690,7 +690,7 @@
       "context": "Operativsystemer · Emneoversikt",
       "description": "De 13 forelesningene i Canvas-rekkefølge, fra Introduction til Security.",
       "keywords": ["forelesninger","lectures","Donn Morrison","Canvas"],
-      "url": "education/active/idatt2202/index.html#forelesninger",
+      "url": "education/active/idatt2202/#forelesninger",
       "priority": 15
     },
     {
@@ -701,7 +701,7 @@
       "context": "Operativsystemer · Emneoversikt",
       "description": "14 Canvas-quizer knyttet til semesterets temaer. Quiz 10 dekker både Storage Systems og Files and Directories.",
       "keywords": ["Canvas","quizer","quizoversikt","14 quizer","Quiz 10"],
-      "url": "education/active/idatt2202/index.html#quizer",
+      "url": "education/active/idatt2202/#quizer",
       "priority": 15
     },
     {
@@ -712,7 +712,7 @@
       "context": "Operativsystemer · Emneoversikt",
       "description": "Anderson & Dahlin: Operating Systems: Principles and Practice, 2nd edition. Security bruker Hailperin Chapter 11 og kursmateriale.",
       "keywords": ["pensum","textbook","lærebok","Anderson","Dahlin","Operating Systems Principles and Practice","Max Hailperin","Operating Systems and Middleware","chapter","kapitler"],
-      "url": "education/active/idatt2202/index.html#pensum",
+      "url": "education/active/idatt2202/#pensum",
       "priority": 20
     },
     {
@@ -723,7 +723,7 @@
       "context": "Operativsystemer · Emneoversikt",
       "description": "Oversikt over eksamener og løsninger fra H2023, H2024 og H2025.",
       "keywords": ["eksamen","eksamener","previous exams","solutions","løsninger","H2023","H2024","H2025"],
-      "url": "education/active/idatt2202/index.html#eksamener",
+      "url": "education/active/idatt2202/#eksamener",
       "priority": 15
     },
     {
@@ -734,7 +734,7 @@
       "context": "Operativsystemer · Emneoversikt",
       "description": "Eksamen og løsning er del av kurs-/studiekildene.",
       "keywords": ["H2023","2023","eksamen","løsning"],
-      "url": "education/active/idatt2202/index.html#exam-h2023",
+      "url": "education/active/idatt2202/#exam-h2023",
       "priority": 20
     },
     {
@@ -745,7 +745,7 @@
       "context": "Operativsystemer · Emneoversikt",
       "description": "Question 21 skal bruke if (f == 0), ikke if (f > 0). Eksamen, løsning og correction er del av kurs-/studiekildene.",
       "keywords": ["H2024","2024","eksamen","løsning","correction","Correction to 2024 exam","Question 21","Q21"],
-      "url": "education/active/idatt2202/index.html#exam-h2024",
+      "url": "education/active/idatt2202/#exam-h2024",
       "priority": 20
     },
     {
@@ -756,7 +756,7 @@
       "context": "Operativsystemer · Emneoversikt",
       "description": "Eksamen og suggested solution er del av kurs-/studiekildene.",
       "keywords": ["H2025","2025","eksamen","suggested solution","løsning"],
-      "url": "education/active/idatt2202/index.html#exam-h2025",
+      "url": "education/active/idatt2202/#exam-h2025",
       "priority": 20
     },
     {
@@ -767,7 +767,7 @@
       "context": "Operativsystemer · Emneoversikt",
       "description": "Plass for faglig verifiserte koblinger mellom tidligere eksamensoppgaver og temaer. En komplett spørsmålskartlegging er ikke tilgjengelig ennå.",
       "keywords": ["eksamensrelevans","eksamensoppgaver","question mapping","tema","spørsmålskartlegging"],
-      "url": "education/active/idatt2202/index.html#eksamensrelevans",
+      "url": "education/active/idatt2202/#eksamensrelevans",
       "priority": 15
     },
     {
@@ -778,7 +778,7 @@
       "context": "Operativsystemer · Emneoversikt",
       "description": "Oversikt over praktiske ferdigheter: compile/debug, pointers, processes, file I/O, signals, pthreads, synkronisering og memory.",
       "keywords": ["C","system programming","systemprogrammering","compile","debug","pointers","memory","fork","exec","wait","file I/O","signals","pthreads","locks","semaphores","condition variables","malloc","free","mmap"],
-      "url": "education/active/idatt2202/index.html#praktisk-c",
+      "url": "education/active/idatt2202/#praktisk-c",
       "priority": 15
     },
     {
@@ -789,7 +789,7 @@
       "context": "Operativsystemer · Emneoversikt",
       "description": "Oversikt over textbook, Canvas, slides, transcripts, labøvinger, assignments, C-eksempler og tidligere eksamener med løsninger.",
       "keywords": ["ressurser","kursressurser","studiemateriale","textbook","Canvas","lecture slides","lecture transcripts","lab exercises","course work","assignments","C examples","previous exams"],
-      "url": "education/active/idatt2202/index.html#ressurser",
+      "url": "education/active/idatt2202/#ressurser",
       "priority": 15
     }
   ]
