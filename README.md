@@ -36,17 +36,26 @@ fullførte emnene har ikke egne interne sider. Tomme mapper beholdes i Git med
 
 ## Lokal kjøring
 
-HTML kan åpnes direkte, men globalt søk trenger en HTTP-server for å hente indeksen.
+Bruk en HTTP-server: katalog-URL-er og globalt søk trenger at sidene serveres.
 Kjør fra repositoryets rot:
 
 ```sh
 python -m http.server
 ```
 
-Åpne deretter http://localhost:8000/. Ordinære sider bruker relative lenker.
-404-siden bruker publiserte `/website/`-stier for å fungere også på dype feiladresser.
+Åpne deretter http://localhost:8000/. Vanlig navigasjon bruker katalog-URL-er
+med avsluttende `/`, uten synlig `index.html`. Filene heter fortsatt `index.html`,
+så gamle fil-URL-er virker også. Ordinære sider bruker relative lenker; sidebar
+og søk finner nettstedets rot fra plasseringen til `assets/js/site.js`, ikke hostname.
+Dette fungerer både under `/website/` og fra domeneroten.
+
+404-siden har én eksplisitt `<base href="/website/">` som lar assets og lenker
+fungere også på dype feiladresser. Ved senere publisering fra domeneroten skal
+den settes til `/`; canonical/OG og domeneoppsett endres først i issue #4.
 Gamle adresser til Om meg og Fag videresendes fra 404-siden til den nye strukturen,
-med søkeparametre og ankere bevart. Lokal standardserver bruker ikke denne 404-siden automatisk.
+med søkeparametre og ankere bevart. Gamle `#tidligere-fag`-bokmerker på fagoversikten
+videresendes til `education/previous/`. Lokal standardserver bruker ikke 404-siden
+automatisk; for lokal 404-testing ved domeneroten må base-path også være `/`.
 
 ## Kontroll og publisering
 
@@ -56,6 +65,9 @@ python scripts/validate-site.py
 
 Kontrollen bruker bare Python-standardbiblioteket og sjekker lokale lenker,
 assets, søkeindeks, ankere og dupliserte HTML-ID-er.
+Publiseringsroten leses fra forsidens canonical, og `<base>` på 404-siden respekteres.
+`--base-url https://example.test/website/` kan brukes for å kontrollere samme
+stioppsett på et annet hostname, uten å endre nettstedets metadata.
 Pull requests mot `main` valideres med `.github/workflows/validate-site.yml`.
 `main` valideres og publiseres gjennom `.github/workflows/deploy-pages.yml`;
 kontrollen kjøres før Pages-deploy.

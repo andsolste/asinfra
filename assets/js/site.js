@@ -14,6 +14,13 @@
     }
 
     const siteRoot = new URL("../../", siteScript.src);
+    // A 404 base element resolves assets, but skip links must stay on the current URL.
+    const skipLink = document.querySelector('.skip-link[href^="#"]');
+    if (document.querySelector("base") && skipLink) {
+        const skipTarget = new URL(window.location.href);
+        skipTarget.hash = skipLink.getAttribute("href");
+        skipLink.href = skipTarget.href;
+    }
     const searchIndexUrl = new URL("assets/data/search-index.json", siteRoot);
     const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
     const shortcutLabel = isMac ? "⌘ K" : "Ctrl K";
@@ -46,13 +53,13 @@
         : /^(education)(\/|$)/.test(relativePath) ? "fag"
         : null;
     const navigationPaths = {
-        about: "about/index.html",
-        projects: "projects/index.html",
-        fag: "education/index.html"
+        about: "about/",
+        projects: "projects/",
+        fag: "education/"
     };
 
     const brandLink = sidebar.querySelector("a.sidebar-brand");
-    if (brandLink) brandLink.href = new URL("index.html", siteRoot).href;
+    if (brandLink) brandLink.href = siteRoot.href;
 
     sidebarNavigation.querySelectorAll("[data-nav-section]").forEach((link) => {
         const section = link.dataset.navSection;
@@ -164,7 +171,7 @@
         const subjectDirectory = new URL(`education/active/${subject.slug}/`, siteRoot);
 
         link.className = "sidebar-subjects-link";
-        link.href = new URL("index.html", subjectDirectory).href;
+        link.href = subjectDirectory.href;
         link.textContent = subject.label;
         link.setAttribute("aria-label", `${subject.code} – ${subject.name}`);
         link.title = `${subject.code} – ${subject.name}`;
