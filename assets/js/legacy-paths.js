@@ -1,10 +1,13 @@
-// Preserve incoming links after moving Om meg and Fag. Loaded only by 404.html.
+// Preserve old structure and GitHub Pages-prefix bookmarks. Loaded only by 404.html.
 (() => {
     const siteRoot = new URL("../../", document.currentScript.src);
     const path = window.location.pathname;
     if (!path.startsWith(siteRoot.pathname)) return;
 
-    const relativePath = path.slice(siteRoot.pathname.length).replace(/\/$/, "");
+    let relativePath = path.slice(siteRoot.pathname.length);
+    // The former repository prefix is compatibility-only on root deployments.
+    const legacyPrefix = siteRoot.pathname === "/" && /^website(?:\/|$)/.test(relativePath);
+    if (legacyPrefix) relativePath = relativePath.replace(/^website\/?/, "");
     const aliases = {
         "about.html": "about/",
         "fag": "education/",
@@ -15,8 +18,12 @@
         aliases[`fag/${slug}/index.html`] = `education/active/${slug}/`;
     });
 
-    if (!aliases[relativePath]) return;
-    const target = new URL(aliases[relativePath], siteRoot);
+    const aliasKey = relativePath.replace(/\/$/, "");
+    const alias = Object.hasOwn(aliases, aliasKey) ? aliases[aliasKey] : null;
+    if (!alias && !legacyPrefix) return;
+    const destination = (alias || relativePath).replace(/(^|\/)index\.html$/, "$1") || "./";
+    const target = new URL(destination, siteRoot);
+    if (target.origin !== siteRoot.origin) return;
     target.search = window.location.search;
     target.hash = window.location.hash;
     window.location.replace(target.href);
