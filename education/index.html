@@ -74,16 +74,16 @@
                 <p>Fagene jeg arbeider med høsten 2026, og en oversikt over emnene fra første studieår.</p>
             </section>
 
-            <div class="course-switcher" role="tablist" aria-label="Velg fagoversikt">
-                <button class="course-switcher-tab" id="active-courses-tab" type="button" role="tab" aria-selected="true" aria-controls="aktive-fag">Aktive fag</button>
-                <button class="course-switcher-tab" id="previous-courses-tab" type="button" role="tab" aria-selected="false" aria-controls="tidligere-fag" tabindex="-1">Tidligere fag</button>
-            </div>
+            <nav class="course-switcher" aria-label="Velg fagoversikt">
+                <a class="course-switcher-tab" href="index.html" aria-current="page">Aktive fag</a>
+                <a class="course-switcher-tab" href="previous/index.html" data-previous-courses>Tidligere fag</a>
+            </nav>
 
-            <section class="course-panel" id="aktive-fag" role="tabpanel" aria-labelledby="active-courses-tab">
+            <section class="course-panel" id="aktive-fag" aria-labelledby="active-courses-heading">
                 <header class="course-panel-header">
                     <div>
                         <p class="section-kicker">Høst 2026</p>
-                        <h2>Aktive fag</h2>
+                        <h2 id="active-courses-heading">Aktive fag</h2>
                     </div>
                     <p>Fagene jeg arbeider med nå.</p>
                 </header>
@@ -116,90 +116,6 @@
                 </div>
             </section>
 
-            <section class="course-panel previous-courses-panel" id="tidligere-fag" role="tabpanel" aria-labelledby="previous-courses-tab" hidden>
-                <header class="course-panel-header">
-                    <div>
-                        <p class="section-kicker">Studieåret 2025/2026</p>
-                        <h2>Tidligere fag</h2>
-                    </div>
-                    <p>Emner fra første studieår, gruppert etter semester.</p>
-                </header>
-
-                <section class="semester-group" aria-labelledby="autumn-heading">
-                    <header class="semester-heading">
-                        <h3 id="autumn-heading">Høst 2025</h3>
-                        <span>Første semester</span>
-                    </header>
-                    <div class="previous-course-grid">
-                        <article class="course-card previous-course-card">
-                            <p class="course-code">DCST1001</p>
-                            <h4>Infrastruktur: grunnleggende ferdigheter</h4>
-                            <p>Grunnleggende kompetanse i maskinvare, operativsystemer, datanettverk, virtualisering og skytjenester. Faget gir praktisk erfaring med kommandolinje, bruker- og tilgangsstyring, lagring, sikkerhetskopiering, feilsøking og logganalyse.</p>
-                            <a class="ntnu-link" href="https://www.ntnu.no/studier/emner/DCST1001/2025" target="_blank" rel="noopener noreferrer" aria-label="Se DCST1001 hos NTNU, åpnes i ny fane">Se hos NTNU <span aria-hidden="true">↗</span></a>
-                        </article>
-                        <article class="course-card previous-course-card">
-                            <p class="course-code">DCST1002</p>
-                            <h4>Cybersikkerhet og teamarbeid</h4>
-                            <p>Grunnleggende forståelse av cybersikkerhet, sårbarheter i digital infrastruktur, identitets- og tilgangsstyring samt trussel- og risikoanalyse. Faget utvikler også ferdigheter i team- og prosjektarbeid, faglig formidling og opphavsrett.</p>
-                            <a class="ntnu-link" href="https://www.ntnu.no/studier/emner/DCST1002/2025" target="_blank" rel="noopener noreferrer" aria-label="Se DCST1002 hos NTNU, åpnes i ny fane">Se hos NTNU <span aria-hidden="true">↗</span></a>
-                        </article>
-                        <article class="course-card previous-course-card course-card-zero">
-                            <div class="course-card-meta-row">
-                                <p class="course-code">HMS0002</p>
-                                <span class="course-credit">0 studiepoeng</span>
-                            </div>
-                            <h4>HMS-kurs for 1. årsstudenter</h4>
-                            <p>Praktisk og teoretisk grunnopplæring i førstehjelp og brannvern, inkludert hjerte-lunge-redning, hjertestarter, slukkearbeid og evakuering. Kurset gir beredskap til å ivareta egen og andres sikkerhet ved brann eller ulykke.</p>
-                            <a class="ntnu-link" href="https://www.ntnu.no/studier/emner/HMS0002/2025" target="_blank" rel="noopener noreferrer" aria-label="Se HMS0002 hos NTNU, åpnes i ny fane">Se hos NTNU <span aria-hidden="true">↗</span></a>
-                        </article>
-                        <article class="course-card previous-course-card">
-                            <p class="course-code">TDT4109</p>
-                            <h4>Informasjonsteknologi, grunnkurs</h4>
-                            <p>Grunnleggende forståelse av datamaskiners oppbygging, digital representasjon og versjonskontroll, kombinert med prosedyreorientert programmering i Python. Faget gir trening i algoritmer, datastrukturer, filbehandling, testing og feilsøking.</p>
-                            <a class="ntnu-link" href="https://www.ntnu.no/studier/emner/TDT4109/2025" target="_blank" rel="noopener noreferrer" aria-label="Se TDT4109 hos NTNU, åpnes i ny fane">Se hos NTNU <span aria-hidden="true">↗</span></a>
-                        </article>
-                        <article class="course-card previous-course-card">
-                            <p class="course-code">TMA4412</p>
-                            <h4>Matematikk 2C: Diskret matematikk</h4>
-                            <p>Diskret matematikk med logikk, mengdelære, kombinatorikk, tallteori, kryptologi, rekursjon og induksjon. Faget gir også ferdigheter i å bruke relasjoner, grafer, trær, formelle språk og endelige automater i teknologiske problemstillinger.</p>
-                            <a class="ntnu-link" href="https://www.ntnu.no/studier/emner/TMA4412/2025" target="_blank" rel="noopener noreferrer" aria-label="Se TMA4412 hos NTNU, åpnes i ny fane">Se hos NTNU <span aria-hidden="true">↗</span></a>
-                        </article>
-                    </div>
-                </section>
-
-                <section class="semester-group" aria-labelledby="spring-heading">
-                    <header class="semester-heading">
-                        <h3 id="spring-heading">Vår 2026</h3>
-                        <span>Andre semester</span>
-                    </header>
-                    <div class="previous-course-grid">
-                        <article class="course-card previous-course-card">
-                            <p class="course-code">DCST1005</p>
-                            <h4>Infrastruktur: sikre grunntjenester</h4>
-                            <p>Kompetanse i private og offentlige skyløsninger, katalogtjenester, identitets- og tilgangsstyring, overvåkning og sentralisert logging. Faget gir praktisk erfaring med administrasjon, tilgjengeliggjøring, migrering, sikkerhet og grunnleggende ytelsesvurdering i skybasert infrastruktur.</p>
-                            <a class="ntnu-link" href="https://www.ntnu.no/studier/emner/DCST1005/2025" target="_blank" rel="noopener noreferrer" aria-label="Se DCST1005 hos NTNU, åpnes i ny fane">Se hos NTNU <span aria-hidden="true">↗</span></a>
-                        </article>
-                        <article class="course-card previous-course-card">
-                            <p class="course-code">DCST1006</p>
-                            <h4>Datakommunikasjon og nettverk</h4>
-                            <p>Grunnleggende kompetanse i lagdelte nettverk, IP-adressering, Ethernet, TCP/UDP, switching, routing og sentrale nettverkstjenester. Faget gir praktisk erfaring med å designe, konfigurere, vedlikeholde og feilsøke små og mellomstore datanettverk.</p>
-                            <a class="ntnu-link" href="https://www.ntnu.no/studier/emner/DCST1006/2025" target="_blank" rel="noopener noreferrer" aria-label="Se DCST1006 hos NTNU, åpnes i ny fane">Se hos NTNU <span aria-hidden="true">↗</span></a>
-                        </article>
-                        <article class="course-card previous-course-card">
-                            <p class="course-code">IDATT2002</p>
-                            <h4>Databaser</h4>
-                            <p>Kompetanse i datamodellering, relasjonsdatabaser, SQL, normalisering, integritet og transaksjoner. Faget dekker også databasesikkerhet, ytelse, kobling mot programkode og grunnleggende NoSQL for semistrukturerte data.</p>
-                            <a class="ntnu-link" href="https://www.ntnu.no/studier/emner/IDATT2002/2025" target="_blank" rel="noopener noreferrer" aria-label="Se IDATT2002 hos NTNU, åpnes i ny fane">Se hos NTNU <span aria-hidden="true">↗</span></a>
-                        </article>
-                        <article class="course-card previous-course-card">
-                            <p class="course-code">TDT4100</p>
-                            <h4>Objektorientert programmering</h4>
-                            <p>Objektorientert programmering i Java med vekt på algoritmer, datastrukturer, modularisering, gjenbruk og objektorientert design. Faget gir trening i enhetstesting, feilsøking, UML, design patterns og utvikling av enkle applikasjoner.</p>
-                            <a class="ntnu-link" href="https://www.ntnu.no/studier/emner/TDT4100/2025" target="_blank" rel="noopener noreferrer" aria-label="Se TDT4100 hos NTNU, åpnes i ny fane">Se hos NTNU <span aria-hidden="true">↗</span></a>
-                        </article>
-                    </div>
-                </section>
-            </section>
         </main>
         <footer class="site-footer">© 2026 Andreas Sollie Steffensen</footer>
     </div>

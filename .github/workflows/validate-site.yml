@@ -1,9 +1,6 @@
 name: Validate static site
 
 on:
-  push:
-    branches:
-      - refactor/site-structure
   pull_request:
     branches:
       - main

@@ -250,7 +250,7 @@
       "context": "Høst 2025 · NTNU",
       "description": "Maskinvare, operativsystemer, datanettverk, virtualisering, skytjenester og praktisk systemadministrasjon.",
       "keywords": ["maskinvare", "operativsystemer", "datanettverk", "virtualisering", "skytjenester", "kommandolinje", "tilgangsstyring", "lagring", "sikkerhetskopiering", "feilsøking", "logganalyse"],
-      "url": "education/index.html#tidligere-fag",
+      "url": "education/previous/index.html#tidligere-fag",
       "priority": 12
     },
     {
@@ -261,7 +261,7 @@
       "context": "Høst 2025 · NTNU",
       "description": "Cybersikkerhet, sårbarheter, identitets- og tilgangsstyring, trussel- og risikoanalyse samt team- og prosjektarbeid.",
       "keywords": ["cybersikkerhet", "sårbarheter", "digital infrastruktur", "identitetsstyring", "tilgangsstyring", "trusselanalyse", "risikoanalyse", "teamarbeid", "prosjektarbeid", "opphavsrett"],
-      "url": "education/index.html#tidligere-fag",
+      "url": "education/previous/index.html#tidligere-fag",
       "priority": 12
     },
     {
@@ -272,7 +272,7 @@
       "context": "Høst 2025 · 0 studiepoeng · NTNU",
       "description": "Førstehjelp, hjerte-lunge-redning, hjertestarter, brannvern, slukkearbeid og evakuering.",
       "keywords": ["HMS", "førstehjelp", "HLR", "hjerte-lunge-redning", "hjertestarter", "brannvern", "slukkearbeid", "evakuering", "sikkerhet"],
-      "url": "education/index.html#tidligere-fag",
+      "url": "education/previous/index.html#tidligere-fag",
       "priority": 8
     },
     {
@@ -283,7 +283,7 @@
       "context": "Høst 2025 · NTNU",
       "description": "Datamaskiners oppbygging, digital representasjon, versjonskontroll og prosedyreorientert programmering i Python.",
       "keywords": ["informasjonsteknologi", "Python", "programmering", "algoritmer", "datastrukturer", "filbehandling", "testing", "feilsøking", "versjonskontroll", "digital representasjon"],
-      "url": "education/index.html#tidligere-fag",
+      "url": "education/previous/index.html#tidligere-fag",
       "priority": 12
     },
     {
@@ -294,7 +294,7 @@
       "context": "Høst 2025 · NTNU",
       "description": "Logikk, mengdelære, kombinatorikk, tallteori, kryptologi, rekursjon, induksjon, grafer og formelle språk.",
       "keywords": ["diskret matematikk", "logikk", "mengdelære", "kombinatorikk", "tallteori", "kryptologi", "rekursjon", "induksjon", "relasjoner", "grafer", "trær", "formelle språk", "endelige automater"],
-      "url": "education/index.html#tidligere-fag",
+      "url": "education/previous/index.html#tidligere-fag",
       "priority": 12
     },
     {
@@ -305,7 +305,7 @@
       "context": "Vår 2026 · NTNU",
       "description": "Skyløsninger, katalogtjenester, identitets- og tilgangsstyring, overvåkning, logging og sikker infrastrukturdrift.",
       "keywords": ["infrastruktur", "skyløsninger", "cloud", "katalogtjenester", "identitetsstyring", "tilgangsstyring", "overvåkning", "logging", "migrering", "sikkerhet", "ytelse"],
-      "url": "education/index.html#tidligere-fag",
+      "url": "education/previous/index.html#tidligere-fag",
       "priority": 12
     },
     {
@@ -316,7 +316,7 @@
       "context": "Vår 2026 · NTNU",
       "description": "Lagdelt datakommunikasjon, IP-adressering, Ethernet, TCP/UDP, switching, routing og sentrale nettverkstjenester.",
       "keywords": ["datakommunikasjon", "nettverk", "IP-adressering", "Ethernet", "TCP", "UDP", "switching", "routing", "nettverkstjenester", "konfigurering", "feilsøking"],
-      "url": "education/index.html#tidligere-fag",
+      "url": "education/previous/index.html#tidligere-fag",
       "priority": 12
     },
     {
@@ -327,7 +327,7 @@
       "context": "Vår 2026 · NTNU",
       "description": "Datamodellering, relasjonsdatabaser, SQL, normalisering, integritet, transaksjoner, databasesikkerhet og NoSQL.",
       "keywords": ["databaser", "datamodellering", "relasjonsdatabaser", "SQL", "normalisering", "integritet", "transaksjoner", "databasesikkerhet", "ytelse", "NoSQL"],
-      "url": "education/index.html#tidligere-fag",
+      "url": "education/previous/index.html#tidligere-fag",
       "priority": 12
     },
     {
@@ -338,7 +338,7 @@
       "context": "Vår 2026 · NTNU",
       "description": "Objektorientert programmering i Java, algoritmer, datastrukturer, modularisering, testing, UML og design patterns.",
       "keywords": ["objektorientert programmering", "Java", "algoritmer", "datastrukturer", "modularisering", "gjenbruk", "objektorientert design", "enhetstesting", "feilsøking", "UML", "design patterns"],
-      "url": "education/index.html#tidligere-fag",
+      "url": "education/previous/index.html#tidligere-fag",
       "priority": 12
     },
     {
