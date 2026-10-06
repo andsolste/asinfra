@@ -1,7 +1,10 @@
 # Andreas Sollie Steffensen – Personal Website
 
 Personlig portfolio og profilside med prosjekter og fagoversikter fra NTNU.
-Publisert på [GitHub Pages](https://andsolste.github.io/website/).
+Produksjon: [asinfra.no](https://asinfra.no/), hostet på GitHub Pages.
+Custom domain er `asinfra.no`, og nettstedet publiseres fra domeneroten `/`.
+DNS hos Uniweb, GitHub-domeneverifisering, custom domain og HTTPS er konfigurert
+utenfor repoet. `www.asinfra.no` er satt opp som alternativ adresse.
 
 ## Teknologi og struktur
 
@@ -48,15 +51,25 @@ python -m http.server
 med avsluttende `/`, uten synlig `index.html`. Filene heter fortsatt `index.html`,
 så gamle fil-URL-er virker også. Ordinære sider bruker relative lenker; sidebar
 og søk finner nettstedets rot fra plasseringen til `assets/js/site.js`, ikke hostname.
-Dette fungerer både under `/website/` og fra domeneroten.
+Produksjonen bruker domeneroten; relative lenker trenger ingen domenespesifikk omskriving.
 
-404-siden har én eksplisitt `<base href="/website/">` som lar assets og lenker
-fungere også på dype feiladresser. Ved senere publisering fra domeneroten skal
-den settes til `/`; canonical/OG og domeneoppsett endres først i issue #4.
+404-siden har `<base href="/">` som lar assets, søk og lenker fungere også på dype
+feiladresser. Canonical og Open Graph peker til tilsvarende URL-er på `https://asinfra.no/`.
 Gamle adresser til Om meg og Fag videresendes fra 404-siden til den nye strukturen,
 med søkeparametre og ankere bevart. Gamle `#tidligere-fag`-bokmerker på fagoversikten
-videresendes til `education/previous/`. Lokal standardserver bruker ikke 404-siden
-automatisk; for lokal 404-testing ved domeneroten må base-path også være `/`.
+videresendes til `education/previous/`. Gamle `/website/...`-stier håndteres også
+av 404-skriptet, som fjerner det tidligere repository-prefikset før eventuell
+struktur-redirect. Ukjente destinasjoner forblir vanlige 404-sider, uten redirect-loop.
+Den gamle GitHub Pages-adressen håndteres først av hostingens domene-redirect;
+repoet håndterer eventuelle bevarte prefikser og gamle interne paths.
+Lokal standardserver bruker ikke 404-siden automatisk.
+
+GitHub Actions er fortsatt publiseringskilden. Ingen `CNAME`-fil er nødvendig
+for custom domain med dette oppsettet, se
+[GitHub-dokumentasjonen](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
+Ved eventuell tilbakeføring må metadata og 404-base tilpasses adressen som tas
+i bruk igjen, og Pages-/DNS-oppsettet håndteres separat. Relative lenker og
+rotberegning fra script-plasseringen kan beholdes.
 
 ## Study – lokal utvikling
 
@@ -98,7 +111,7 @@ Kontrollen bruker bare Python-standardbiblioteket og sjekker lokale lenker,
 assets, søkeindeks, ankere og dupliserte HTML-ID-er. Appkildekode under `apps/`
 er unntatt fra denne statiske kontrollen; Study kontrolleres med npm-scriptene over.
 Publiseringsroten leses fra forsidens canonical, og `<base>` på 404-siden respekteres.
-`--base-url https://example.test/website/` kan brukes for å kontrollere samme
+`--base-url https://example.test/` kan brukes for å kontrollere samme
 stioppsett på et annet hostname, uten å endre nettstedets metadata.
 Pull requests mot `main` valideres med `.github/workflows/validate-site.yml`.
 `main` valideres og publiseres gjennom `.github/workflows/deploy-pages.yml`;
