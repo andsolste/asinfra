@@ -7,14 +7,14 @@
     const pageShell = document.getElementById("page-shell");
     const sidebarNavigation = document.getElementById("primary-navigation");
     const mobileViewport = window.matchMedia("(max-width: 820px)");
-    const siteScript = document.currentScript || Array.from(document.scripts).find((script) => /\/assets\/site\.js(?:[?#]|$)/.test(script.src));
+    const siteScript = document.currentScript || Array.from(document.scripts).find((script) => /\/assets\/js\/site\.js(?:[?#]|$)/.test(script.src));
 
     if (!sidebar || !sidebarToggle || !mobileMenuButton || !scrim || !pageShell || !sidebarNavigation || !siteScript) {
         return;
     }
 
-    const siteRoot = new URL("../", siteScript.src);
-    const searchIndexUrl = new URL("assets/search-index.json", siteRoot);
+    const siteRoot = new URL("../../", siteScript.src);
+    const searchIndexUrl = new URL("assets/data/search-index.json", siteRoot);
     const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
     const shortcutLabel = isMac ? "⌘ K" : "Ctrl K";
     let menuReturnFocusTo = null;
@@ -41,14 +41,14 @@
     const relativePath = currentPath.startsWith(siteRoot.pathname.toLowerCase())
         ? currentPath.slice(siteRoot.pathname.length)
         : "";
-    const activeSection = relativePath === "about.html" ? "about"
+    const activeSection = /^(about)(\/|$)/.test(relativePath) ? "about"
         : /^(projects)(\/|$)/.test(relativePath) ? "projects"
-        : /^(fag)(\/|$)/.test(relativePath) ? "fag"
+        : /^(education)(\/|$)/.test(relativePath) ? "fag"
         : null;
     const navigationPaths = {
-        about: "about.html",
+        about: "about/index.html",
         projects: "projects/index.html",
-        fag: "fag/index.html"
+        fag: "education/index.html"
     };
 
     const brandLink = sidebar.querySelector("a.sidebar-brand");
@@ -161,7 +161,7 @@
     activeSubjects.forEach((subject) => {
         const item = document.createElement("li");
         const link = document.createElement("a");
-        const subjectDirectory = new URL(`fag/${subject.slug}/`, siteRoot);
+        const subjectDirectory = new URL(`education/active/${subject.slug}/`, siteRoot);
 
         link.className = "sidebar-subjects-link";
         link.href = new URL("index.html", subjectDirectory).href;

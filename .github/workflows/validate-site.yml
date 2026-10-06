@@ -1,0 +1,21 @@
+name: Validate static site
+
+on:
+  push:
+    branches:
+      - refactor/site-structure
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Validate site
+        run: python3 scripts/validate-site.py

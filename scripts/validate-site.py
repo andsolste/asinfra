@@ -21,7 +21,7 @@ class Page(HTMLParser):
         attrs = dict(attrs)
         if attrs.get("id"):
             self.ids[attrs["id"]] += 1
-        key = "href" if tag in ("a", "link") else "src" if tag == "script" else None
+        key = "href" if tag in ("a", "link") else "src" if tag in ("script", "img", "iframe", "source") else "data" if tag == "object" else None
         if key and attrs.get(key):
             self.links.append(attrs[key])
 
@@ -58,7 +58,7 @@ for path, page in pages.items():
         check(link, relative, urljoin(BASE, relative))
 
 try:
-    index = json.loads((ROOT / "assets/search-index.json").read_text(encoding="utf-8"))
+    index = json.loads((ROOT / "assets/data/search-index.json").read_text(encoding="utf-8"))
     entries = index["entries"]
     for entry in entries:
         check(entry["url"], f"search: {entry['id']}", BASE)
