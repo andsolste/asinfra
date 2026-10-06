@@ -5,7 +5,8 @@ Publisert på [GitHub Pages](https://andsolste.github.io/website/).
 
 ## Teknologi og struktur
 
-Statisk HTML, CSS og vanilla JavaScript. Ingen rammeverk eller build-system.
+Hovednettstedet bruker statisk HTML, CSS og vanilla JavaScript uten build-system.
+Study er en separat React + TypeScript-app med Vite under `apps/study/`.
 
 ```text
 .github/workflows/     Kontroll og Pages-deploy
@@ -23,7 +24,7 @@ projects/
   index.html           Prosjektoversikt
   technical/           Plass for fremtidige tekniske prosjekter
   media-design/        Eksisterende medieprosjekter og deres filer
-apps/                  Reservert for fremtidige apper
+apps/study/            Selvstendig React + Vite + TypeScript-app
 scripts/               Lettvekts kvalitetskontroll
 index.html             Forside
 404.html               Feilside med navigasjon
@@ -32,7 +33,7 @@ index.html             Forside
 Tidligere fag presenteres på `education/previous/index.html` med lenker til NTNU.
 Hovedoversikten viser aktive fag og lenker videre til tidligere fag; de enkelte
 fullførte emnene har ikke egne interne sider. Tomme mapper beholdes i Git med
-`.gitkeep`; ingen apper eller nye prosjekter er implementert.
+`.gitkeep`. Study har foreløpig bare et app-shell, ikke dashboardfunksjonalitet.
 
 ## Lokal kjøring
 
@@ -57,6 +58,36 @@ med søkeparametre og ankere bevart. Gamle `#tidligere-fag`-bokmerker på fagove
 videresendes til `education/previous/`. Lokal standardserver bruker ikke 404-siden
 automatisk; for lokal 404-testing ved domeneroten må base-path også være `/`.
 
+## Study – lokal utvikling
+
+Bruk Node.js 22.12 eller nyere, gjerne Node.js 24 LTS, og npm.
+Appen har egen `package.json` og `package-lock.json`, uten workspaces.
+
+```sh
+cd apps/study
+npm install
+npm run dev
+```
+
+Åpne adressen Vite viser, normalt http://localhost:5173/study/.
+
+```sh
+npm run typecheck
+npm run build
+npm run preview
+```
+
+`build` kjører også typekontroll og lager `apps/study/dist/`.
+`preview` viser produksjonsbygget lokalt, normalt på http://localhost:4173/study/.
+Vite er konfigurert med `base: '/study/'`, som er den framtidige offentlige URL-en.
+Appen er ikke koblet til Pages-deployen ennå; dette hører til issue #6.
+Ingen dashboard- eller backendfunksjoner er implementert.
+
+Koden ligger i `src/App.tsx`, `src/main.tsx` og `src/styles.css`.
+Mapper for komponenter, hooks, sider og andre ressurser opprettes når de trengs.
+`node_modules/` og `dist/` holdes utenfor Git. Oppsettet har ingen egen linter;
+TypeScript kjører i strict-modus med kontroll av ubrukte variabler og parametre.
+
 ## Kontroll og publisering
 
 ```sh
@@ -64,7 +95,8 @@ python scripts/validate-site.py
 ```
 
 Kontrollen bruker bare Python-standardbiblioteket og sjekker lokale lenker,
-assets, søkeindeks, ankere og dupliserte HTML-ID-er.
+assets, søkeindeks, ankere og dupliserte HTML-ID-er. Appkildekode under `apps/`
+er unntatt fra denne statiske kontrollen; Study kontrolleres med npm-scriptene over.
 Publiseringsroten leses fra forsidens canonical, og `<base>` på 404-siden respekteres.
 `--base-url https://example.test/website/` kan brukes for å kontrollere samme
 stioppsett på et annet hostname, uten å endre nettstedets metadata.
