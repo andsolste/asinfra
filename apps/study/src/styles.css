@@ -1,0 +1,63 @@
+:root {
+  color-scheme: dark;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+  --background: #0F172A;
+  --border: #334155;
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --purple: #8B5CF6;
+  --purple-light: #A78BFA;
+  --blue: #60A5FA;
+  background: var(--background);
+  color: var(--text-primary);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.study-shell {
+  width: min(100%, 48rem);
+  margin: 0 auto;
+  padding: clamp(3rem, 10vw, 6rem) clamp(1.25rem, 5vw, 2.5rem);
+}
+
+.study-header {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.study-label {
+  margin: 0 0 1rem;
+  color: var(--blue);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(2.25rem, 6vw, 3.5rem);
+  line-height: 1.1;
+  letter-spacing: -.035em;
+}
+
+.study-description {
+  max-width: 40rem;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+}
+
+:focus-visible {
+  outline: 3px solid var(--purple-light);
+  outline-offset: 3px;
+}
