@@ -1,4 +1,4 @@
-name: Deploy static site to GitHub Pages
+name: Deploy website and Study to GitHub Pages
 
 on:
   push:
@@ -28,13 +28,31 @@ jobs:
       - name: Validate site
         run: python3 scripts/validate-site.py
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/study/package-lock.json
+
+      - name: Install Study dependencies
+        working-directory: apps/study
+        run: npm ci
+
+      - name: Typecheck and build Study
+        working-directory: apps/study
+        run: npm run build
+
+      - name: Assemble and check publishing directory
+        run: python3 scripts/build-pages.py
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload static site
+      - name: Upload combined site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: publish
 
       - name: Deploy to GitHub Pages
         id: deployment

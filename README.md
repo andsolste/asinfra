@@ -28,7 +28,7 @@ projects/
   technical/           Plass for fremtidige tekniske prosjekter
   media-design/        Eksisterende medieprosjekter og deres filer
 apps/study/            Selvstendig React + Vite + TypeScript-app
-scripts/               Lettvekts kvalitetskontroll
+scripts/               Statisk validering og samlet Pages-publiseringsmappe
 index.html             Forside
 404.html               Feilside med navigasjon
 ```
@@ -78,7 +78,7 @@ Appen har egen `package.json` og `package-lock.json`, uten workspaces.
 
 ```sh
 cd apps/study
-npm install
+npm ci
 npm run dev
 ```
 
@@ -92,8 +92,8 @@ npm run preview
 
 `build` kjører også typekontroll og lager `apps/study/dist/`.
 `preview` viser produksjonsbygget lokalt, normalt på http://localhost:4173/study/.
-Vite er konfigurert med `base: '/study/'`, som er den framtidige offentlige URL-en.
-Appen er ikke koblet til Pages-deployen ennå; dette hører til issue #6.
+Vite er konfigurert med `base: '/study/'`. Pages-deployen publiserer bygget på
+[asinfra.no/study/](https://asinfra.no/study/), separat fra den statiske hovedsiden.
 Ingen dashboard- eller backendfunksjoner er implementert.
 
 Koden ligger i `src/App.tsx`, `src/main.tsx` og `src/styles.css`.
@@ -113,9 +113,28 @@ er unntatt fra denne statiske kontrollen; Study kontrolleres med npm-scriptene o
 Publiseringsroten leses fra forsidens canonical, og `<base>` på 404-siden respekteres.
 `--base-url https://example.test/` kan brukes for å kontrollere samme
 stioppsett på et annet hostname, uten å endre nettstedets metadata.
-Pull requests mot `main` valideres med `.github/workflows/validate-site.yml`.
-`main` valideres og publiseres gjennom `.github/workflows/deploy-pages.yml`;
-kontrollen kjøres før Pages-deploy.
+Pull requests mot `main` kontrolleres med `.github/workflows/validate-site.yml`.
+Både denne og `.github/workflows/deploy-pages.yml` bruker Node.js 24, `npm ci`
+og `npm run build` (inkludert typekontroll) i `apps/study/`, i tillegg til statisk
+validering. Begge kontrollerer den samlede publiseringsmappen; bare `main` deployes.
+
+Etter Study-build kan samme produksjonsmappe lages lokalt fra repo-roten:
+
+```sh
+python scripts/build-pages.py
+python -m http.server --directory publish
+```
+
+Åpne http://localhost:8000/ eller http://localhost:8000/study/.
+Scriptet erstatter kun den genererte `publish/`-mappen. Det kopierer `index.html`,
+`404.html`, `about/`, `education/`, `projects/` og `assets/`, inkludert originale
+prosjektfiler, og legger `apps/study/dist/` i `publish/study/`. Dotfiler og
+`node_modules` utelates; ukjente filtyper/utviklingsfiler og ugyldige Study-assetstier
+stopper byggingen. Hovedfiler og Study-assets kontrolleres før upload.
+Kun `publish/` lastes opp som én Pages-artifact, aldri hele repoet. Kildekode,
+workflows, scripts og README publiseres ikke. `publish/` ignoreres av Git og den
+statiske HTML-validatoren; React-bygget kontrolleres av TypeScript/Vite og
+publiseringsscriptet.
 
 ## Vedlikehold
 

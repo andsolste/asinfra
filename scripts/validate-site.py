@@ -32,10 +32,12 @@ class Page(HTMLParser):
             self.links.append(attrs[key])
 
 
-# App source, dependencies and builds are checked by each app's own tooling.
+# App source/builds and assembled output are checked by the app/Pages tooling.
 pages = {
     p.resolve(): Page(p) for p in ROOT.rglob("*.html")
-    if ".git" not in p.parts and not p.is_relative_to(ROOT / "apps")
+    if ".git" not in p.parts
+    and not p.is_relative_to(ROOT / "apps")
+    and not p.is_relative_to(ROOT / "publish")
 }
 
 parser = argparse.ArgumentParser(description=__doc__)
