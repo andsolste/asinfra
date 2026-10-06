@@ -1,6 +1,6 @@
 /*
  * Fagkomponenter.
- * Grunnstil, fargevariabler, sidebar og sideoppsett kommer fra ../assets/site.css.
+ * Grunnstil, fargevariabler, sidebar og sideoppsett kommer fra assets/css/site.css.
  */
 
 /* Felles introduksjon og metadata */
@@ -46,13 +46,15 @@
     font: inherit;
     font-weight: 700;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .course-switcher-tab:hover {
     color: var(--text-primary);
 }
 
-.course-switcher-tab[aria-selected="true"] {
+.course-switcher-tab[aria-selected="true"],
+.course-switcher-tab[aria-current="page"] {
     border-color: var(--purple);
     background: var(--purple-subtle);
     color: var(--purple-light);

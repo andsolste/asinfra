@@ -16,9 +16,9 @@ assets/
   favicon.svg          AS-monogram
 about/index.html       Personlig profil
 education/
-  index.html           Aktive og tidligere fag
+  index.html           Hovedoversikt med aktive fag og lenke til tidligere fag
   active/              De fire aktive emnesidene
-  previous/            Plass for eventuelt fremtidig innhold
+  previous/index.html  Tidligere fag, gruppert etter semester
 projects/
   index.html           Prosjektoversikt
   technical/           Plass for fremtidige tekniske prosjekter
@@ -29,8 +29,9 @@ index.html             Forside
 404.html               Feilside med navigasjon
 ```
 
-Tidligere fag vises fortsatt i egen fane på `education/index.html` med lenker
-til NTNU. De har ikke egne interne sider. Tomme mapper beholdes i Git med
+Tidligere fag presenteres på `education/previous/index.html` med lenker til NTNU.
+Hovedoversikten viser aktive fag og lenker videre til tidligere fag; de enkelte
+fullførte emnene har ikke egne interne sider. Tomme mapper beholdes i Git med
 `.gitkeep`; ingen apper eller nye prosjekter er implementert.
 
 ## Lokal kjøring
@@ -55,10 +56,9 @@ python scripts/validate-site.py
 
 Kontrollen bruker bare Python-standardbiblioteket og sjekker lokale lenker,
 assets, søkeindeks, ankere og dupliserte HTML-ID-er.
-Pull requests og strukturbranchen kontrolleres med
-`.github/workflows/validate-site.yml`.
-`main` publiseres gjennom `.github/workflows/deploy-pages.yml`; samme kontroll
-kjøres før Pages-deploy. Refactor-branchen publiserer ikke over produksjonssiden.
+Pull requests mot `main` valideres med `.github/workflows/validate-site.yml`.
+`main` valideres og publiseres gjennom `.github/workflows/deploy-pages.yml`;
+kontrollen kjøres før Pages-deploy.
 
 ## Vedlikehold
 
