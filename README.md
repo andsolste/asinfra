@@ -36,7 +36,7 @@ index.html             Forside
 Tidligere fag presenteres på `education/previous/index.html` med lenker til NTNU.
 Hovedoversikten viser aktive fag og lenker videre til tidligere fag; de enkelte
 fullførte emnene har ikke egne interne sider. Tomme mapper beholdes i Git med
-`.gitkeep`. Study har innlogging og databasegrunnlag, men ingen dashboardfunksjoner.
+`.gitkeep`. Study har innlogging, egne fag og databasegrunnlag for studieøkter.
 
 ## Lokal kjøring
 
@@ -96,7 +96,12 @@ npm run preview
 `preview` viser produksjonsbygget lokalt, normalt på http://localhost:4173/study/.
 Vite er konfigurert med `base: '/study/'`. Pages-deployen publiserer bygget på
 [asinfra.no/study/](https://asinfra.no/study/), separat fra den statiske hovedsiden.
-Ingen fagadministrasjon, timer, historikk eller statistikk er implementert.
+Study støtter oppretting og redigering av egne fag, med valgfri fagkode.
+Aktive og arkiverte fag vises separat; arkivering kan angres ved å aktivere faget
+igjen. Fag slettes ikke, og ID-er/koblinger til studieøkter beholdes. Data hentes
+fra Supabase og isoleres med eksisterende RLS, ikke lokal lagring eller offentlige
+emnesider. Ingen ny migrasjon trengs for fagadministrasjonen.
+Timer, historikk og statistikk er ikke implementert.
 
 Koden ligger i `src/App.tsx`, `src/main.tsx` og `src/styles.css`.
 Mapper for komponenter, hooks, sider og andre ressurser opprettes når de trengs.
@@ -120,7 +125,9 @@ inn i frontend. GitHub Actions leser de to navnene fra Repository variables
 
 Registrering forklarer e-postbekreftelse når Supabase krever det. SDK-et håndterer
 session, token-refresh og innlogging etter reload; utlogging gjelder denne sessionen.
-Innlogget konto viser e-post og gjør et autorisert `subjects`-oppslag med session-JWT.
+Innlogget konto viser e-post; fagoversikten gjør autoriserte `subjects`-oppslag og
+lagringer med session-JWT. Database-default setter eier ved oppretting. UI-et bruker
+returnerte rader ved lagring; etter feil kreves ny innhenting før nytt forsøk.
 Tomt resultat er normalt. Manglende migrasjon/tilgang gir en forståelig feilmelding.
 Feil konfigurasjon i lokal utvikling gir en melding i UI, ikke en blank side.
 
@@ -184,7 +191,8 @@ Manuell slutt-test lokalt og på `https://asinfra.no/study/` etter merge/deploy:
 
 1. Registrer konto, følg bekreftelseslenken, og kontroller at du kommer til `/study/`.
 2. Test feil passord og ubekreftet konto; meldinger skal være forståelige.
-3. Logg inn og se riktig e-post samt vellykket fagoppslag (0 fag er gyldig).
+3. Logg inn og se riktig e-post og fagoversikt (tom liste er gyldig). Opprett fag
+   med/uten kode, rediger, arkiver og aktiver igjen; kontroller data etter reload.
 4. Reload og bekreft at session beholdes; logg ut og kontroller at skjemaet kommer tilbake.
 5. Gjenta med konto B, og kjør `npm run test:rls` mot riktig miljø.
 6. Kontroller desktop/mobil, tastaturnavigasjon og ingen 404/konsollfeil på Study-assets.

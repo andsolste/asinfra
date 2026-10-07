@@ -57,8 +57,18 @@ test('migration enforces grants, two-user RLS and same-owner subject links', asy
       await denied('insert into public.study_sessions(subject_id,started_at) values ($1,now())', [subjects[other]], '23503')
       await denied('update public.study_sessions set subject_id=$1 where id=$2', [subjects[other], sessions[i]], '23503')
       const extra = (await db.query("insert into public.subjects(name) values ('CRUD') returning id")).rows[0].id
-      assert.equal((await db.query("update public.subjects set name='Changed', is_archived=true where id=$1 returning id", [extra])).rows.length, 1)
+      assert.equal((await db.query("update public.subjects set name='Changed', code='CODE' where id=$1 returning id", [extra])).rows.length, 1)
       const entry = (await db.query('insert into public.study_sessions(subject_id,started_at) values ($1,now()) returning id', [extra])).rows[0].id
+      for (const archived of [true, false]) {
+        const updated = (await db.query('update public.subjects set is_archived=$1 where id=$2 returning *', [archived, extra])).rows[0]
+        assert.equal(updated.id, extra)
+        assert.equal(updated.is_archived, archived)
+        assert.equal((await db.query('select subject_id from public.study_sessions where id=$1', [entry])).rows[0].subject_id, extra)
+        assert.equal((await db.query('update public.subjects set is_archived=$1 where id=$2 returning id', [archived, subjects[other]])).rows.length, 0)
+      }
+      await denied("insert into public.subjects(name) values ('   ')", [], '23514')
+      await denied("insert into public.subjects(name) values (repeat('x',121))", [], '23514')
+      await denied("update public.subjects set code=repeat('x',33) where id=$1", [extra], '23514')
       assert.equal((await db.query("update public.study_sessions set description='Changed', ended_at=now() where id=$1 returning id", [entry])).rows.length, 1)
       assert.equal((await db.query('delete from public.study_sessions where id=$1 returning id', [entry])).rows.length, 1)
       assert.equal((await db.query('delete from public.subjects where id=$1 returning id', [extra])).rows.length, 1)

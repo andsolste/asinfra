@@ -50,6 +50,12 @@ try {
       assert.equal(ok(await client.from(table).delete().eq('id', ids[other][field]).select('id'), 'Cannot delete other row').length, 0)
       assert.ok((await client.from(table).update({ user_id: users[other] }).eq('id', ids[i][field])).error, 'Cannot transfer ownership')
     }
+    for (const archived of [true, false]) {
+      const rows = ok(await client.from('subjects').update({ is_archived: archived }).eq('id', ids[i].subject).select('id,is_archived'), 'Archive/reactivate own subject')
+      assert.deepEqual(rows, [{ id: ids[i].subject, is_archived: archived }])
+      assert.equal(ok(await client.from('subjects').update({ is_archived: archived }).eq('id', ids[other].subject).select('id'), 'Cannot archive/reactivate other subject').length, 0)
+      assert.equal(ok(await client.from('study_sessions').select('subject_id').eq('id', ids[i].session), 'Session link stays intact')[0].subject_id, ids[i].subject)
+    }
     await blockedInsert(client, 'subjects', { user_id: users[other], name: 'Blocked' }, 'Cannot insert for another user')
     await blockedInsert(client, 'study_sessions', { user_id: users[other], started_at: new Date().toISOString() }, 'Cannot insert session for another user')
     await blockedInsert(client, 'study_sessions', { subject_id: ids[other].subject, started_at: new Date().toISOString() }, 'Cannot link other subject')
