@@ -68,7 +68,8 @@ h1 {
 fieldset { border: 0; padding: 0; margin: 1.5rem 0 0; min-width: 0; }
 .auth-field { display: grid; gap: .5rem; margin-bottom: 1.25rem; }
 label { font-weight: 600; }
-input { width: 100%; min-height: 44px; padding: .7rem .85rem; font: inherit; color: var(--text-primary); background: #1E293B; border: 1px solid var(--border); border-radius: 6px; }
+input, select, textarea { width: 100%; min-width: 0; min-height: 44px; padding: .7rem .85rem; font: inherit; color: var(--text-primary); background: #1E293B; border: 1px solid var(--border); border-radius: 6px; }
+textarea { resize: vertical; }
 small { color: var(--text-secondary); }
 button { min-height: 44px; padding: .7rem 1rem; font: inherit; font-weight: 600; background: var(--purple); color: var(--text-primary); border: 1px solid transparent; border-radius: 6px; cursor: pointer; }
 button:hover:not(:disabled) { background: #7C3AED; }
@@ -95,3 +96,17 @@ button:disabled { opacity: .65; cursor: wait; }
 .archived-subjects { margin-top: 1.75rem; }
 .archived-subjects summary { min-height: 44px; cursor: pointer; color: var(--text-secondary); }
 .archived-subjects summary h3 { display: inline; margin: 0; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.timer-section { padding-block: 2rem; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
+.timer-section h2 { font-size: 1.4rem; margin: 0; }
+.timer-section .subject-code { color: var(--blue); margin-bottom: .25rem; }
+.timer-subject { font-size: 1.25rem; margin: 0; }
+.timer-description { color: var(--text-secondary); white-space: pre-wrap; }
+.timer-clock { font-size: clamp(2rem, 9vw, 3.5rem); font-variant-numeric: tabular-nums; line-height: 1.2; margin-block: 1.5rem; }
+.timer-meta { color: var(--text-secondary); font-size: .9rem; }
+.timer-saved { border-left: 2px solid var(--purple); padding-left: 1rem; margin-top: 1.25rem; }
+.timer-saved p { font-weight: 600; }
+.timer-saved dl { margin: 0; }
+.timer-saved dl > div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .25rem 1rem; }
+.timer-saved dd { margin: 0; font-variant-numeric: tabular-nums; }

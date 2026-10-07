@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { useSubjects } from '../hooks/useSubjects'
+import type { useSubjects } from '../hooks/useSubjects'
 import { splitSubjects } from '../lib/subjects'
 import type { Subject } from '../lib/subjects'
 import SubjectForm from './SubjectForm'
 
-export default function Subjects() {
-  const data = useSubjects()
+export default function Subjects({ data }: { data: ReturnType<typeof useSubjects> }) {
   const [creating, setCreating] = useState(false)
   const [editing, setEditing] = useState<string | null>(null)
   const heading = useRef<HTMLHeadingElement | null>(null)
