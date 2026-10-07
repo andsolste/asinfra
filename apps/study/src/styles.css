@@ -61,3 +61,19 @@ h1 {
   outline: 3px solid var(--purple-light);
   outline-offset: 3px;
 }
+
+.auth-section { margin-top: 2rem; max-width: 32rem; }
+.auth-section h2 { margin: 0 0 .75rem; font-size: 1.4rem; }
+.auth-section p { color: var(--text-secondary); }
+fieldset { border: 0; padding: 0; margin: 1.5rem 0 0; min-width: 0; }
+.auth-field { display: grid; gap: .5rem; margin-bottom: 1.25rem; }
+label { font-weight: 600; }
+input { width: 100%; min-height: 44px; padding: .7rem .85rem; font: inherit; color: var(--text-primary); background: #1E293B; border: 1px solid var(--border); border-radius: 6px; }
+small { color: var(--text-secondary); }
+button { min-height: 44px; padding: .7rem 1rem; font: inherit; font-weight: 600; background: var(--purple); color: var(--text-primary); border: 1px solid transparent; border-radius: 6px; cursor: pointer; }
+button:hover:not(:disabled) { background: #7C3AED; }
+button:disabled { opacity: .65; cursor: wait; }
+.text-button { background: transparent; color: var(--purple-light); padding-inline: 0; text-align: left; }
+.text-button:hover:not(:disabled) { background: transparent; text-decoration: underline; }
+.auth-section .auth-error, .auth-error { color: #FBBF24; }
+.account-email { overflow-wrap: anywhere; }
