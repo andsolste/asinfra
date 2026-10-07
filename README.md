@@ -36,7 +36,7 @@ index.html             Forside
 Tidligere fag presenteres på `education/previous/index.html` med lenker til NTNU.
 Hovedoversikten viser aktive fag og lenker videre til tidligere fag; de enkelte
 fullførte emnene har ikke egne interne sider. Tomme mapper beholdes i Git med
-`.gitkeep`. Study har foreløpig bare et app-shell, ikke dashboardfunksjonalitet.
+`.gitkeep`. Study har innlogging og databasegrunnlag, men ingen dashboardfunksjoner.
 
 ## Lokal kjøring
 
@@ -79,6 +79,7 @@ Appen har egen `package.json` og `package-lock.json`, uten workspaces.
 ```sh
 cd apps/study
 npm ci
+# Kopier .env.example til .env.local og fyll inn prosjektets offentlige verdier.
 npm run dev
 ```
 
@@ -86,6 +87,7 @@ npm run dev
 
 ```sh
 npm run typecheck
+npm test
 npm run build
 npm run preview
 ```
@@ -94,12 +96,98 @@ npm run preview
 `preview` viser produksjonsbygget lokalt, normalt på http://localhost:4173/study/.
 Vite er konfigurert med `base: '/study/'`. Pages-deployen publiserer bygget på
 [asinfra.no/study/](https://asinfra.no/study/), separat fra den statiske hovedsiden.
-Ingen dashboard- eller backendfunksjoner er implementert.
+Ingen fagadministrasjon, timer, historikk eller statistikk er implementert.
 
 Koden ligger i `src/App.tsx`, `src/main.tsx` og `src/styles.css`.
 Mapper for komponenter, hooks, sider og andre ressurser opprettes når de trengs.
 `node_modules/` og `dist/` holdes utenfor Git. Oppsettet har ingen egen linter;
 TypeScript kjører i strict-modus med kontroll av ubrukte variabler og parametre.
+
+## Study – Supabase og innlogging
+
+Supabase håndterer email/password-auth og database. Study bruker bare disse
+frontend-variablene i `apps/study/.env.local` (eksempel uten ekte verdier):
+
+```dotenv
+VITE_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_REPLACE_ME
+```
+
+Lokale `.env*`-filer ignoreres; kun `.env.example` versjoneres. Bruk aldri private
+API-nøkler eller databasepassord i Vite. Publishable key er offentlig og bygges
+inn i frontend. GitHub Actions leser de to navnene fra Repository variables
+(`vars`), og byggingen feiler tydelig ved manglende/ugyldig konfigurasjon.
+
+Registrering forklarer e-postbekreftelse når Supabase krever det. SDK-et håndterer
+session, token-refresh og innlogging etter reload; utlogging gjelder denne sessionen.
+Innlogget konto viser e-post og gjør et autorisert `subjects`-oppslag med session-JWT.
+Tomt resultat er normalt. Manglende migrasjon/tilgang gir en forståelig feilmelding.
+Feil konfigurasjon i lokal utvikling gir en melding i UI, ikke en blank side.
+
+`supabase/config.toml` er bare lokal CLI-konfigurasjon med e-postbekreftelse på.
+Hosted Auth-innstillinger endres ikke av database-migrasjonen. Bekreft at email/password
+og email confirmation er aktivert, og at Site URL/Redirect URLs tillater
+`https://asinfra.no/study/` og `http://localhost:5173/study/`.
+Behold standard bekreftelseslenke (`ConfirmationURL`); SDK-et håndterer retur til `/study/`.
+
+Migrasjonen i `supabase/migrations/` oppretter bruker-eide `subjects` og
+`study_sessions`. Fag har valgfri emnekode og arkivstatus; økter har valgfritt fag,
+beskrivelse, start/slutt og opprettelsestid. Varighet utledes, lagres ikke separat.
+Sammensatt foreign key sikrer at fag og økt tilhører samme bruker. Sletting av fag
+fjerner koblingen, men beholder økter. Sletting av Auth-brukeren sletter brukerens data.
+
+**RLS er sikkerhetsgrensen:** `anon`/`public` har ingen tabellgrants.
+`authenticated` har eksplisitt SELECT/INSERT/UPDATE/DELETE, begrenset til eget
+`user_id` med `auth.uid()` på begge tabeller. UPDATE kontrollerer også ny eier.
+Ingen forhøyet API-nøkkel brukes av appen eller testene.
+
+### Tester og kontrollert migrasjonsdeploy etter review
+
+`npm test` kjører migrasjonen i isolert PostgreSQL/WASM (PGlite) med to test-ID-er,
+`authenticated`/`anon`-roller og en liten stub for Supabase sin `auth.uid()`.
+Testene kontrollerer ekte PostgreSQL grants, policies og FK-regler, men simulerer
+ikke Supabase Auth, e-post eller Data API. Testavhengigheten inngår ikke i frontend-bundle.
+
+For full lokal Supabase med installert CLI og Docker, fra repo-roten:
+
+```sh
+npx supabase start
+npx supabase db reset --local
+npx supabase status
+```
+
+`reset --local` sletter bare den lokale utviklingsdatabasen. Bruk prosjekt-URL og
+publishable key fra lokal status i `.env.local`, start Vite og registrer/bekreft en
+testkonto via lokal Mailpit. Ingen hosted migrasjon kjøres automatisk i CI.
+
+**Først etter SQL/RLS-review**, link prosjektet og inspiser deploy-planen:
+
+```sh
+npx supabase login
+npx supabase link --project-ref YOUR_PROJECT_REF
+npx supabase db push --dry-run
+npx supabase db push
+```
+
+Kontroller project-ref og ventede migrasjoner før siste kommando. Logg inn via CLI-ens
+vanlige sikre flyt; legg aldri tokens/passord i repoet. Bruk ikke `config push` her.
+
+Opprett deretter to forskjellige, bekreftede testkontoer gjennom Auth-UI-et. For
+`npm run test:rls` i `apps/study/` må følgende settes midlertidig i prosessmiljøet:
+`RUN_STUDY_RLS_TESTS=yes`, `TEST_USER_A_EMAIL`, `TEST_USER_A_PASSWORD`,
+`TEST_USER_B_EMAIL`, `TEST_USER_B_PASSWORD`. `.env.local` leverer de to offentlige
+frontend-variablene. Ikke legg testcredentials i Git eller CI. Scriptet gjør ekte
+email/password-innlogging og tester begge brukernes CRUD/isolasjonsregler via Data API;
+det oppretter kun UUID-merkede testfag/økter og rydder dem opp gjennom eierkontoene.
+
+Manuell slutt-test lokalt og på `https://asinfra.no/study/` etter merge/deploy:
+
+1. Registrer konto, følg bekreftelseslenken, og kontroller at du kommer til `/study/`.
+2. Test feil passord og ubekreftet konto; meldinger skal være forståelige.
+3. Logg inn og se riktig e-post samt vellykket fagoppslag (0 fag er gyldig).
+4. Reload og bekreft at session beholdes; logg ut og kontroller at skjemaet kommer tilbake.
+5. Gjenta med konto B, og kjør `npm run test:rls` mot riktig miljø.
+6. Kontroller desktop/mobil, tastaturnavigasjon og ingen 404/konsollfeil på Study-assets.
 
 ## Kontroll og publisering
 

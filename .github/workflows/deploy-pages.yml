@@ -41,7 +41,14 @@ jobs:
 
       - name: Typecheck and build Study
         working-directory: apps/study
-        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          test -n "$VITE_SUPABASE_URL" || { echo "Missing repository variable: VITE_SUPABASE_URL"; exit 1; }
+          test -n "$VITE_SUPABASE_PUBLISHABLE_KEY" || { echo "Missing repository variable: VITE_SUPABASE_PUBLISHABLE_KEY"; exit 1; }
+          npm test
+          npm run build
 
       - name: Assemble and check publishing directory
         run: python3 scripts/build-pages.py
