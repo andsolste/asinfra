@@ -101,7 +101,38 @@ Aktive og arkiverte fag vises separat; arkivering kan angres ved å aktivere fag
 igjen. Fag slettes ikke, og ID-er/koblinger til studieøkter beholdes. Data hentes
 fra Supabase og isoleres med eksisterende RLS, ikke lokal lagring eller offentlige
 emnesider. Ingen ny migrasjon trengs for fagadministrasjonen.
-Timer, historikk og statistikk er ikke implementert.
+Study kan starte, pause, fortsette og stoppe en studieøkt. Velg et aktivt fag og en
+valgfri beskrivelse. Historikk, etterredigering og statistikk kommer senere.
+
+### Studieøkter og arbeidsperioder
+
+En `study_sessions`-rad inneholder fag, beskrivelse og start/slutt. Hver sammenhengende
+arbeidsperiode lagres i `study_session_segments` med `timestamptz`. Arbeidstid summeres
+fra segmentene; pause er klokketid minus arbeidstid. Ingen totalvarighet lagres separat.
+Timeren regner fra tidsstempler og serverens klokke, ikke antall interval-ticks.
+Tidspunkt vises i nettleserens lokale tid.
+
+Migrasjonen `20261007120000_add_study_session_segments.sql` legger til segmenttabellen,
+composite FK `(session_id, user_id)`, egne RLS-policyer/grants og to partial unique
+indexes: én uavsluttet økt per bruker (`ended_at IS NULL`, også pauset) og ett åpent
+segment per økt. `study_session_transition` gjør start/pause/fortsett/stopp atomisk
+med invoker-rettigheter/RLS og en transaksjonslås per bruker. Retry bruker de samme
+UUID-ene, og en gammel pause kan ikke lukke et nyere segment. `study_session_snapshot`
+henter økt, fag og segmenter konsistent ved innlasting og når fanen får fokus.
+Økten fortsetter til du stopper den; logout eller lukking av fanen stopper ikke klokken.
+
+Kun bekreftede databaseverdier endrer timerstatus. Ved feil kan du prøve samme handling
+igjen eller kontrollere status. Ingen localStorage-timer brukes som sannhetskilde.
+Fagadministrasjon og timer deler én fagoversikt; arkivering etter start endrer ikke økten.
+
+Før denne PR-en merges må migrasjonen gjennomgås og anvendes manuelt med CLI-flyten
+under. Kontroller spesielt om gamle `study_sessions` har flere uavsluttede rader
+per bruker (grupper på `user_id`, filtrer `ended_at IS NULL`, `count(*) > 1`).
+Avklar/korriger slike rader bevisst før migrasjonen: indeksen vil ellers avvise den.
+Migrasjonen verken avslutter gamle økter eller finner på arbeidsperioder. En eldre
+økt uten segmenter vises som pauset med en advarsel; tidligere arbeidstid er ukjent.
+Den nye frontend-versjonen trenger migrasjonen; merge/deploy derfor ikke før den er klar.
+Ingen hosted migrasjon eller produksjonsdata opprettes av testene i CI.
 
 Koden ligger i `src/App.tsx`, `src/main.tsx` og `src/styles.css`.
 Mapper for komponenter, hooks, sider og andre ressurser opprettes når de trengs.
@@ -185,7 +216,9 @@ Opprett deretter to forskjellige, bekreftede testkontoer gjennom Auth-UI-et. For
 `TEST_USER_B_EMAIL`, `TEST_USER_B_PASSWORD`. `.env.local` leverer de to offentlige
 frontend-variablene. Ikke legg testcredentials i Git eller CI. Scriptet gjør ekte
 email/password-innlogging og tester begge brukernes CRUD/isolasjonsregler via Data API;
-det oppretter kun UUID-merkede testfag/økter og rydder dem opp gjennom eierkontoene.
+det oppretter kun UUID-merkede testfag/økter/segmenter og rydder dem opp gjennom eierkontoene.
+Bruk dedikerte testkontoer uten uavsluttede økter. Scriptet tester også atomiske
+timeroverganger, retry, same-owner FK og én aktiv økt/ett åpent segment.
 
 Manuell slutt-test lokalt og på `https://asinfra.no/study/` etter merge/deploy:
 
@@ -196,6 +229,9 @@ Manuell slutt-test lokalt og på `https://asinfra.no/study/` etter merge/deploy:
 4. Reload og bekreft at session beholdes; logg ut og kontroller at skjemaet kommer tilbake.
 5. Gjenta med konto B, og kjør `npm run test:rls` mot riktig miljø.
 6. Kontroller desktop/mobil, tastaturnavigasjon og ingen 404/konsollfeil på Study-assets.
+7. Start en økt, pause/fortsett flere ganger og stopp både fra pågående og pauset tilstand.
+   Kontroller arbeidstid/pausetid, recovery etter reload/logout, dobbeltklikk og retry
+   ved nettverksfeil. Fag/beskrivelse skal ikke kunne endres midt i økten.
 
 ## Kontroll og publisering
 
