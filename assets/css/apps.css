@@ -1,0 +1,10 @@
+/* App launcher layout; cards, controls and colors come from site.css. */
+.apps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr));
+    gap: 1rem;
+}
+
+.apps-grid .app-card {
+    min-height: 0;
+}

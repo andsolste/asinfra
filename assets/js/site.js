@@ -51,11 +51,13 @@
     const activeSection = /^(about)(\/|$)/.test(relativePath) ? "about"
         : /^(projects)(\/|$)/.test(relativePath) ? "projects"
         : /^(education)(\/|$)/.test(relativePath) ? "fag"
+        : /^(apps)(\/|$)/.test(relativePath) ? "apps"
         : null;
     const navigationPaths = {
         about: "about/",
         projects: "projects/",
-        fag: "education/"
+        fag: "education/",
+        apps: "apps/"
     };
 
     const brandLink = sidebar.querySelector("a.sidebar-brand");
