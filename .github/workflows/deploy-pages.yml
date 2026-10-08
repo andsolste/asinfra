@@ -1,4 +1,4 @@
-name: Deploy website and Study to GitHub Pages
+name: Deploy static website to GitHub Pages
 
 on:
   push:
@@ -33,22 +33,15 @@ jobs:
         with:
           node-version: '24'
           cache: npm
-          cache-dependency-path: apps/study/package-lock.json
+          cache-dependency-path: supabase/package-lock.json
 
-      - name: Install Study dependencies
-        working-directory: apps/study
+      - name: Install backend test dependencies
+        working-directory: supabase
         run: npm ci
 
-      - name: Typecheck and build Study
-        working-directory: apps/study
-        env:
-          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
-        run: |
-          test -n "$VITE_SUPABASE_URL" || { echo "Missing repository variable: VITE_SUPABASE_URL"; exit 1; }
-          test -n "$VITE_SUPABASE_PUBLISHABLE_KEY" || { echo "Missing repository variable: VITE_SUPABASE_PUBLISHABLE_KEY"; exit 1; }
-          npm test
-          npm run build
+      - name: Test canonical migrations and RLS locally
+        working-directory: supabase
+        run: npm test
 
       - name: Assemble and check publishing directory
         run: python3 scripts/build-pages.py
@@ -56,7 +49,7 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload combined site
+      - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
           path: publish

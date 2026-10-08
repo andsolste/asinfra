@@ -15,8 +15,8 @@ major_version = 17
 
 [auth]
 enabled = true
-site_url = "http://localhost:5173/study/"
-additional_redirect_urls = ["https://asinfra.no/study/"]
+site_url = "http://localhost:5173/"
+additional_redirect_urls = ["http://localhost:4173/", "https://study.asinfra.no/", "https://asinfra.no/study/"]
 enable_signup = true
 minimum_password_length = 8
 

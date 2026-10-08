@@ -32,11 +32,12 @@ class Page(HTMLParser):
             self.links.append(attrs[key])
 
 
-# App source/builds and assembled output are checked by the app/Pages tooling.
+# Backend, future app sources and assembled output are not static website pages.
 pages = {
     p.resolve(): Page(p) for p in ROOT.rglob("*.html")
     if ".git" not in p.parts
     and not p.is_relative_to(ROOT / "apps")
+    and not p.is_relative_to(ROOT / "supabase")
     and not p.is_relative_to(ROOT / "publish")
 }
 
