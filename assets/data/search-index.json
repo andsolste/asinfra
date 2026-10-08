@@ -1,12 +1,12 @@
 {
-  "version": 16,
+  "version": 17,
   "entries": [
     {
       "id": "page-home",
       "type": "Side",
       "title": "Forside",
       "context": "Andreas Sollie Steffensen",
-      "description": "Personlig nettside med snarveier til Om meg, Prosjekter og Fag.",
+      "description": "Personlig nettside med navigasjon til Om meg, Prosjekter, Fag og Apps.",
       "keywords": ["Digital Infrastruktur og Cybersikkerhet", "NTNU", "fagprosjekter", "labber", "tekniske writeups", "notater", "pensum", "studieressurser"],
       "url": "./",
       "featured": true,
@@ -63,6 +63,27 @@
       "url": "projects/",
       "featured": true,
       "priority": 30
+    },
+    {
+      "id": "page-apps",
+      "type": "Side",
+      "title": "Apps",
+      "context": "Apper og verktøy",
+      "description": "Apper Andreas har bygget, klare til å åpnes og brukes. Prosjekter er den separate porteføljen.",
+      "keywords": ["apper", "applikasjoner", "verktøy", "app-hub"],
+      "url": "apps/",
+      "featured": true,
+      "priority": 25
+    },
+    {
+      "id": "app-study",
+      "type": "App",
+      "title": "Study",
+      "context": "Apps · Studiearbeid",
+      "description": "Registrer studiearbeid og følg faktisk arbeidstid med start, pause, fortsett og stopp.",
+      "keywords": ["studiearbeid", "arbeidstid", "studieøkt", "timer", "pause"],
+      "url": "apps/#study",
+      "priority": 20
     },
     {
       "id": "projects-bdigsec",

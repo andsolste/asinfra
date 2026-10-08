@@ -12,6 +12,10 @@ Hovednettstedet bruker statisk HTML, CSS og vanilla JavaScript uten build-system
 Study er flyttet til [andsolste/asinfra-study](https://github.com/andsolste/asinfra-study)
 og publiseres separat på [study.asinfra.no](https://study.asinfra.no/).
 
+`/apps/` er inngangen til å bruke apper; `/projects/` er porteføljen med
+prosjektbeskrivelser. Nye apper legges til som vanlige kort i `apps/index.html`
+med navn, kort bruksbeskrivelse og direkte lenke til appen. Appkode bygges ikke her.
+
 ```text
 .github/workflows/     Kontroll og Pages-deploy
 assets/
@@ -20,6 +24,7 @@ assets/
   data/                Statisk søkeindeks
   favicon.svg          AS-monogram
 about/index.html       Personlig profil
+apps/index.html        App-hub med direkte lenker til apper som kan brukes
 education/
   index.html           Hovedoversikt med aktive fag og lenke til tidligere fag
   active/              De fire aktive emnesidene
@@ -169,7 +174,7 @@ hovedrepoets workflows. Bare Study-repoet bygger/deployer Study-frontenden.
 
 Publiseringsscriptet erstatter kun genererte `publish/`. Det kopierer statiske
 produksjonsfiler fra `index.html`, `404.html`, `about/`, `education/`,
-`projects/`, `assets/` og legacy `study/index.html`, inkludert originale
+`projects/`, `apps/`, `assets/` og legacy `study/index.html`, inkludert originale
 prosjektassets. `publish/study/` skal inneholde bare redirect-siden, ingen gamle
 React-bundles. Dotfiler, dependencies, backend, scripts og README publiseres ikke.
 Bare `publish/` lastes opp som Pages-artifact. Study-kilden eies kun av det nye repoet.

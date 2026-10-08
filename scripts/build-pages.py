@@ -4,7 +4,7 @@ import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLISH = ROOT / "publish"
-STATIC_PATHS = ("index.html", "404.html", "about", "education", "projects", "assets", "study")
+STATIC_PATHS = ("index.html", "404.html", "about", "education", "projects", "apps", "assets", "study")
 PUBLIC_SUFFIXES = {
     ".html", ".css", ".js", ".json", ".svg", ".jpg", ".jpeg", ".png",
     ".webp", ".avif", ".gif", ".ico", ".pdf", ".woff", ".woff2",
@@ -50,7 +50,7 @@ def build():
         shutil.copy2(source, target)
 
     for name in ("index.html", "404.html", "about/index.html", "education/index.html",
-                 "projects/index.html", "assets/favicon.svg", "study/index.html"):
+                 "projects/index.html", "apps/index.html", "assets/favicon.svg", "study/index.html"):
         if not (PUBLISH / name).is_file():
             raise ValueError(f"Missing production file: {name}")
     print(f"OK: publish/ contains {len(files)} public files; static site + legacy Study redirect only.")
