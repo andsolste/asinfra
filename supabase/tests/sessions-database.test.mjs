@@ -21,7 +21,7 @@ test('session migration: atomic RPCs, retry IDs, constraints, grants and two-use
     alter default privileges in schema public grant all on tables to anon, authenticated;
   `)
   for (const user of users) await db.query('insert into auth.users(id) values ($1)', [user])
-  const migrations = new URL('../../../supabase/migrations/', import.meta.url)
+  const migrations = new URL('../migrations/', import.meta.url)
   for (const file of (await readdir(migrations)).filter(file => file.endsWith('.sql')).sort()) {
     await db.exec(await readFile(new URL(file, migrations), 'utf8'))
   }

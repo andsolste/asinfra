@@ -23,7 +23,7 @@ test('migration enforces grants, two-user RLS and same-owner subject links', asy
     alter default privileges in schema public grant all on tables to anon, authenticated;
   `)
   for (const id of users) await db.query('insert into auth.users(id) values ($1)', [id])
-  const migrations = new URL('../../../supabase/migrations/', import.meta.url)
+  const migrations = new URL('../migrations/', import.meta.url)
   for (const file of (await readdir(migrations)).filter(file => file.endsWith('.sql')).sort()) {
     await db.exec(await readFile(new URL(file, migrations), 'utf8'))
   }

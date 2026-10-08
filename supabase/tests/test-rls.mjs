@@ -3,11 +3,14 @@
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { createClient } from '@supabase/supabase-js'
-import { readSupabaseConfig } from '../src/lib/config.ts'
 
 if (process.env.RUN_STUDY_RLS_TESTS !== 'yes') throw new Error('Set RUN_STUDY_RLS_TESTS=yes to approve temporary test-row writes.')
-const config = readSupabaseConfig(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_PUBLISHABLE_KEY)
-if (!config) throw new Error('A valid project URL and publishable browser key are required.')
+const config = { url: process.env.VITE_SUPABASE_URL, key: process.env.VITE_SUPABASE_PUBLISHABLE_KEY }
+let protocol
+try { protocol = new URL(config.url).protocol } catch { /* Rejected below without logging configuration. */ }
+if (!['http:', 'https:'].includes(protocol) || !config.key?.startsWith('sb_publishable_')) {
+  throw new Error('A valid project URL and publishable browser key are required.')
+}
 const credentials = ['A', 'B'].map(label => ({
   email: process.env[`TEST_USER_${label}_EMAIL`], password: process.env[`TEST_USER_${label}_PASSWORD`],
 }))
