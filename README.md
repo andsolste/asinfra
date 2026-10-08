@@ -101,6 +101,51 @@ localhost-roten; hosted Auth-innstillinger håndteres separat i samme prosjekt.
 Produksjonen bruker `https://study.asinfra.no/`. Gamle Auth-redirects kan beholdes
 under overgangen. Ingen hosted config eller schema endres av Pages-workflowene.
 
+### Backend for ferdig studiehistorikk (fase 1 av #10)
+
+Migrasjonen `20261008120000_add_study_session_history.sql` legger til tre
+`SECURITY INVOKER`-RPC-er med tom `search_path` og execute kun for
+`authenticated`. Eksisterende RLS, tabeller, timer og recovery beholdes.
+Frontend for historikk/ukestatistikk er ikke implementert her.
+
+- `study_session_history(p_from, p_to, p_limit, p_offset)` returnerer en JSON-array
+  med `session`, `subject` (eller `null` hvis faget er slettet) og alle
+  `segments` for egne ferdige økter. Sortering: starttid og ID synkende.
+  Uten tidsfilter brukes `null` for begge grenser. Standard side er 100 økter;
+  `p_limit` er 1–200 og `p_offset` er ikke-negativ. Hent flere sider til en
+  kort/tom side kommer, også ved beregning av uketotaler.
+- Med begge absolutte tidsgrenser inkluderer historikk et session hvis minst ett
+  arbeidssegment har positiv overlapp med `[p_from, p_to)`. En økt som startet
+  før uken tas dermed med; pauser, nullvarighet og økter uten segmenter teller
+  ikke som arbeid. Alle segmentene returneres, også de utenfor filteret.
+- `study_session_history_edit(p_session_id, p_subject_id, p_description,
+  p_started_at, p_ended_at, p_segments)` erstatter en egen ferdig økt atomisk og
+  returnerer oppdatert snapshot. Beskrivelsen trimmes og er maks 500 tegn.
+  Et eget arkivert fag eller `null` er tillatt. `p_segments` er en kronologisk
+  array av objekter med **kun** `started_at` og `ended_at` som timestamp-strenger.
+  Begge må være endelige, med slutt ≥ start, uten overlapp og innenfor økten.
+  Berørende segmenter og nullvarighet er gyldige; `[]` betyr ingen registrert
+  arbeidstid. Nye segment-ID-er genereres av databasen; eier hentes fra
+  `auth.uid()`, aldri klientdata. Enhver feil ruller tilbake hele korreksjonen.
+- `study_session_history_delete(p_session_id)` sletter kun en egen ferdig økt
+  og returnerer dens ID. Eksisterende FK/cascade sletter segmentene atomisk.
+  Aktive og pausede, uavsluttede økter må stoppes før redigering/sletting.
+
+Disse RPC-ene deler brukerens transaksjonslås med timer-RPC-ene. RLS er fortsatt
+eierskapsgrensen; de eksisterende tabellrettighetene er ikke endret. Valideringen
+av historiske korreksjoner skjer i edit-RPC-en, ikke i et nytt globalt triggersystem.
+
+Tidspunkter lagres fortsatt som `timestamptz`; send absolutte ISO-timestamps med
+`Z` eller eksplisitt offset. Frontend skal definere ukegrensene i brukerens lokale
+tid, konvertere til absolutte timestamps og klippe/summere hvert arbeidssegment.
+Sessionens start/slutt inkluderer pauser og er **ikke** faktisk arbeidstid.
+Det er ingen databasebasert ukestatistikk eller fast norsk tidssone.
+
+Ingen hosted migrasjon er kjørt. Etter review/merge og kontroll av riktig
+prosjekt, kjør fra repo-roten `npx supabase db push --dry-run`. Hvis de to tidligere
+migrasjonene allerede er anvendt, skal bare
+`20261008120000_add_study_session_history.sql` vises som ny.
+
 ## Backendtester og migrasjoner
 
 Bruk Node.js 22.12+ (CI bruker 24). Backend har egen låsefil uten workspaces:
@@ -111,10 +156,12 @@ npm ci
 npm test
 ```
 
-`tests/database.test.mjs` og `tests/sessions-database.test.mjs` kjører alle
+`tests/database.test.mjs`, `tests/sessions-database.test.mjs` og
+`tests/history-database.test.mjs` kjører alle
 canonical migrations i isolert PostgreSQL/WASM (PGlite). De kontrollerer grants,
 RLS mellom to brukere, foreign keys, constraints, atomiske RPC-er, retry og
-recovery. Bare Supabase sitt Auth-schema/`auth.uid()` stubbes; testen bruker
+recovery, samt historikk, periodeoverlapp og korreksjon/sletting av ferdige økter.
+Bare Supabase sitt Auth-schema/`auth.uid()` stubbes; testen bruker
 ingen hosted database, ekte kontoer eller API-nøkler.
 
 Den valgfrie `npm run test:rls` fra `supabase/` kjører
