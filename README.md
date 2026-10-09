@@ -9,7 +9,7 @@ utenfor repoet. `www.asinfra.no` er satt opp som alternativ adresse.
 ## Teknologi og struktur
 
 Hovednettstedet bruker statisk HTML, CSS og vanilla JavaScript uten build-system.
-Study er flyttet til [andsolste/asinfra-study](https://github.com/andsolste/asinfra-study)
+Study-frontenden eies av [andsolste/asinfra-study](https://github.com/andsolste/asinfra-study)
 og publiseres separat på [study.asinfra.no](https://study.asinfra.no/).
 
 `/apps/` er inngangen til å bruke apper; `/projects/` er porteføljen med
@@ -98,15 +98,18 @@ start/pause/fortsett/stopp atomisk, og `study_session_snapshot` brukes for recov
 
 `supabase/config.toml` gjelder bare lokal CLI-kjøring. Lokal Auth-retur bruker
 localhost-roten; hosted Auth-innstillinger håndteres separat i samme prosjekt.
-Produksjonen bruker `https://study.asinfra.no/`. Gamle Auth-redirects kan beholdes
-under overgangen. Ingen hosted config eller schema endres av Pages-workflowene.
+Produksjonen bruker `https://study.asinfra.no/`. Gamle Auth-redirects til
+`https://asinfra.no/study/` kan beholdes for legacy-bekreftelseslenker, ikke som
+produksjonsadresse for nye returer. Ingen hosted config eller schema endres av
+Pages-workflowene.
 
-### Backend for ferdig studiehistorikk (fase 1 av #10)
+### Historikk og ukestatistikk
 
-Migrasjonen `20261008120000_add_study_session_history.sql` legger til tre
+Den deployede migrasjonen `20261008120000_add_study_session_history.sql` gir tre
 `SECURITY INVOKER`-RPC-er med tom `search_path` og execute kun for
 `authenticated`. Eksisterende RLS, tabeller, timer og recovery beholdes.
-Frontend for historikk/ukestatistikk er ikke implementert her.
+Historikk, redigering/sletting og ukestatistikk er implementert i Study-frontenden
+på `https://study.asinfra.no/`, med kildekode i `andsolste/asinfra-study`.
 
 - `study_session_history(p_from, p_to, p_limit, p_offset)` returnerer en JSON-array
   med `session`, `subject` (eller `null` hvis faget er slettet) og alle
@@ -136,15 +139,14 @@ eierskapsgrensen; de eksisterende tabellrettighetene er ikke endret. Valideringe
 av historiske korreksjoner skjer i edit-RPC-en, ikke i et nytt globalt triggersystem.
 
 Tidspunkter lagres fortsatt som `timestamptz`; send absolutte ISO-timestamps med
-`Z` eller eksplisitt offset. Frontend skal definere ukegrensene i brukerens lokale
-tid, konvertere til absolutte timestamps og klippe/summere hvert arbeidssegment.
+`Z` eller eksplisitt offset. Frontenden definerer ukegrensene i brukerens lokale
+tid, konverterer til absolutte timestamps og klipper/summerer hvert arbeidssegment.
 Sessionens start/slutt inkluderer pauser og er **ikke** faktisk arbeidstid.
 Det er ingen databasebasert ukestatistikk eller fast norsk tidssone.
 
-Ingen hosted migrasjon er kjørt. Etter review/merge og kontroll av riktig
-prosjekt, kjør fra repo-roten `npx supabase db push --dry-run`. Hvis de to tidligere
-migrasjonene allerede er anvendt, skal bare
-`20261008120000_add_study_session_history.sql` vises som ny.
+Migrasjonene `20261007090000`, `20261007120000` og `20261008120000` er deployet
+til hosted Supabase. History/edit/delete-RPC-ene brukes i produksjon. Fremtidige
+schemaendringer følger vedlikeholdsprosedyren nedenfor.
 
 ## Backendtester og migrasjoner
 
@@ -185,7 +187,7 @@ npx supabase status
 `reset --local` sletter lokal utviklingsdata. Bruk lokale offentlige verdier
 med Study-frontenden og lokal Mailpit for e-postbekreftelse.
 
-**Etter SQL/RLS-review**, for en tilsiktet hosted schemaendring:
+**For fremtidige hosted schemaendringer etter SQL/RLS-review**, fra repo-roten:
 
 ```sh
 npx supabase login
@@ -194,9 +196,10 @@ npx supabase db push --dry-run
 npx supabase db push
 ```
 
-Kontroller project-ref, ventede migrations og eksisterende data før siste
-kommando. Ikke legg tokens/passord i Git eller bruk `config push` som del av
-denne flyten. Ingen migrations/schemaendringer inngår i frontend-flyttingen.
+Kontroller project-ref, ventede migrations og eksisterende data i dry-run før
+`db push`; bare nye, godkjente migrations skal anvendes. Ikke legg tokens/passord
+i Git eller bruk `config push` som del av denne flyten. Frontend- og Pages-deployment
+kjører ikke migrations; backend vedlikeholdes separat i dette repoet.
 
 ## Kontroll og publisering
 
@@ -224,7 +227,7 @@ produksjonsfiler fra `index.html`, `404.html`, `about/`, `education/`,
 `projects/`, `apps/`, `assets/` og legacy `study/index.html`, inkludert originale
 prosjektassets. `publish/study/` skal inneholde bare redirect-siden, ingen gamle
 React-bundles. Dotfiler, dependencies, backend, scripts og README publiseres ikke.
-Bare `publish/` lastes opp som Pages-artifact. Study-kilden eies kun av det nye repoet.
+Bare `publish/` lastes opp som Pages-artifact. Study-kilden eies kun av Study-repoet.
 
 Gamle `https://asinfra.no/study/`-bokmerker videresendes til
 `https://study.asinfra.no/` med `location.replace`, som bevarer query og hash.
