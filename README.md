@@ -153,7 +153,8 @@ schemaendringer følger vedlikeholdsprosedyren nedenfor.
 Flow v1-fundamentet er additivt og gjennomgås separat fra produksjons-Study:
 se [supabase/README.md](supabase/README.md) for native tabeller, område-bridge,
 bevart legacy-historikk, logiske 04:00-dager og review/deployrekkefølge.
-Den nye migrasjonen `20261012180000` er **ikke deployet av denne PR-en**;
+Fundamentet `20261012180000` er deployet. Ny migration `20261013090000` for native
+start/cutover/legacy-vern er **ikke deployet av denne PR-en**;
 eksisterende migrations/API-er beholdes. Ingen DNS/Auth-endring gjøres her.
 
 Bruk Node.js 22.12+ (CI bruker 24). Backend har egen låsefil uten workspaces:
@@ -165,7 +166,8 @@ npm test
 ```
 
 `tests/database.test.mjs`, `tests/sessions-database.test.mjs` og
-`tests/history-database.test.mjs` og `tests/flow-database.test.mjs` kjører alle
+`tests/history-database.test.mjs`, `tests/flow-database.test.mjs` og
+`tests/flow-workday.test.mjs` kjører
 canonical migrations i isolert PostgreSQL/WASM (PGlite). De kontrollerer grants,
 RLS mellom to brukere, foreign keys, constraints, atomiske RPC-er, retry og
 recovery, samt historikk, periodeoverlapp og korreksjon/sletting av ferdige økter.
