@@ -4,11 +4,73 @@ Config, migrations og databasetester eies av `andsolste/asinfra/supabase`.
 Frontenden eies av `andsolste/asinfra-study`; produksjonsadressen er fortsatt
 `https://study.asinfra.no/`. Det brukes samme Supabase-prosjekt og Auth-brukere.
 
-## Flow-fundamentet (#10) – ikke deployet av denne PR-en
+## Flow-fundamentet (#10)
 
-Ny, additiv migration: `20261012180000_create_flow_foundation.sql`.
+Fundamentet er etablert og deployet med `20261012180000_create_flow_foundation.sql`.
 De tre eksisterende Study-migrasjonene og de fem `study_session_*`-RPC-ene
 endres ikke. Pages/CI deployer aldri databaseschema.
+
+## Native tidtaker og cutover (#11) – ny migration, ikke deployet av denne PR-en
+
+`20261013090000_activate_flow_workday.sql` legger til orkestrering og vern, uten
+å endre de gamle migration-filene eller kopiere historisk arbeid.
+
+- `flow_work_state(timezone)` reconciler snapshot og gir server_time, aktiv dag,
+  legacy_active og serverberegnet boundary/cutoff for neste eksplisitte start.
+  Ugyldig/manglende browserzone gir null startgrenser, men en allerede startet
+  dags fryste zone kan fortsatt gjenopprettes. Lesing oppretter aldri en dag.
+- `flow_work_day_start(day_id, segment_id, timezone, expected_boundary_at, area_id?, task_id?)`
+  låser bruker (seed 9), bruker serverklokken, avslutter eventuell åpen legacy-periode
+  og session, oppretter dag + første native segment på samme tidspunkt, og setter
+  varig `flow_timer_cutovers`-markør. Pauset legacy-gap fylles ikke med arbeid.
+  Invalid aktivitet/FK/zone ruller tilbake ALT, også legacy close og markør.
+- `flow_work_activity(day_id, expected_open_id, expected_segment_count, next_id, area_id?, task_id?)`
+  bygger på foundationens atomiske switch. Count-versjonen beskytter også et gammelt
+  resume når en annen fane har arbeidet og pauset igjen (open ID er null begge ganger).
+
+Day/segment UUID-er er retry-tokens. En forsinket start returnerer eksisterende
+status, aldri nytt arbeid; samme token kan ikke gjenopplive en avsluttet dag.
+Expected boundary gjør at en aldri-committet start fra før 04:00 ikke begynner
+å arbeide etter grensen ved retry. Stale idle-start på en aktiv dag bytter heller
+ikke aktivitet. Ny aktivitet etter cutoff krever ny, eksplisitt brukerhandling.
+
+Cutover-markøren har egen RLS, own select/insert og ingen update/delete for vanlige
+brukere. Insert-triggeren henter tidspunkt fra faktisk native dag, ikke klientens
+markørtimestamp; markør uten native dag avvises. En etterfølgende admin-sletting av
+en native dag fjerner ikke markøren. En utsatt insert-constraint krever første
+segment på dag-start i samme transaksjon: direkte Data API kan ikke committe en
+tom/halvlagret dag eller aktivere cutover uten arbeid. Eksisterende foundation-dager
+uten første aktivitet avvises for review ved migration, ikke fylles med oppdiktet arbeid.
+Auth-brukersletting cascader egne data.
+
+Før markør finnes fungerer gammel Study-timer som før. Etter markør blokkerer
+row guards gamle RPC-er OG direkte writes som starter/gjenåpner legacy arbeid
+eller forlenger det etter cutover. Historikk/read/edit/delete beholdes; en legacy
+korreksjon må slutte ved eller før cutover, aldri inn i native tid. Native writes
+kan ikke begynne før cutover eller mens uavsluttet legacy session finnes.
+Gamle RPC-definisjoner er uendret. En gammel resume mot ferdig session returnerer
+bare dens ferdige snapshot og registrerer ikke nytt arbeid.
+
+Migrasjonen låser timer-tabellenes writes mens guardene installeres (reads tillates).
+Hvis foundation-data allerede har både native dag og uavsluttet legacy session,
+avbrytes migrasjonen for review, ikke en gjettet truncation. Legacy-arbeid etter
+en allerede eksisterende native start krever også review. Native
+segmenter kan heller ikke overlappe lukkede legacy-perioder ved direkte inserts/updates.
+Future-dated legacy
+arbeid avviser første native start og må korrigeres via legacy historikk før cutover.
+Områdeeditoren fortsetter å skrive kun subjects via broen; ingen dual-editor handoff
+gjøres i #11. Parallelle native/legacy timers kan ikke brukes som rollback etter cutover.
+
+Cutoff/recovery bruker fortsatt foundationens server-snapshot. Ingen browser-timeout
+er sikkerhetsgrensen. Ingen Start/Stop-dag-UI, task CRUD eller native historikk/statistikk
+innføres i backend-PR-en. De er henholdsvis #12/#13; eksport #7, domene #14.
+
+Review/deploy: review backend → merge → kontroller project-ref og migration list →
+dry-run → godkjent push → verifiser gammel app før første cutover → merge/deploy
+frontend → smoke-test native start/pause/resume/bytte/cutoff og gamle faner.
+Se frontend README for 18 konkrete smoke-testpunkter. Ingen hosted push, Auth/DNS-
+endring eller merge er utført. JWT/Data API og ekte flerforbindelses-concurrency
+må også kontrolleres i lokal/test-Supabase før produksjonsaktivering.
 
 | Tabell | Formål |
 | --- | --- |
@@ -42,10 +104,9 @@ backfill. Nye native områder kopieres ikke tilbake til `subjects`.
 
 I fase #10 er `subjects` skrivekilden for kopierte områder. Ikke aktiver parallelle
 områdeeditorer over begge tabeller: en senere legacy-redigering vil speiles over
-den native kopien. #11 må gjøre en eksplisitt, reviewet handoff av områdeskriving
+den native kopien. Senere native områdeeditor må ha en eksplisitt, reviewet handoff
 før native UI aktiveres (inkludert strategi for gamle, åpne frontendfaner).
-Handoff må også avslutte/reconcile en eventuell aktiv legacy-økt før native timer
-aktiveres: de to domenene har hver sin aktive-tilstand, ikke en felles dobbeltskriver.
+Timer-cutover håndteres i #11 av start-RPC + varig markør; ingen dobbeltskriver aktiveres.
 Behold bridge/legacy-lesing til denne overgangen er verifisert; ikke fjern den
 bare fordi frontenden har fått navnet Flow.
 
@@ -87,12 +148,13 @@ alle `segments` og `server_time`. En annen brukers dag returneres aldri.
 En utløpt rad kan fortsatt ha `ended_at = NULL` frem til neste snapshot/transition;
 det betyr **ikke** arbeid etter cutoff. Åpen varighet må alltid klippes til lagret
 cutoff ved fremtidig lesing/statistikk. Ingen cron eller browser-timeout kreves
-for korrekt recovery; automatisk visuell oppdatering kommer i #11.
+for korrekt recovery; #11-frontenden henter serverstatus ved cutoff og recovery.
 
 Én aktiv dag per bruker og én rad per bruker/logisk dato er tillatt. Reisen til
 en annen sone endrer ikke en startet dag; heller ikke en avsluttet dag gjenåpnes.
-#11 må presentere denne dato-/reisepolicyen tydelig og bruke snapshot før ny dag
-opprettes. Start-/stopp-dag-orkestrering og UI er ikke implementert i #10.
+Native start i #11 følger denne policyen og bruker snapshot før ny dag opprettes.
+En avsluttet logisk dato kan ikke gjenåpnes ved tidssonereise. Ingen manuell Stopp-dag
+tilbys i #11; pauser beholder dagen til cutoff.
 
 ## Atomiske arbeidsperioder
 
@@ -136,7 +198,7 @@ historisk attribution, cutoff-recovery, retry/rollback og 04:00/DST i UTC,
 Europe/Oslo og America/New_York. Hele den eksisterende testsuiten kjøres også.
 PGlite bruker ekte PostgreSQL/WASM med stubbet managed Auth, uten hosted writes.
 Dette erstatter ikke review eller en senere flerforbindelses-/ekte JWT/Data API-
-kontroll i lokal/test-Supabase før aktivering av #11.
+kontroll i lokal/test-Supabase før produksjonsaktivering av #11.
 
 Anbefalt rekkefølge: review begge PR-er → merge backend → kontroller project-ref
 og `supabase db push --dry-run` → godkjent `db push` → verifiser eksisterende
