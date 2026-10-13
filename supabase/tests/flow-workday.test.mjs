@@ -159,10 +159,12 @@ test('native Flow workday: atomic cutover, stale tabs, server cutoff and ownersh
     for (let i = 1; i < current.segments.length; i++) assert.equal(current.segments[i - 1].ended_at, current.segments[i].started_at)
     await denied(change(current, randomUUID(), a.area, loose), '23514')
     await db.query("update public.flow_tasks set status='completed',completed_at=now() where id=$1", [loose])
+    // Task migration makes direct completion close current work atomically.
+    current = (await state()).current
     await denied(change(current, randomUUID(), null, loose), '23514')
     await db.query('update public.subjects set is_archived=true where id=$1', [a.area])
     await denied(change(current, randomUUID(), a.area), '23503')
-    assert.equal((await state()).current.segments.at(-1).ended_at, null, 'Rejected change never closes existing work')
+    assert.ok((await state()).current.segments.at(-1).ended_at, 'Completion pauses; rejected changes never restart work')
     const b = await fixture()
     await denied(start(a.area), '23503')
     await denied(start(null, loose), '23503')

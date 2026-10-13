@@ -180,6 +180,51 @@ Navneendring viser dagens navn for samme stabile ID; det lagres ikke navnesnapsh
 Ordinary DELETE er ikke gitt på native tabeller. FK-er hindrer dangling områder/
 oppgaver; sletting av selve Auth-brukeren cascader egne data.
 
+## Oppgaver og frister (#12)
+
+Ny additiv migration: `20261013120000_add_flow_tasks.sql`. Deployede foundation-
+og workday-migrations endres ikke. `updated_at` backfilles fra eksisterende
+completed/created-tid; nye tidspunkter styres av serveren. En ekte endring av
+tittel/beskrivelse/område/frist/status øker versjonen, en no-op gjør ikke det.
+Klientens `created_at` ved INSERT og `updated_at`/`completed_at` ignoreres;
+identitet/eier/creation time er immutable etter INSERT.
+
+Anbefalte, `SECURITY INVOKER`-RPC-er med tom `search_path`, kun authenticated:
+
+- `flow_task_save(id, title, description, area, deadline, expected_updated_at)`:
+  null expected = create med UUID-retrytoken; gjentatt create endrer aldri raden.
+  Edit krever radens opprinnelige serverversjon; stale form avvises med `40001`.
+- `flow_task_status(id, active|completed, expected_updated_at)`: ønsket status
+  som allerede er satt er en no-op. Stale fullføring etter gjenåpning avvises.
+- `flow_task_time(id)`: `task_id`, `work_milliseconds`, `server_time`; summerer
+  bare egne native task-ID-segmenter. Åpent arbeid klippes til server now/cutoff.
+  Ingen legacy navne-/beskrivelsesmatching eller full historikkoverføring.
+
+Writes tar samme advisory brukerlås (seed 9) før row locks. Triggers beskytter
+også direkte Data API-writes: cutoff reconciles; fullføring lukker eventuell
+åpen task-periode og setter `completed_at` på kontrollert servertid i samme
+transaksjon. Dagen blir pauset, ingen neste aktivitet starter. Reopen nuller
+completed time. Flytting av område mens en task har åpen periode avvises;
+endring av tekst/frist er tillatt. Historisk segment-attribution omskrives ikke.
+Nye/moved tasks kan bare bruke egne aktive områder; eksisterende arkivert område
+kan beholdes ved tekstredigering. Nye åpne segmenter må alltid ha active task
+med samsvarende area, også ved direkte writes.
+
+Bruk RPC-ene for fast låserekkefølge. Konkurrerende direkte row-writes kan få
+en PostgreSQL deadlock/serialization-feil og rulles da helt tilbake; klienten må
+hente status før retry. Ingen timer/task-endring antas lagret ved usikkert svar.
+
+Migrationen stopper for review hvis pre-eksisterende åpne segmenter peker på
+completed task eller har avvikende task-area. Den gjetter ikke tidligere
+fullføringstid eller omskriver historikk. Kontroller dette ved dry-run/review.
+Ingen hosted migration kjøres av frontend/Pages.
+
+`tests/flow-tasks.test.mjs` kjører hele migrationkjeden i isolert PostgreSQL og
+kontrollerer to eiere, direkte writes, retry/stale form, fullføring/pause/reopen,
+områdeflytting/arkivering, cutoff og total task-tid over flere dager. Frontend-
+deadline-input bruker browserens lokale tid, med eksisterende DST-validering;
+backend mottar absolutt `timestamptz`, uavhengig av arbeidsdagens 04:00.
+
 ## Sikkerhet, tester og review
 
 Alle native tabeller har RLS via `auth.uid()`, select/insert/update for egen bruker,
