@@ -154,10 +154,13 @@ Flow v1-fundamentet er additivt og gjennomgås separat fra produksjons-Study:
 se [supabase/README.md](supabase/README.md) for native tabeller, område-bridge,
 bevart legacy-historikk, logiske 04:00-dager og review/deployrekkefølge.
 Fundamentet `20261012180000` og native timer/cutover `20261013090000` er deployet.
-Oppgavemigrasjonen `20261013120000` er også deployet. Ny additiv migration
-`20261019090000_add_flow_history_statistics.sql` gir samlet Flow-/legacy-historikk,
-serveraggregert Dag/Uke/Måned/Totalt, områdedetaljer og begrenset native korreksjon.
-Den er **ikke deployet av denne PR-en** og må reviewes/deployes før #13-frontenden.
+Oppgavemigrasjonen `20261013120000` og samlet historikk/statistikk `20261019090000`
+er også deployet, sammen med #13-frontenden. Ny additiv migration
+`20261019140000_add_flow_export.sql` gir eksplisitt, paginert CSV-lesing med
+serverfryst referansetid og endringskontroll. Den er **ikke deployet av denne
+PR-en** og må reviewes/deployes før #7-frontenden. Rapporten bruker eksisterende
+`flow_statistics`; ingen eksportfiler eller offentlig deling lagres i backend.
+Se [eksportkontrakten](supabase/README.md#lokal-eksport-7) for API og deployrekkefølge.
 Eksisterende migrations/API-er beholdes. Ingen DNS/Auth-endring gjøres her.
 
 Bruk Node.js 22.12+ (CI bruker 24). Backend har egen låsefil uten workspaces:
@@ -171,7 +174,7 @@ npm test
 `tests/database.test.mjs`, `tests/sessions-database.test.mjs` og
 `tests/history-database.test.mjs`, `tests/flow-database.test.mjs` og
 `tests/flow-workday.test.mjs`, `tests/flow-tasks.test.mjs` og
-`tests/flow-history-statistics.test.mjs` kjører
+`tests/flow-history-statistics.test.mjs` og `tests/flow-export.test.mjs` kjører
 canonical migrations i isolert PostgreSQL/WASM (PGlite). De kontrollerer grants,
 RLS mellom to brukere, foreign keys, constraints, atomiske RPC-er, retry og
 recovery, samt historikk, periodeoverlapp og korreksjon/sletting av ferdige økter.

@@ -226,8 +226,8 @@ backend mottar absolutt `timestamptz`, uavhengig av arbeidsdagens 04:00.
 
 ## Samlet historikk og statistikk (#13)
 
-Ny additiv migration: `20261019090000_add_flow_history_statistics.sql`.
-**Ikke deployet av denne PR-en.** Ingen gamle migrations, timer-/task-kontrakter,
+Deployet migration: `20261019090000_add_flow_history_statistics.sql`.
+Ingen gamle migrations, timer-/task-kontrakter,
 tabellrader, timestamps eller cutover-markører omskrives.
 
 ### Leselag og skalering
@@ -315,7 +315,98 @@ test samlet historikk/statistikk. Før produksjon: ekte JWT/Data API med to
 testbrukere og flere DB-forbindelser mens en annen fane bytter/pause/fullfører;
 kontroller ingen dobbeltelling, snapshots, stale korreksjon og cutoff/DST.
 Se frontend README for UI-/feil-/mobilpunkter. Ingen hosted push/merge, DNS/Auth-
-endring eller lukking av #13 utføres her. Eksport #7 og domene #14 er fortsatt utsatt.
+endring eller lukking av #13 utføres her. #13 er nå deployet; eksport følger som
+separat fase nedenfor. Domene #14 er fortsatt utsatt.
+
+## Lokal eksport (#7)
+
+Ny additiv migration: `20261019140000_add_flow_export.sql`. **Ikke deployet**
+av denne PR-en. Eksisterende RPC-kontrakter og migrations endres ikke. Frontend
+og CSV-/rapportpresentasjon eies fortsatt bare av `andsolste/asinfra-study`.
+
+### API og tidssemantikk
+
+- `flow_export_start(p_kind='week', p_date=null, p_timezone=null)` oppretter et
+  serverstyrt manifest og returnerer første 500 rader samt canonical statistikk.
+  Alle fire perioder støttes. Dato/zone/kind er valg, aldri klientens user_id/now/cutoff.
+- `flow_export_rows(p_cursor, p_limit=500)` tar kun markør `{job: UUID, after: heltall}`,
+  med limit 1–1000. Respons: `job_id`, `period`, `server_time`, `expires_at`,
+  `total_rows`, `rows`, `next_cursor`. Startresponsen inkluderer også `statistics`.
+  Hver rad har sammenhengende `ordinal`; siste side har null neste markør.
+- `flow_export_discard(p_job_id)` sletter bare eget manifest. Frontend forsøker
+  dette ved ferdig eksport, feil og avbrudd. Ingen CSV eller rådatafil lagres her.
+
+`flow_read_segments` er råkilden. `flow_statistics` bestemmer periodegrenser og
+starttotal; `flow_day_bounds` beregner 04:00/DST. Native bruker lagret logical date,
+zone, cutoff og segmentets område/task. Legacy klippes til perioden og deles til
+positive dagslices ved canonical grenser. Kalendergrenser caches per dato i hvert
+kall, ikke beregnes på nytt for hvert segment. Ingen JS-splitting, N+1-oppslag,
+pausearbeid, task-matching eller kopiering/migrering av historiske data.
+
+Radene inkluderer source, segment_id, flow_date, timezone, absolutte UTC
+started_at/ended_at, eksakte `work_microseconds` som heltallstekst, område/kode/
+arkivstatus, task/tittel/status/frist og beskrivelse. Interne ID-er brukes bare til
+runtime-validering/deduplisering; frontend utelater dem fra CSV/rapport.
+Navn/status/frist/beskrivelse er nåværende tilgjengelige metadata. Områdetilknytning
+er historisk fra segmentet. Arkiverte områder og fullførte tasks filtreres ikke bort.
+
+CSV krever gyldig eksplisitt IANA-displayzone også for Totalt, fordi legacy trenger
+en logical date. Totalsummen er fortsatt tidssoneuavhengig. Urepresenterbare
+kalendergrenser avvises, ikke gjettes. Rapport bruker `flow_statistics` direkte,
+ikke rå eksportrows. Alle eksportfunksjoner serialiserer timestamps i UTC slik
+at endret DB-session-timezone mellom sider ikke gir falsk digest-endring.
+
+### Konsistens, kostnad og sikkerhet
+
+`flow_export_jobs` lagrer bare eget immutable manifest: servergenerert ID, eier,
+periode/displayzone, serverreferanse, 30-minutters utløp, radantall, varighet,
+digest og aggregert statistikk. BEFORE INSERT-triggeren overskriver alle avledede
+felt, inkludert ID/eier/tid, også ved direkte Data API-insert. Ingen authenticated
+UPDATE er tillatt. RLS begrenser SELECT/INSERT/DELETE til `auth.uid()`.
+
+Hver side leser radsett/digest fra samme MVCC-statement og sammenligner med
+manifestet. Åpent arbeid fryses ved serverreferansen; senere vanlig timervekst,
+pause/bytte legger ikke til arbeid før denne referansen. Korreksjon, sletting og
+metadataendring gir `40001`: klienten avbryter og starter på nytt, uten delvis fil.
+Dette er **ikke** en langvarig transaksjon eller bevart historisk MVCC-snapshot.
+Den bundne ordinalmarkøren er stabil bare fordi endret radsett avvises, ikke en
+skjør offset over levende data. Ingen langvarig bruker-advisory-lock tas.
+
+Digest (MD5 som endringsdetektor, ikke autentiseringstoken) beregnes over alle
+ordnede eksportrows for hver side. Det koster O(N) lesing per side og midlertidig
+serverminne; svært store eksporter bør måles i testmiljø før produksjon. Manifest
+varer 30 minutter og avvises etter dette. Egne utløpte manifester slettes ved neste
+eksportstart; best-effort discard rydder normalt straks. Ingen global cron/TTL-
+delete er lagt til: dersom klienten forsvinner og aldri eksporterer igjen, kan et
+inaktivt manifest bli liggende til administrativ opprydding eller brukersletting.
+Det inneholder aggregert brukermetadata under RLS, ikke CSV/rårows. Vurder senere
+serverstyrt periodisk sletting hvis faktisk volum tilsier det.
+
+`flow_private.export_slices` og insert-triggeren er interne, utenfor Data API-ens
+eksponerte `public` schema. Ikke legg `flow_private` til exposed schemas.
+Nye offentlige RPC-er er `SECURITY INVOKER`, har tom search_path, eksplisitt
+execute bare til authenticated og kontrollerer `auth.uid()`. RLS for alle kilder
+beholdes; andre brukeres jobb-ID-er gir ikke tilgang. Ny indeks er
+`flow_export_jobs_owner_expiry(user_id,expires_at)`; eksisterende segmentindekser
+gjenbrukes. Ingen service-role eller nye frontendhemmeligheter.
+
+### Tester og utrulling
+
+`tests/flow-export.test.mjs` kjører hele migrationkjeden med perioder/summer mot
+`flow_statistics`, native/legacy/Annet/arkivert/fullført, åpne segmenter,
+03:59:59/04:00, uke/måned/år/skuddår, 23/25-timers DST i Oslo/New York, over 1100
+rader, ties/mikrosekunder, tre sider, session-timezonebytte, frozen reference,
+metadataendring/korreksjon/sletting, serveroverstyrte manifestfelt, utløp/discard og
+to brukeres RLS/grants. PGlite stubber Auth og serverklokke; ekte JWT/Data API og
+flerforbindelses-concurrency må fortsatt smoke-testes separat i lokal/test-Supabase.
+
+Rekkefølge: review backend → merge backend → kontroller project-ref og
+`supabase migration list` → `supabase db push --dry-run` → særskilt godkjent
+`supabase db push` → smoke-test eksisterende Flow med gammel frontend → merge
+frontend → frontend README sin konkrete 24-punkts eksportkontroll (CSV-import,
+rapporter, A4/Letter/PDF, mobil, store eksporter, feil/avbrudd og to testbrukere).
+Ingen merge, hosted migration eller lukking av #7 er utført. #19 offentlig Flow,
+#14 domeneovergang, deling og cloud upload er ikke en del av eksporten.
 
 ## Sikkerhet, tester og review
 
