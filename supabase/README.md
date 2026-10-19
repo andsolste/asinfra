@@ -10,9 +10,9 @@ Fundamentet er etablert og deployet med `20261012180000_create_flow_foundation.s
 De tre eksisterende Study-migrasjonene og de fem `study_session_*`-RPC-ene
 endres ikke. Pages/CI deployer aldri databaseschema.
 
-## Native tidtaker og cutover (#11) – ny migration, ikke deployet av denne PR-en
+## Native tidtaker og cutover (#11)
 
-`20261013090000_activate_flow_workday.sql` legger til orkestrering og vern, uten
+`20261013090000_activate_flow_workday.sql` er deployet og legger til orkestrering og vern, uten
 å endre de gamle migration-filene eller kopiere historisk arbeid.
 
 - `flow_work_state(timezone)` reconciler snapshot og gir server_time, aktiv dag,
@@ -117,12 +117,11 @@ ID-er, eierskap, segmenter og RPC-kontrakter. Ingen historisk arbeidstid kopiere
 til Flow-tabellene. Manglende tidssone kan ikke rekonstrueres tapsfritt; vi
 oppfinner derfor ingen historiske 04:00-dager eller norsk tidssone.
 
-#13 skal kombinere to tydelige kilder: `legacy-study` med eksisterende segmenter,
-og `flow` med native segmenter. Bruk kilde + segment-ID som identitet og summer
-hver arbeidspost én gang; en kopiert area er metadata, ikke kopiert arbeid.
-Legacy kalenderstatistikk beholdes i mellomtiden. Eventuell senere omgruppering
-av gammel historikk trenger en eksplisitt bruker-/tidssonepolicy, ikke en backfill
-som gjetter. Legacy null-område kan bety slettet fag; originalt navn er ikke kjent.
+#13 kombinerer to tydelige kilder: `legacy-study` med eksisterende segmenter,
+og `flow` med native segmenter. Kilde + segment-ID er identitet; en kopiert area
+er metadata, ikke kopiert arbeid. Legacy null-område kan bety slettet fag;
+originalt navn er ikke kjent. Den eksplisitte 04:00-visningspolicyen nedenfor
+endrer ikke gamle data eller gamle klienters API-er.
 
 ## Logisk dag og recovery
 
@@ -224,6 +223,99 @@ kontrollerer to eiere, direkte writes, retry/stale form, fullføring/pause/reope
 områdeflytting/arkivering, cutoff og total task-tid over flere dager. Frontend-
 deadline-input bruker browserens lokale tid, med eksisterende DST-validering;
 backend mottar absolutt `timestamptz`, uavhengig av arbeidsdagens 04:00.
+
+## Samlet historikk og statistikk (#13)
+
+Ny additiv migration: `20261019090000_add_flow_history_statistics.sql`.
+**Ikke deployet av denne PR-en.** Ingen gamle migrations, timer-/task-kontrakter,
+tabellrader, timestamps eller cutover-markører omskrives.
+
+### Leselag og skalering
+
+`flow_read_segments` er en `security_invoker`-view med `UNION ALL` av de to
+fysiske kildene. Tabellgrants og RLS gjelder fortsatt; alle join har eierkontroll
+med `auth.uid()`. Native area/task hentes fra segmentet, legacy area fra sessionens
+subject-ID, aldri fra oppgavens nåværende område eller beskrivelsesmatching.
+Eksisterende area-backfill gir felles ID-er. NULL = Annet, med dagens metadata.
+
+- `flow_history(limit=25, cursor=NULL)`: én sortert UNION av ferdige legacy-økter
+  og avsluttede/utløpte native dager. Global keyset på
+  `(started_at DESC, source DESC, id DESC)`, `limit+1` for neste side. Markøren
+  beholder database-timestampets mikrosekunder; ikke konverter den gjennom JS Date.
+  Eier/start/id-indekser på begge kilder støtter oppslag. Underliggende segmenter
+  følger bare postene på siden. Dagens uavsluttede dag forblir i timerpanelet.
+- `flow_statistics(kind, date?, timezone?, area_id?, area_only=false, task_id?)`:
+  serveraggregater for day/week/month/total, daglige area-summer og area/task-bidrag.
+  Perioder filtreres før aggregering; lifetime skanner egne segmenter på serveren,
+  ikke store råhistorikk-sider til browseren. `total` returnerer ingen dagsserie.
+- `flow_area_statistics(area_id=NULL, timezone?)`: day/week/month/total fra samme
+  snapshot/klokke, inkludert Annet og tidligere arbeid uten oppgave. Dersom ingen
+  periode kan bestemmes uten gyldig sone, er periodefelt NULL, men Totalt beholdes.
+- Task-filter i `flow_statistics` gir `task_date`, `task_today` og `task_current`
+  fra lagret aktuell Flow-dato. Legacy bidrar aldri til en task. Den eldre
+  `flow_task_time` beholdes uendret for kompatibilitet.
+
+Reads er `STABLE`, `SECURITY INVOKER`, med tom `search_path`, eksplisitt auth-sjekk
+og execute kun for authenticated. Én statement-snapshot og `statement_timestamp()`
+brukes for alle delsummer, også de fire area-kallene. MVCC ser en atomisk
+timertransition før eller etter commit, ikke en halvt lukket/åpnet kombinasjon.
+Reads tar ikke langvarig advisory-lås som blokkerer timeren. Utløpt åpent arbeid
+klippes til cutoff uten at lesingen skriver/reconciler dagen.
+
+### Tid og datakorrekthet
+
+Native segmenter grupperes på **lagret logical_date** og klippes til lagret cutoff
+og samme serverklokke. Gjeldende dato bruker dagen som omfatter server now innenfor
+sine fryste grenser, ikke browserens nye tidssone. Uke er mandag–søndag, måned er
+kalendermåned. Kalenderdatoer må ikke beregnes med faste 24-timersintervaller.
+
+Legacy har ingen historisk zone. Klienten velger eksplisitt en gyldig IANA-zone
+(normalt browserens) for visning: hver dag er lokal 04:00 → neste lokale 04:00.
+Segmenter splittes/klippes ved disse grensene. Dette er **ikke** en backfill eller
+en påstand om original tidssone. Hver grense konverteres separat ved DST; en dag
+kan være 23/25 timer. Ugyldig/manglende sone eller ikke-eksisterende 04:00 returneres
+som `legacy_timezone_error`, aldri en gjettet standard. Native data er fortsatt
+tilgjengelige; Totalt trenger ingen tidssone eller vilkårlig dato.
+
+Bare positive faktiske segmentintervaller telles. Åpne perioder klippes til server
+now/cutoff (og legacy parent-end/cutover), uten fremtidig arbeid. Pauser og
+session-envelope telles ikke. Presisjon beholdes frem til frontendens visning.
+Ingen union-rad kopieres mellom kilder; områdemetadata lager aldri dobbelt arbeid.
+
+### Korreksjon og kompatibilitet
+
+`flow_history_attribute(segment, area, task, expected_area, expected_task)` endrer
+bare område/oppgave på et lukket segment i en avsluttet dag. Brukerlås seed 9 og
+forventet opprinnelig tilknytning beskytter stale skjemaer. Identisk ønsket verdi
+er idempotent. Eksisterende guards håndhever egne area/task og sammenheng mellom
+dem, også arkiverte områder/fullførte oppgaver for historisk korreksjon. Ingen
+native start, slutt, logisk dato, zone, boundary eller cutoff kan redigeres her;
+native sletting/reåpning tilbys ikke. Dette er den bevisst smale korreksjonsflaten.
+
+`flow_history_edit_legacy` bruker den eksisterende atomiske editoren, men avviser
+i tillegg overlapp med andre positive legacy-/native perioder. Feil ruller tilbake
+både session og segmentutskifting. `study_session_history_delete` brukes uendret.
+Alle gamle read/write-RPC-er og RLS-policyer beholdes slik at deploy av backend
+ikke krever samtidig frontendbytte. Ny frontend må derimot vente på denne migrationen.
+
+### Test og deploy
+
+`tests/flow-history-statistics.test.mjs` kjører hele canonical migrationkjeden med
+to brukere: legacy-only/native-only/begge, NULL/slettet område, flyttet/fullført
+task, åpne/cutoff-segmenter, 03:59:59/04:00, DST i UTC/Oslo/New York, måned/år/skuddår,
+mer enn 1100 legacy-segmenter og flere blandede cursorsider, korreksjoner/rollback,
+grants/invoker/RLS og gamle kontrakter. Frontend tester mapper, stale responses,
+periode-/areakansellering og usikker write-recovery separat. Testdatabasen stubber
+Auth og serverklokken; dette er ikke hosted JWT- eller flerforbindelsesverifisering.
+
+Rekkefølge: review begge PR-er → merge backend → kontroller project-ref og
+`supabase migration list` → `supabase db push --dry-run` → særskilt godkjent
+`supabase db push` → smoke-test gammel Flow/timer/tasks/RLS → merge frontend →
+test samlet historikk/statistikk. Før produksjon: ekte JWT/Data API med to
+testbrukere og flere DB-forbindelser mens en annen fane bytter/pause/fullfører;
+kontroller ingen dobbeltelling, snapshots, stale korreksjon og cutoff/DST.
+Se frontend README for UI-/feil-/mobilpunkter. Ingen hosted push/merge, DNS/Auth-
+endring eller lukking av #13 utføres her. Eksport #7 og domene #14 er fortsatt utsatt.
 
 ## Sikkerhet, tester og review
 
