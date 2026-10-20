@@ -10,11 +10,10 @@ utenfor repoet. `www.asinfra.no` er satt opp som alternativ adresse.
 
 Hovednettstedet bruker statisk HTML, CSS og vanilla JavaScript uten build-system.
 Flow-frontenden eies av [andsolste/asinfra-study](https://github.com/andsolste/asinfra-study).
-Dagens produksjon er fortsatt [study.asinfra.no](https://study.asinfra.no/).
-Denne preflight-PR-en klargjør Apps og `/study/` for `https://flow.asinfra.no/`.
-**Ikke merge før ny Flow-produksjon, Auth og legacy-løsning er godkjent.**
-Se [#14-runbook, DNS/Auth-plan, legacy-valg og rollback](https://github.com/andsolste/asinfra-study/blob/c7a38d7754c5c9da41cc24aeb313fa98b93c7cbc/docs/flow-domain-cutover.md).
-Lenken peker til den reviewbare preflight-versjonen, ikke en bekreftet cutover.
+Flow kjører på [flow.asinfra.no](https://flow.asinfra.no/). Domeneflyttingen i #14
+ble gjennomført og manuelt verifisert 20. oktober 2026; frontend-PR #22 og
+ASInfra-PR #32 er merget. Apps åpner Flow direkte, og `/study/` er en legacy-redirect.
+Se [sluttstatus, historisk runbook og rollback](https://github.com/andsolste/asinfra-study/blob/main/docs/flow-domain-cutover.md).
 
 `/apps/` er inngangen til å bruke apper; `/projects/` er porteføljen med
 prosjektbeskrivelser. Nye apper legges til som vanlige kort i `apps/index.html`
@@ -87,10 +86,11 @@ rotberegning fra script-plasseringen kan beholdes.
 
 - **andsolste/asinfra** eier `asinfra.no`, det statiske hovednettstedet og canonical
   `supabase/` med config, migrations, RLS, constraints, RPC-er og backendtester.
-- **andsolste/asinfra-study** eier React/Vite-frontenden på `study.asinfra.no`
-  før cutover, og `flow.asinfra.no` etter #14. Ingen flytting av backend inngår.
+- **andsolste/asinfra-study** eier React/Vite-frontenden på `flow.asinfra.no`.
   Frontendutvikling, lokal Vite-kjøring og deployment er dokumentert i
   [Flow-repoet](https://github.com/andsolste/asinfra-study).
+- **andsolste/asinfra-study-redirect** eier kun `study.asinfra.no` og sender gamle
+  adresser videre til Flow med path/query/hash bevart i JavaScript.
 - Begge bruker samme Supabase-prosjekt/Auth. Brukere, ID-er og data er ikke flyttet.
   Study-repoet inneholder ikke migrations; databaseendringer gjøres med review her.
 
@@ -103,16 +103,13 @@ start/pause/fortsett/stopp atomisk, og `study_session_snapshot` brukes for recov
 
 `supabase/config.toml` gjelder bare lokal CLI-kjøring. Lokal Auth-retur bruker
 localhost-roten; hosted Auth-innstillinger håndteres separat i samme prosjekt.
-Produksjonen bruker `https://study.asinfra.no/`. Gamle Auth-redirects til
-`https://asinfra.no/study/` kan beholdes for legacy-bekreftelseslenker, ikke som
-produksjonsadresse for nye returer. Ingen hosted config eller schema endres av
-Pages-workflowene.
-
-Ved #14 skal `https://flow.asinfra.no/` først legges til i hosted Redirect URLs.
-Etter HTTPS/login/signup-smoke byttes Site URL til Flow. Behold Study, localhost
-5173, preview 4173 og andre eksisterende app-/legacy-returer. Hosted listen og
-e-postmalene må leses i dashboardet før endring; lokal `supabase/config.toml`
-endres ikke av denne domenepreflighten.
+Produksjonen og Supabase Site URL bruker `https://flow.asinfra.no/`.
+Study, localhost 5173, preview 4173 og andre nødvendige app-/legacy-adresser kan
+fortsatt stå i allowed Redirect URLs, også gammel `https://asinfra.no/study/`
+dersom den brukes av eldre bekreftelseslenker. Ikke erstatt hele listen ved
+vedlikehold. Ingen hosted config eller schema endres av Pages-workflowene.
+Domeneflyttingen krevde ingen backend-, data- eller brukermigrasjon; samme
+Supabase-prosjekt og canonical `supabase/` beholdes.
 
 ### Historikk og ukestatistikk
 
@@ -120,7 +117,7 @@ Den deployede migrasjonen `20261008120000_add_study_session_history.sql` gir tre
 `SECURITY INVOKER`-RPC-er med tom `search_path` og execute kun for
 `authenticated`. Eksisterende RLS, tabeller, timer og recovery beholdes.
 Historikk, redigering/sletting og ukestatistikk er implementert i Study-frontenden
-på `https://study.asinfra.no/`, med kildekode i `andsolste/asinfra-study`.
+på `https://flow.asinfra.no/`, med kildekode i `andsolste/asinfra-study`.
 
 - `study_session_history(p_from, p_to, p_limit, p_offset)` returnerer en JSON-array
   med `session`, `subject` (eller `null` hvis faget er slettet) og alle
@@ -256,21 +253,21 @@ prosjektassets. `publish/study/` skal inneholde bare redirect-siden, ingen gamle
 React-bundles. Dotfiler, dependencies, backend, scripts og README publiseres ikke.
 Bare `publish/` lastes opp som Pages-artifact. Study-kilden eies kun av Study-repoet.
 
-Etter merge av cutover-PR-en videresendes `https://asinfra.no/study/` direkte til
+Gamle `https://asinfra.no/study/` videresendes direkte til
 `https://flow.asinfra.no/` med `location.replace`, som bevarer query og hash.
 Canonical, meta refresh og synlig lenke gir fallback; uten JavaScript sender
 meta refresh til subdomenets rot uten query/hash. Ingen serverside-routing kreves.
-Det er ikke en implementasjon av `study.asinfra.no`-redirect: den trenger en egen,
-reviewet providerregel eller minimal Pages-site. Anbefalingen og mulig TLS-avbrudd
-ved flytting av hostname er beskrevet i runbooken. Ikke la gammel CNAME alene
-stå som antatt redirect. Apex/www og hovednettstedets Pages-oppsett er urørt.
+`https://study.asinfra.no/` håndteres separat av den aktive Pages-siten i
+`andsolste/asinfra-study-redirect`, med ansvar kun for den gamle Study-adressen.
+Apex/www og hovednettstedets øvrige Pages-oppsett er urørt.
 
 Validatoren kontrollerer Apps-lenke, begge Flow-ankere og legacy-sidens mål/copy.
 Den lokale Node-testen kjører sidens faktiske redirect-script med syntetisk query/
 hash og kontrollerer ett direkte hopp uten selv-loop. Søk peker allerede til
 `apps/#flow` og beholder `Study` som søkealias; indeksen trenger ingen URL-endring.
-Hosted DNS/TLS, nye login-/bekreftelsesreturer og subdomene-redirect må verifiseres
-senere. #14 holdes åpent til runbookens cutover-smoke er fullført.
+HTTPS, Auth/session, signup/bekreftelse, Apps og begge legacy-innganger ble
+manuelt verifisert ved cutover 20. oktober 2026, inkludert deep path/query/hash
+på Study-redirecten. Runbooken beholdes som historikk og rollback-dokumentasjon.
 
 ## Vedlikehold
 
