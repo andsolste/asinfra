@@ -76,13 +76,13 @@
       "priority": 25
     },
     {
-      "id": "app-study",
+      "id": "app-flow",
       "type": "App",
-      "title": "Study",
-      "context": "Apps · Studiearbeid",
-      "description": "Registrer studiearbeid og følg faktisk arbeidstid med start, pause, fortsett og stopp.",
-      "keywords": ["studiearbeid", "arbeidstid", "studieøkt", "timer", "pause"],
-      "url": "apps/#study",
+      "title": "Flow",
+      "context": "Apps · Arbeidstid og oversikt",
+      "description": "Faktisk arbeidstid, oppgaver og områder, med historikk, statistikk og eksport.",
+      "keywords": ["Flow", "Study", "arbeidstid", "oppgaver", "områder", "statistikk", "eksport", "timer", "pause"],
+      "url": "apps/#flow",
       "priority": 20
     },
     {

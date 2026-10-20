@@ -17,10 +17,14 @@ class Page(HTMLParser):
         self.links = []
         self.base_href = None
         self.canonical = None
+        self.metadata = {}
+        self.text = []
         self.feed(path.read_text(encoding="utf-8"))
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        if tag == "meta":
+            self.metadata[attrs.get("name") or attrs.get("property")] = attrs.get("content", "")
         if attrs.get("id"):
             self.ids[attrs["id"]] += 1
         if tag == "base" and attrs.get("href"):
@@ -30,6 +34,9 @@ class Page(HTMLParser):
         key = "href" if tag in ("a", "link") else "src" if tag in ("script", "img", "iframe", "source") else "data" if tag == "object" else None
         if key and attrs.get(key):
             self.links.append(attrs[key])
+
+    def handle_data(self, data):
+        self.text.append(data)
 
 
 # Backend and assembled output are not static website pages. apps/ is the public hub.
@@ -87,6 +94,19 @@ try:
         check(entry["url"], f"search: {entry['id']}", BASE)
 except (OSError, ValueError, KeyError, TypeError) as error:
     errors.append(f"search-index.json: {error}")
+
+# Product entry contract: Flow still uses the Study origin until the separate domain move.
+apps = pages[(ROOT / "apps/index.html").resolve()]
+apps_text = " ".join(apps.text)
+if "Flow" not in apps_text or "Åpne Flow" not in apps_text or "Åpne Study" in apps_text:
+    errors.append("apps/: expected Flow name/action, not old Study copy")
+if "https://study.asinfra.no/" not in apps.links:
+    errors.append("apps/: Flow must still link to https://study.asinfra.no/")
+for name in ("description", "og:description"):
+    if "Flow" not in apps.metadata.get(name, "") or "arbeidstid" not in apps.metadata.get(name, ""):
+        errors.append(f"apps/: missing Flow/arbeidstid in {name}")
+if not all(anchor in apps.ids for anchor in ("flow", "flow-title", "study")):
+    errors.append("apps/: missing Flow anchor or legacy #study compatibility")
 
 if errors:
     print("\n".join(errors))
