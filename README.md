@@ -9,8 +9,12 @@ utenfor repoet. `www.asinfra.no` er satt opp som alternativ adresse.
 ## Teknologi og struktur
 
 Hovednettstedet bruker statisk HTML, CSS og vanilla JavaScript uten build-system.
-Study-frontenden eies av [andsolste/asinfra-study](https://github.com/andsolste/asinfra-study)
-og publiseres separat på [study.asinfra.no](https://study.asinfra.no/).
+Flow-frontenden eies av [andsolste/asinfra-study](https://github.com/andsolste/asinfra-study).
+Dagens produksjon er fortsatt [study.asinfra.no](https://study.asinfra.no/).
+Denne preflight-PR-en klargjør Apps og `/study/` for `https://flow.asinfra.no/`.
+**Ikke merge før ny Flow-produksjon, Auth og legacy-løsning er godkjent.**
+Se [#14-runbook, DNS/Auth-plan, legacy-valg og rollback](https://github.com/andsolste/asinfra-study/blob/c7a38d7754c5c9da41cc24aeb313fa98b93c7cbc/docs/flow-domain-cutover.md).
+Lenken peker til den reviewbare preflight-versjonen, ikke en bekreftet cutover.
 
 `/apps/` er inngangen til å bruke apper; `/projects/` er porteføljen med
 prosjektbeskrivelser. Nye apper legges til som vanlige kort i `apps/index.html`
@@ -83,9 +87,10 @@ rotberegning fra script-plasseringen kan beholdes.
 
 - **andsolste/asinfra** eier `asinfra.no`, det statiske hovednettstedet og canonical
   `supabase/` med config, migrations, RLS, constraints, RPC-er og backendtester.
-- **andsolste/asinfra-study** eier `study.asinfra.no` og React/Vite-frontenden.
+- **andsolste/asinfra-study** eier React/Vite-frontenden på `study.asinfra.no`
+  før cutover, og `flow.asinfra.no` etter #14. Ingen flytting av backend inngår.
   Frontendutvikling, lokal Vite-kjøring og deployment er dokumentert i
-  [Study-repoet](https://github.com/andsolste/asinfra-study).
+  [Flow-repoet](https://github.com/andsolste/asinfra-study).
 - Begge bruker samme Supabase-prosjekt/Auth. Brukere, ID-er og data er ikke flyttet.
   Study-repoet inneholder ikke migrations; databaseendringer gjøres med review her.
 
@@ -102,6 +107,12 @@ Produksjonen bruker `https://study.asinfra.no/`. Gamle Auth-redirects til
 `https://asinfra.no/study/` kan beholdes for legacy-bekreftelseslenker, ikke som
 produksjonsadresse for nye returer. Ingen hosted config eller schema endres av
 Pages-workflowene.
+
+Ved #14 skal `https://flow.asinfra.no/` først legges til i hosted Redirect URLs.
+Etter HTTPS/login/signup-smoke byttes Site URL til Flow. Behold Study, localhost
+5173, preview 4173 og andre eksisterende app-/legacy-returer. Hosted listen og
+e-postmalene må leses i dashboardet før endring; lokal `supabase/config.toml`
+endres ikke av denne domenepreflighten.
 
 ### Historikk og ukestatistikk
 
@@ -222,6 +233,7 @@ Fra repo-roten:
 
 ```sh
 python scripts/validate-site.py
+node --test scripts/test-flow-redirect.mjs
 python scripts/build-pages.py
 python -m http.server --directory publish
 ```
@@ -244,10 +256,21 @@ prosjektassets. `publish/study/` skal inneholde bare redirect-siden, ingen gamle
 React-bundles. Dotfiler, dependencies, backend, scripts og README publiseres ikke.
 Bare `publish/` lastes opp som Pages-artifact. Study-kilden eies kun av Study-repoet.
 
-Gamle `https://asinfra.no/study/`-bokmerker videresendes til
-`https://study.asinfra.no/` med `location.replace`, som bevarer query og hash.
+Etter merge av cutover-PR-en videresendes `https://asinfra.no/study/` direkte til
+`https://flow.asinfra.no/` med `location.replace`, som bevarer query og hash.
 Canonical, meta refresh og synlig lenke gir fallback; uten JavaScript sender
 meta refresh til subdomenets rot uten query/hash. Ingen serverside-routing kreves.
+Det er ikke en implementasjon av `study.asinfra.no`-redirect: den trenger en egen,
+reviewet providerregel eller minimal Pages-site. Anbefalingen og mulig TLS-avbrudd
+ved flytting av hostname er beskrevet i runbooken. Ikke la gammel CNAME alene
+stå som antatt redirect. Apex/www og hovednettstedets Pages-oppsett er urørt.
+
+Validatoren kontrollerer Apps-lenke, begge Flow-ankere og legacy-sidens mål/copy.
+Den lokale Node-testen kjører sidens faktiske redirect-script med syntetisk query/
+hash og kontrollerer ett direkte hopp uten selv-loop. Søk peker allerede til
+`apps/#flow` og beholder `Study` som søkealias; indeksen trenger ingen URL-endring.
+Hosted DNS/TLS, nye login-/bekreftelsesreturer og subdomene-redirect må verifiseres
+senere. #14 holdes åpent til runbookens cutover-smoke er fullført.
 
 ## Vedlikehold
 

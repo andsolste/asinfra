@@ -24,7 +24,7 @@ class Page(HTMLParser):
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         if tag == "meta":
-            self.metadata[attrs.get("name") or attrs.get("property")] = attrs.get("content", "")
+            self.metadata[attrs.get("name") or attrs.get("property") or attrs.get("http-equiv", "").lower()] = attrs.get("content", "")
         if attrs.get("id"):
             self.ids[attrs["id"]] += 1
         if tag == "base" and attrs.get("href"):
@@ -95,18 +95,32 @@ try:
 except (OSError, ValueError, KeyError, TypeError) as error:
     errors.append(f"search-index.json: {error}")
 
-# Product entry contract: Flow still uses the Study origin until the separate domain move.
+# Cutover contract: Apps and the legacy entry go directly to Flow, not via Study.
+FLOW_URL = "https://flow.asinfra.no/"
 apps = pages[(ROOT / "apps/index.html").resolve()]
 apps_text = " ".join(apps.text)
 if "Flow" not in apps_text or "Åpne Flow" not in apps_text or "Åpne Study" in apps_text:
     errors.append("apps/: expected Flow name/action, not old Study copy")
-if "https://study.asinfra.no/" not in apps.links:
-    errors.append("apps/: Flow must still link to https://study.asinfra.no/")
+if FLOW_URL not in apps.links or "https://study.asinfra.no/" in apps.links:
+    errors.append("apps/: Flow must link directly to https://flow.asinfra.no/")
 for name in ("description", "og:description"):
     if "Flow" not in apps.metadata.get(name, "") or "arbeidstid" not in apps.metadata.get(name, ""):
         errors.append(f"apps/: missing Flow/arbeidstid in {name}")
 if not all(anchor in apps.ids for anchor in ("flow", "flow-title", "study")):
     errors.append("apps/: missing Flow anchor or legacy #study compatibility")
+
+legacy = pages.get((ROOT / "study/index.html").resolve())
+if not legacy:
+    errors.append("study/: missing legacy redirect page")
+else:
+    legacy_text = " ".join(legacy.text)
+    if legacy.canonical != FLOW_URL or legacy.metadata.get("refresh") != f"0; url={FLOW_URL}" or FLOW_URL not in legacy.links:
+        errors.append("study/: canonical, meta refresh and fallback link must go directly to Flow")
+    if "Åpne Flow" not in legacy_text or "Study" in legacy_text or "https://study.asinfra.no" in legacy_text:
+        errors.append("study/: expected Flow legacy copy/target, not old Study copy")
+    for expected in (f"new URL('{FLOW_URL}')", "target.search = window.location.search", "target.hash = window.location.hash", "window.location.replace(target.href)"):
+        if expected not in legacy_text:
+            errors.append(f"study/: missing redirect contract: {expected}")
 
 if errors:
     print("\n".join(errors))
