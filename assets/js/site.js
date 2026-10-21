@@ -14,6 +14,8 @@
     }
 
     const siteRoot = new URL("../../", siteScript.src);
+    const usesShell = document.body.classList.contains("asinfra-page");
+    const headerSearchButton = document.getElementById("header-search-button");
     // A 404 base element resolves assets, but skip links must stay on the current URL.
     const skipLink = document.querySelector('.skip-link[href^="#"]');
     if (document.querySelector("base") && skipLink) {
@@ -42,7 +44,7 @@
     }
 
     root.classList.add("sidebar-restoring");
-    root.classList.toggle("sidebar-collapsed", !isMobile() && desktopCollapsed);
+    root.classList.toggle("sidebar-collapsed", !usesShell && !isMobile() && desktopCollapsed);
 
     const currentPath = window.location.pathname.toLowerCase();
     const relativePath = currentPath.startsWith(siteRoot.pathname.toLowerCase())
@@ -63,7 +65,7 @@
     const brandLink = sidebar.querySelector("a.sidebar-brand");
     if (brandLink) brandLink.href = siteRoot.href;
 
-    sidebarNavigation.querySelectorAll("[data-nav-section]").forEach((link) => {
+    document.querySelectorAll("[data-nav-section]").forEach((link) => {
         const section = link.dataset.navSection;
         if (!navigationPaths[section]) return;
         link.href = new URL(navigationPaths[section], siteRoot).href;
@@ -92,6 +94,10 @@
         if (!isMobile()) return;
         menuReturnFocusTo = document.activeElement;
         root.classList.add("sidebar-open");
+        if (usesShell) {
+            sidebar.setAttribute("role", "dialog");
+            sidebar.setAttribute("aria-modal", "true");
+        }
         scrim.hidden = false;
         pageShell.setAttribute("inert", "");
         updateControls();
@@ -100,6 +106,10 @@
 
     const closeMobileMenu = (restoreFocus = true) => {
         root.classList.remove("sidebar-open");
+        if (usesShell) {
+            sidebar.removeAttribute("role");
+            sidebar.removeAttribute("aria-modal");
+        }
         scrim.hidden = true;
         pageShell.removeAttribute("inert");
         updateControls();
@@ -188,7 +198,7 @@
     });
 
     subjectNavigation.append(subjectLabel, subjectList);
-    sidebarNavigation.after(subjectNavigation);
+    if (!usesShell) sidebarNavigation.after(subjectNavigation);
 
     sidebar.querySelectorAll("a").forEach((link) => {
         link.addEventListener("click", () => {
@@ -247,6 +257,13 @@
     const searchSummary = document.getElementById("site-search-summary");
     const searchEmpty = searchOverlay.querySelector(".search-empty");
     const searchCloseButton = searchOverlay.querySelector(".search-close-button");
+
+    // Both controls open the same palette. No homepage-specific search bridge.
+    if (usesShell && headerSearchButton) {
+        headerSearchButton.title = searchButton.title;
+        headerSearchButton.hidden = false;
+        document.body.classList.add("shell-enhanced");
+    }
 
     const normalize = (value) => String(value || "")
         .normalize("NFD")
@@ -489,11 +506,13 @@
         if (root.classList.contains("search-open")) return;
 
         const activeElement = document.activeElement;
-        searchReturnFocusTo = isMobile()
+        searchReturnFocusTo = usesShell && activeElement instanceof HTMLElement && pageShell.contains(activeElement)
+            ? activeElement
+            : isMobile()
             ? mobileMenuButton
             : activeElement instanceof HTMLElement && activeElement !== document.body
                 ? activeElement
-                : searchButton;
+                : headerSearchButton || searchButton;
 
         if (root.classList.contains("sidebar-open")) closeMobileMenu(false);
 
@@ -502,6 +521,7 @@
         sidebar.setAttribute("inert", "");
         pageShell.setAttribute("inert", "");
         searchButton.setAttribute("aria-expanded", "true");
+        if (headerSearchButton) headerSearchButton.setAttribute("aria-expanded", "true");
         searchInput.setAttribute("aria-expanded", "true");
         searchInput.value = "";
         renderResults();
@@ -524,6 +544,7 @@
         sidebar.removeAttribute("inert");
         pageShell.removeAttribute("inert");
         searchButton.setAttribute("aria-expanded", "false");
+        if (headerSearchButton) headerSearchButton.setAttribute("aria-expanded", "false");
         searchInput.setAttribute("aria-expanded", "false");
         searchInput.removeAttribute("aria-activedescendant");
         visibleResults = [];
@@ -542,6 +563,7 @@
     };
 
     searchButton.addEventListener("click", openSearch);
+    if (headerSearchButton) headerSearchButton.addEventListener("click", openSearch);
     searchCloseButton.addEventListener("click", () => closeSearch());
     searchOverlay.addEventListener("click", (event) => {
         if (event.target === searchOverlay) closeSearch();
@@ -594,12 +616,27 @@
                 event.preventDefault();
                 searchInput.focus();
             }
+        } else if (usesShell && event.key === "Tab" && root.classList.contains("sidebar-open")) {
+            const focusable = Array.from(sidebar.querySelectorAll("a[href], button:not([disabled])"));
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
         }
     });
 
     const resetResponsiveState = () => {
-        root.classList.toggle("sidebar-collapsed", !isMobile() && desktopCollapsed);
+        root.classList.toggle("sidebar-collapsed", !usesShell && !isMobile() && desktopCollapsed);
         root.classList.remove("sidebar-open");
+        if (usesShell) {
+            sidebar.removeAttribute("role");
+            sidebar.removeAttribute("aria-modal");
+        }
         scrim.hidden = true;
         pageShell.removeAttribute("inert");
         menuReturnFocusTo = null;
