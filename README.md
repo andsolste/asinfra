@@ -100,7 +100,9 @@ Uten JavaScript er headerlenkene fortsatt synlige på mobil.
 Innholdskomponentene er beholdt, med kun generell farge-/breddeharmonisering.
 De fire aktive fagsidene og tidligere fag bruker også denne rammen (fase 2C1).
 Faginnhold, ankere, responsiv semesteroversikt og current-week-logikk er beholdt.
-Prosjekt-detaljsidene bruker foreløpig den gamle sidebaren; de inngår i fase 2C2.
+De fem prosjektdetaljene bruker samme shell (fase 2C2), med egen, scoped
+styling i `projects.css`. Dokumentgrid, portrettarbeider og store foto beholder
+bildeforhold, captions og lenker til originalfilene.
 Backend og Flow er uendret.
 Forsidens bilde og innholdsstiler ligger fortsatt separat i `assets/css/home.css`.
 
