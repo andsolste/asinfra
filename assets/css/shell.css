@@ -152,6 +152,7 @@
 .asinfra-page .content-page a:not([class]) { color: var(--blue-light); }
 
 .asinfra-page :is(.button-link, .card-action) {
+    border-radius: var(--shell-radius);
     color: #061c22;
 }
 

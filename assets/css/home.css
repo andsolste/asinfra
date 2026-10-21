@@ -179,6 +179,20 @@ body.home-page {
     background: rgb(8 20 28 / 68%);
 }
 
+.home-about-lines {
+    position: absolute;
+    z-index: -1;
+    right: -.5rem;
+    bottom: -.5rem;
+    width: min(100%, 18rem);
+    height: auto;
+    fill: none;
+    stroke: var(--home-accent);
+    stroke-width: 1.2;
+    opacity: .12;
+    pointer-events: none;
+}
+
 .home-card-projects {
     background: rgb(9 29 39 / 72%);
 }
@@ -195,6 +209,16 @@ body.home-page {
 
 .home-card-education {
     background: rgb(12 25 35 / 68%);
+}
+
+.home-card-education::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: linear-gradient(90deg, rgb(6 16 23 / 90%), rgb(6 16 23 / 40%)),
+        linear-gradient(0deg, rgb(6 16 23 / 48%), transparent 60%),
+        url("../images/home-education-gloshaugen.webp") center 58% / cover;
+    content: "";
 }
 
 .home-card-apps {
@@ -265,24 +289,21 @@ body.home-page {
 
 .home-statement {
     display: flex;
-    min-height: 92px;
     margin-top: 1rem;
-    padding: 1.5rem 1.8rem;
+    padding: 1.25rem 0;
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
-    border: 1px solid var(--home-line);
-    border-radius: 7px;
-    background: rgb(7 18 26 / 68%);
+    border-top: 1px solid var(--home-line);
 }
 
 .home-statement > p {
     margin: 0;
     padding-left: 1.75rem;
-    border-left: 2px solid var(--home-accent);
-    color: #cbd8e0;
+    border-left: 1px solid var(--home-line);
+    color: var(--home-muted);
     font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(1rem, 1.3vw, 1.25rem);
+    font-size: 1rem;
     font-style: italic;
     line-height: 1.65;
 }
@@ -294,7 +315,7 @@ body.home-page {
     align-content: center;
     gap: .25rem;
     flex-shrink: 0;
-    border-left: 1px solid #526b75;
+    border-left: 1px solid var(--home-line);
     color: #b4c5cd;
     font-size: .55rem;
     letter-spacing: .19em;
@@ -343,7 +364,7 @@ body.home-page {
     }
 
     .home-statement {
-        padding: 1.35rem;
+        padding: 1.25rem 0;
         flex-direction: column;
         align-items: stretch;
         gap: 1rem;

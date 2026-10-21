@@ -115,10 +115,14 @@ nordlys ikke strekkes over alle kortene på mobil. Overlay ligger separat og
 fader motivet inn i den mørke sidebakgrunnen uten å redigere bildefilen.
 
 Prosjektkortet gjenbruker det faktiske Ullern-forsidearbeidet fra porteføljen.
-De andre kortene har transparente, mørke flater, ikke stock eller falske
-app-screenshots. Senere kan egne landskaps-/campusbilder og et ekte Flow-screenshot
-vurderes etter visuell review. De fire forsidekortene har lik border-prioritet;
-den tidligere dekorative høyreteksten i heroen er fjernet.
+Utdanningskortet bruker `assets/images/home-education-gloshaugen.webp`, en
+KI-generert, dekorativ tolkning av Hovedbygningen på Gløshaugen fra brukerens
+designreferanse, med varmt kveldslys. Dette er ikke et dokumentarisk NTNU-foto;
+ingen separat originalfil ble funnet i repoet eller den tilgjengelige historikken.
+Om meg-kortet har et diskret, dekorativt SVG-linjemønster, skjult for skjermlesere.
+Kortene har lik border-prioritet og viser ikke falske app-screenshots.
+Statement-teksten er beholdt, men tonet ned med en enkel skillelinje og mindre
+typografi. Den tidligere dekorative høyreteksten i heroen er fjernet.
 
 ## Innholdsdesign – fase 2B av #21
 
