@@ -245,3 +245,90 @@
     .shell-flow-link,
     .shell-search { transition: background-color .15s ease, border-color .15s ease, color .15s ease; }
 }
+
+/* Phase 2B: shared content rhythm, opt-in on the four overview pages.
+ * Header/footer, homepage and deep pages are deliberately unaffected. */
+.asinfra-page .interior-page {
+    --shell-content-width: 1160px;
+    padding-top: clamp(2rem, 3.5vw, 3rem);
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.interior-page .interior-intro {
+    max-width: 880px;
+    margin: 0 0 clamp(2.25rem, 4vw, 3rem);
+}
+
+.interior-page .interior-intro::before { content: none; }
+
+.interior-page .interior-kicker {
+    margin: 0 0 1.1rem;
+    color: var(--shell-accent);
+    font-size: .68rem;
+    font-weight: 550;
+    letter-spacing: .2em;
+    line-height: 1.5;
+    text-transform: uppercase;
+}
+
+.interior-page .interior-intro h1 {
+    max-width: 23ch;
+    font-size: clamp(2rem, 3.3vw, 2.9rem);
+    font-weight: 550;
+    letter-spacing: -.035em;
+    line-height: 1.13;
+    text-wrap: balance;
+}
+
+.interior-page .interior-intro > p:last-child {
+    max-width: 68ch;
+    margin-top: 1.3rem;
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.75;
+}
+
+.interior-page .interior-section-title {
+    margin: 0;
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    font-weight: 550;
+    line-height: 1.25;
+}
+
+.interior-page .content-link {
+    display: inline-flex;
+    width: fit-content;
+    min-height: 44px;
+    align-items: center;
+    gap: .75rem;
+    color: var(--shell-accent);
+    font-size: .9rem;
+    font-weight: 500;
+    text-decoration: none;
+    text-underline-offset: .3em;
+}
+
+.interior-page .content-link:hover {
+    color: var(--text-primary);
+    text-decoration: underline;
+}
+
+.interior-next {
+    display: flex;
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: .5rem 2rem;
+    border-top: 1px solid var(--shell-border);
+}
+
+.interior-next > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 2rem;
+}
+
+@media (max-width: 540px) {
+    .interior-next { flex-direction: column; }
+}

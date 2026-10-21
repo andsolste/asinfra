@@ -836,6 +836,70 @@ th {
     }
 }
 
+/* Phase 2B: overview-only treatment. Earlier/deep courses keep the rules above. */
+.education-overview .course-switcher {
+    width: fit-content;
+    max-width: 100%;
+    margin-bottom: 2.5rem;
+    padding: 0;
+    gap: 1.5rem;
+    border: 0;
+    border-bottom: 1px solid var(--shell-border);
+    border-radius: 0;
+    background: transparent;
+}
+
+.education-overview .course-switcher-tab {
+    min-height: 44px;
+    padding: .7rem 0;
+    flex: none;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    background: transparent;
+    font-size: .9rem;
+    font-weight: 500;
+}
+
+.education-overview .course-switcher-tab[aria-current="page"] {
+    border-bottom-color: var(--shell-accent);
+    background: transparent;
+    color: var(--shell-accent);
+}
+
+.education-overview .course-panel-header { align-items: baseline; }
+.education-overview .course-panel-header h2 { font-size: 1.6rem; font-weight: 550; }
+.education-overview .section-kicker { margin-bottom: .65rem; font-size: .68rem; font-weight: 550; letter-spacing: .18em; }
+.education-overview .course-panel-header > p { font-size: .85rem; }
+.education-overview .course-grid { grid-template-columns: minmax(0, 1fr); gap: .85rem; }
+
+.education-overview .course-card {
+    display: grid;
+    padding: 1.6rem;
+    grid-column: auto;
+    grid-template-columns: 96px minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 1.75rem;
+    border-radius: var(--shell-radius);
+    background: var(--shell-surface);
+}
+
+.education-overview .course-code { margin: .2rem 0 0; color: var(--shell-accent); font-size: .72rem; font-weight: 550; }
+.course-summary { min-width: 0; max-width: 74ch; }
+.education-overview .course-summary h3 { font-size: 1.2rem; font-weight: 550; line-height: 1.35; }
+.education-overview .course-summary p { margin: .75rem 0 0; font-size: .94rem; }
+.education-overview .course-card .content-link { align-self: end; white-space: nowrap; font-size: .85rem; }
+
+@media (max-width: 820px) {
+    .education-overview .course-card { grid-template-columns: 80px minmax(0, 1fr); gap: 1rem 1.5rem; }
+    .education-overview .course-card .content-link { grid-column: 2; }
+}
+
+@media (max-width: 600px) {
+    .education-overview .course-card { padding: 1.25rem; grid-template-columns: minmax(0, 1fr); }
+    .education-overview .course-card .content-link { grid-column: auto; }
+}
+
 /* IT2810 · kompakt fagkart */
 .it2810-topic-grid {
     display: grid;
