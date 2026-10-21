@@ -82,12 +82,24 @@ Ved eventuell tilbakeføring må metadata og 404-base tilpasses adressen som tas
 i bruk igjen, og Pages-/DNS-oppsettet håndteres separat. Relative lenker og
 rotberegning fra script-plasseringen kan beholdes.
 
-## Forsiden – designfase 1 av #21
+## ASInfra-shell – designfase 2A av #21
 
-Forsiden bruker `assets/css/home.css` og en liten søkeknapp-bro i
-`assets/js/home.js`. Felles `site.css`/`site.js`, undersider, backend og Flow er
-uendret. Desktop har toppnavigasjon; mobil bruker eksisterende sidebar/søk.
-Det finnes ingen temabryter i dagens felles kode, så ingen uvirksom kontroll er lagt til.
+Forsiden og toppnivåsidene Om meg, Utdanning, Prosjekter og Apper bruker
+`assets/css/shell.css`: felles farger, toppheader, navigasjon, mobilramme og footer.
+Logoen ligger én gang i `assets/images/asinfra-mark.svg` og brukes som dekorativt
+bilde sammen med ASInfra-teksten. Header-markup er vanlig statisk HTML med
+relative lenker og én felles visuell implementasjon, uten template-motor.
+
+`assets/js/site.js` kobler begge søkeknappene til samme eksisterende palette,
+setter aktiv hovedkategori og gjenbruker off-canvas-meny, scrim, Escape og
+fokusretur. På de fem sidene har mobilmenyen også eksplisitt Tab-fokusfelle.
+Desktop-sidebaren er skjult der; lagret collapse-valg beholdes for dype sider.
+Uten JavaScript er headerlenkene fortsatt synlige på mobil.
+
+Innholdskomponentene er beholdt, med kun generell farge-/breddeharmonisering.
+Dype fag-, tidligere fag- og prosjektsider bruker fortsatt `site.css` og den
+gamle sidebaren. De inngår ikke i denne designfasen. Backend og Flow er uendret.
+Forsidens bilde og innholdsstiler ligger fortsatt separat i `assets/css/home.css`.
 
 Heroen bruker `assets/images/home-hero-aurora.webp` (2880 × 1800 px, ca. 378 kB)
 via `--home-hero-image: url("../images/home-hero-aurora.webp")` i `home.css`.
@@ -100,7 +112,8 @@ fader motivet inn i den mørke sidebakgrunnen uten å redigere bildefilen.
 Prosjektkortet gjenbruker det faktiske Ullern-forsidearbeidet fra porteføljen.
 De andre kortene har transparente, mørke flater, ikke stock eller falske
 app-screenshots. Senere kan egne landskaps-/campusbilder og et ekte Flow-screenshot
-vurderes etter visuell review. Denne fasen etablerer ikke et globalt designsystem.
+vurderes etter visuell review. De fire forsidekortene har lik border-prioritet;
+den tidligere dekorative høyreteksten i heroen er fjernet.
 
 ## Arkitektur og delt backend
 
