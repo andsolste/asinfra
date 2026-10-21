@@ -19,20 +19,25 @@ body.home-page {
     background: transparent;
 }
 
-/* Image and contrast are separate layers, so the source stays unmodified. */
-.home-shell::before,
-.home-shell::after {
+.home-scene {
     position: absolute;
     z-index: -1;
-    inset: 0;
-    bottom: auto;
+    inset: 0 0 auto;
     height: var(--home-scene-height);
     max-height: 100%;
+    overflow: hidden;
     pointer-events: none;
+}
+
+/* Clip the moving photo beneath a stationary overlay; neither affects layout. */
+.home-scene::before,
+.home-scene::after {
+    position: absolute;
+    inset: 0;
     content: "";
 }
 
-.home-shell::before {
+.home-scene::before {
     background-color: #0a1b25;
     background-image: var(--home-hero-image), linear-gradient(145deg, #071017 8%, #17383e 58%, #08131c 90%);
     background-position: var(--home-hero-position), center;
@@ -40,7 +45,7 @@ body.home-page {
     background-repeat: no-repeat;
 }
 
-.home-shell::after {
+.home-scene::after {
     background: linear-gradient(90deg, rgb(3 10 16 / 62%), rgb(3 10 16 / 24%) 48%, rgb(3 10 16 / 8%)),
         linear-gradient(0deg, #061017, rgb(6 16 23 / 28%) 24%, rgb(6 16 23 / 10%) 70%, rgb(6 16 23 / 18%));
 }
@@ -415,5 +420,12 @@ body.home-page {
     .home-card-link,
     .home-button {
         transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+    }
+}
+
+@media (min-width: 821px) and (prefers-reduced-motion: no-preference) {
+    .home-scene.is-parallax::before {
+        transform: translate3d(0, var(--home-parallax-offset, 0px), 0);
+        will-change: transform;
     }
 }

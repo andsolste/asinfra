@@ -25,7 +25,7 @@ assets/
   css/                 Felles og seksjonsspesifikke stilark
   js/                  Navigasjon, søk og seksjonsspesifikke skript
   data/                Statisk søkeindeks
-  favicon.svg          AS-monogram
+  favicon.svg          ASInfra-symbol tilpasset favicon
 about/index.html       Personlig profil
 apps/index.html        App-hub med direkte lenker til apper som kan brukes
 education/
@@ -64,7 +64,8 @@ så gamle fil-URL-er virker også. Ordinære sider bruker relative lenker; sideb
 og søk finner nettstedets rot fra plasseringen til `assets/js/site.js`, ikke hostname.
 Produksjonen bruker domeneroten; relative lenker trenger ingen domenespesifikk omskriving.
 
-404-siden har `<base href="/">` som lar assets, søk og lenker fungere også på dype
+404-siden bruker samme ASInfra-shell, mobilmeny, søk og footer som resten av siden.
+Den har `<base href="/">` som lar assets, søk og lenker fungere også på dype
 feiladresser. Canonical og Open Graph peker til tilsvarende URL-er på `https://asinfra.no/`.
 Gamle adresser til Om meg og Fag videresendes fra 404-siden til den nye strukturen,
 med søkeparametre og ankere bevart. Gamle `#tidligere-fag`-bokmerker på fagoversikten
@@ -113,6 +114,13 @@ Bildet publiseres uendret; referanseskjermbildet er ikke et produksjonsasset.
 `78% 50%`. Bildelaget har egen høyde (`--home-scene-height`), slik at fjord og
 nordlys ikke strekkes over alle kortene på mobil. Overlay ligger separat og
 fader motivet inn i den mørke sidebakgrunnen uten å redigere bildefilen.
+
+`assets/js/home.js` flytter kun fotoet i et klippet bakgrunnslag via én
+`requestAnimationFrame` per scroll-frame. Bildet beveger seg med 20 % av vanlig
+scrollhastighet; overlay og innhold følger dokumentet normalt. Scenens høyde
+måles kun ved oppstart/resize. Mobil (≤ 820 px), reduced motion og manglende
+JavaScript gir statisk bakgrunn. Ingen bildefiler, kort eller tekster endres.
+Faviconet gjenbruker ASInfra-symbolet med tykkere strek og padding på mørk flate.
 
 Prosjektkortet gjenbruker det faktiske Ullern-forsidearbeidet fra porteføljen.
 Utdanningskortet bruker `assets/images/home-education-gloshaugen.webp`, en
@@ -282,6 +290,7 @@ Fra repo-roten:
 ```sh
 python scripts/validate-site.py
 node --test scripts/test-flow-redirect.mjs
+node --test scripts/test-home-parallax.mjs
 python scripts/build-pages.py
 python -m http.server --directory publish
 ```
