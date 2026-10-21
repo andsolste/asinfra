@@ -82,6 +82,26 @@ Ved eventuell tilbakeføring må metadata og 404-base tilpasses adressen som tas
 i bruk igjen, og Pages-/DNS-oppsettet håndteres separat. Relative lenker og
 rotberegning fra script-plasseringen kan beholdes.
 
+## Forsiden – designfase 1 av #21
+
+Forsiden bruker `assets/css/home.css` og en liten søkeknapp-bro i
+`assets/js/home.js`. Felles `site.css`/`site.js`, undersider, backend og Flow er
+uendret. Desktop har toppnavigasjon; mobil bruker eksisterende sidebar/søk.
+Det finnes ingen temabryter i dagens felles kode, så ingen uvirksom kontroll er lagt til.
+
+Heroen bruker `assets/images/home-hero-aurora.webp` (2880 × 1800 px, ca. 378 kB)
+via `--home-hero-image: url("../images/home-hero-aurora.webp")` i `home.css`.
+Bildet publiseres uendret; referanseskjermbildet er ikke et produksjonsasset.
+`cover` og `--home-hero-position` styrer utsnittet: desktop `58% 64%`, mobil
+`78% 50%`. Bildelaget har egen høyde (`--home-scene-height`), slik at fjord og
+nordlys ikke strekkes over alle kortene på mobil. Overlay ligger separat og
+fader motivet inn i den mørke sidebakgrunnen uten å redigere bildefilen.
+
+Prosjektkortet gjenbruker det faktiske Ullern-forsidearbeidet fra porteføljen.
+De andre kortene har transparente, mørke flater, ikke stock eller falske
+app-screenshots. Senere kan egne landskaps-/campusbilder og et ekte Flow-screenshot
+vurderes etter visuell review. Denne fasen etablerer ikke et globalt designsystem.
+
 ## Arkitektur og delt backend
 
 - **andsolste/asinfra** eier `asinfra.no`, det statiske hovednettstedet og canonical
