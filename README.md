@@ -92,13 +92,16 @@ relative lenker og én felles visuell implementasjon, uten template-motor.
 
 `assets/js/site.js` kobler begge søkeknappene til samme eksisterende palette,
 setter aktiv hovedkategori og gjenbruker off-canvas-meny, scrim, Escape og
-fokusretur. På de fem sidene har mobilmenyen også eksplisitt Tab-fokusfelle.
-Desktop-sidebaren er skjult der; lagret collapse-valg beholdes for dype sider.
+fokusretur. På sider med denne rammen har mobilmenyen også eksplisitt Tab-fokusfelle.
+Desktop-sidebaren er skjult der; lagret collapse-valg beholdes for sider som
+fortsatt bruker den.
 Uten JavaScript er headerlenkene fortsatt synlige på mobil.
 
 Innholdskomponentene er beholdt, med kun generell farge-/breddeharmonisering.
-Dype fag-, tidligere fag- og prosjektsider bruker fortsatt `site.css` og den
-gamle sidebaren. De inngår ikke i denne designfasen. Backend og Flow er uendret.
+De fire aktive fagsidene og tidligere fag bruker også denne rammen (fase 2C1).
+Faginnhold, ankere, responsiv semesteroversikt og current-week-logikk er beholdt.
+Prosjekt-detaljsidene bruker foreløpig den gamle sidebaren; de inngår i fase 2C2.
+Backend og Flow er uendret.
 Forsidens bilde og innholdsstiler ligger fortsatt separat i `assets/css/home.css`.
 
 Heroen bruker `assets/images/home-hero-aurora.webp` (2880 × 1800 px, ca. 378 kB)
