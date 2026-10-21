@@ -272,136 +272,161 @@
     padding: 1.35rem;
 }
 
+/* Project details share the shell's interior layout; media keeps its own
+   aspect ratio and captions. These rules do not affect the portfolio overview. */
 .project-detail {
-    max-width: 1080px;
+    max-width: none;
+    overflow-wrap: anywhere;
 }
 
-.project-article {
+.project-detail .back-link {
+    margin-bottom: 1.5rem;
+    color: var(--shell-muted);
+    font-size: .85rem;
+    font-weight: 500;
+}
+
+.project-detail .back-link:hover {
+    color: var(--shell-accent);
+}
+
+.project-detail .project-article {
     width: 100%;
 }
 
-.project-detail-header {
-    max-width: 800px;
-    margin-bottom: 2.75rem;
+.project-detail .project-detail-header h1 {
+    max-width: none;
 }
 
-.project-detail-header h1 {
-    max-width: 17ch;
-    font-size: clamp(2.2rem, 5vw, 3.6rem);
-}
-
-.project-lead {
-    max-width: 65ch;
-    margin: 1rem 0 0;
+.project-detail .project-lead {
+    max-width: 68ch;
+    margin: 1.3rem 0 0;
     color: var(--text-secondary);
-    font-size: 1.08rem;
-    line-height: 1.7;
+    font-size: 1.05rem;
+    line-height: 1.75;
 }
 
-.project-facts {
+.project-detail .project-facts {
     display: grid;
-    max-width: 760px;
     margin: 1.75rem 0 0;
-    padding: 1rem 0;
+    padding: 1.1rem 0;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+    border-block: 1px solid var(--shell-border);
 }
 
-.project-facts div {
+.project-detail .project-facts div {
     min-width: 0;
 }
 
-.project-facts dt {
-    margin: 0 0 .3rem;
-    color: var(--text-muted);
-    font-size: .75rem;
-    font-weight: 800;
-    letter-spacing: .09em;
+.project-detail .project-facts dt {
+    margin: 0 0 .4rem;
+    color: var(--shell-muted);
+    font-size: .68rem;
+    font-weight: 500;
+    letter-spacing: .16em;
     text-transform: uppercase;
 }
 
-.project-facts dd {
+.project-detail .project-facts dd {
     margin: 0;
-    color: var(--blue-light);
-    font-weight: 700;
+    color: var(--text-secondary);
+    font-size: .94rem;
+    line-height: 1.5;
 }
 
-.project-content-section {
-    padding: 2.5rem 0;
-    border-top: 1px solid var(--border);
+.project-detail .project-content-section {
+    padding: clamp(2rem, 4vw, 2.5rem) 0;
+    border-top: 1px solid var(--shell-border);
 }
 
-.project-content-section > h2 {
+.project-detail .project-content-section > h2 {
     margin: 0 0 1rem;
-    font-size: clamp(1.45rem, 3vw, 1.9rem);
+    scroll-margin-top: 1.5rem;
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    font-weight: 550;
+    line-height: 1.25;
 }
 
-.project-content-copy {
+.project-detail .project-content-copy {
     max-width: 68ch;
     margin: 0 0 1.5rem;
+    line-height: 1.75;
 }
 
-.project-note {
+.project-detail .project-note {
     max-width: 72ch;
-    margin: 1.5rem 0 0;
+    margin: 1.25rem 0 0;
     padding: .9rem 1rem;
-    border-left: 2px solid var(--amber);
-    background: var(--amber-subtle);
-    color: var(--text-secondary);
+    border-left: 2px solid var(--shell-border);
+    background: var(--shell-surface);
+    color: var(--shell-muted);
+    font-size: .9rem;
+    line-height: 1.7;
 }
 
-.media-gallery,
-.document-pages {
+.project-detail .media-gallery,
+.project-detail .document-pages {
     display: grid;
     margin: 1.5rem 0 0;
     padding: 0;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
+    gap: 1.25rem;
     align-items: start;
     list-style: none;
 }
 
-.media-gallery--single {
-    max-width: 760px;
+.project-detail .media-gallery--single,
+.project-detail .media-gallery--series {
     grid-template-columns: minmax(0, 1fr);
 }
 
-.media-gallery--portrait {
+.project-detail .media-gallery--portrait {
     max-width: 720px;
 }
 
-.media-figure {
+.project-detail .media-figure {
     margin: 0;
     overflow: hidden;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--surface-subtle);
+    border: 1px solid var(--shell-border);
+    border-radius: var(--shell-radius);
+    background: var(--shell-surface);
 }
 
-.media-figure img {
+.project-detail .media-figure img {
     display: block;
     width: 100%;
     height: auto;
 }
 
-.media-figure figcaption {
-    padding: .7rem .85rem;
-    border-top: 1px solid var(--border);
-    color: var(--text-muted);
-    font-size: .82rem;
+.project-detail .media-figure figcaption {
+    padding: .8rem 1rem;
+    border-top: 1px solid var(--shell-border);
+    color: var(--shell-muted);
+    font-size: .78rem;
+    line-height: 1.6;
 }
 
-.project-originals {
+.project-detail .project-originals {
     display: flex;
     margin-top: 1.5rem;
     flex-wrap: wrap;
-    gap: .75rem;
+    align-items: center;
+    gap: .75rem 1.25rem;
 }
 
-.project-originals .project-link-secondary {
+.project-detail .project-originals .button-link {
+    max-width: 100%;
+    border-radius: var(--shell-radius);
+    font-size: .9rem;
+    font-weight: 500;
+}
+
+.project-detail .project-originals .project-link-secondary {
     padding: 0 .25rem;
+    color: var(--shell-accent);
+    font-size: .9rem;
+    font-weight: 500;
 }
 
 @media (min-width: 821px) {
@@ -452,21 +477,13 @@
         padding: 1.3rem;
     }
 
-    .project-detail-header {
-        margin-bottom: 2.25rem;
-    }
-
-    .project-facts {
+    .project-detail .project-facts {
         grid-template-columns: minmax(0, 1fr);
         gap: .85rem;
     }
 
-    .project-content-section {
-        padding: 2rem 0;
-    }
-
-    .media-gallery,
-    .document-pages {
+    .project-detail .media-gallery,
+    .project-detail .document-pages {
         grid-template-columns: minmax(0, 1fr);
     }
 }
@@ -485,7 +502,7 @@
     }
 }
 
-/* Phase 2B: editorial overview only. Project detail layouts above stay intact. */
+/* Editorial overview only; detail rules above are independently scoped. */
 .portfolio-page .portfolio-work { padding: 0; border: 0; }
 .portfolio-page .portfolio-section-header { margin-bottom: 1.75rem; }
 .portfolio-page .section-kicker { margin-bottom: .65rem; color: var(--shell-accent); font-size: .68rem; font-weight: 550; letter-spacing: .18em; }
