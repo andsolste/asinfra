@@ -1,8 +1,13 @@
 # Canonical backend: Study og Flow
 
 Config, migrations og databasetester eies av `andsolste/asinfra/supabase`.
-Frontenden eies av `andsolste/asinfra-study`; produksjonsadressen er fortsatt
-`https://study.asinfra.no/`. Det brukes samme Supabase-prosjekt og Auth-brukere.
+Frontenden eies av `andsolste/asinfra-study` og kjører på `https://flow.asinfra.no/`.
+Domeneflyttingen ble gjennomført og manuelt verifisert 20. oktober 2026 uten
+backend-, data- eller brukermigrasjon. Det brukes samme Supabase-prosjekt og Auth-
+brukere; RLS og `auth.uid()` er fortsatt eierskapsgrensen.
+Supabase Site URL er Flow. Study og localhost/preview kan fortsatt være tillatte
+Redirect URLs. `study.asinfra.no` eies kun av `andsolste/asinfra-study-redirect`;
+både den adressen og `asinfra.no/study/` videresender til Flow.
 
 ## Flow-fundamentet (#10)
 
@@ -316,7 +321,8 @@ testbrukere og flere DB-forbindelser mens en annen fane bytter/pause/fullfører;
 kontroller ingen dobbeltelling, snapshots, stale korreksjon og cutoff/DST.
 Se frontend README for UI-/feil-/mobilpunkter. Ingen hosted push/merge, DNS/Auth-
 endring eller lukking av #13 utføres her. #13 er nå deployet; eksport følger som
-separat fase nedenfor. Domene #14 er fortsatt utsatt.
+separat fase nedenfor. Domeneflyttingen i #14 ble gjennomført 20. oktober 2026
+uten schemaendring; se frontendens historiske runbook og rollback.
 
 ## Lokal eksport (#7)
 
@@ -432,4 +438,5 @@ Anbefalt rekkefølge: review begge PR-er → merge backend → kontroller projec
 og `supabase db push --dry-run` → godkjent `db push` → verifiser eksisterende
 frontend/RLS og kopierte områder → merge/deploy frontend. Disse hosted stegene
 er **ikke kjørt** i #10. Frontend-rebrand kan også fungere uten ny migration:
-den aktiverer ingen `flow_*`-API-er. Domene/Auth flyttes først i #14.
+den aktiverer ingen `flow_*`-API-er. Domene/Auth-flyttingen i #14 ble gjennomført
+20. oktober 2026 og endret ikke backend eller data.
