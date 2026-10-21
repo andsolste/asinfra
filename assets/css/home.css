@@ -5,7 +5,7 @@ body.home-page {
     --home-line: #30444b;
     --home-accent: #9ce4e0;
     --home-muted: #b1c0ca;
-    --home-hero-image: none;
+    --home-hero-image: ../images/home-hero-aurora.webp;
     /* Once supplied: url("../images/home-hero-aurora.webp"). See README. */
     --home-hero-position: 62% 38%;
     --home-gutter: clamp(1.25rem, 4.6vw, 5.5rem);
