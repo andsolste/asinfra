@@ -1,5 +1,5 @@
 {
-  "version": 18,
+  "version": 19,
   "entries": [
     {
       "id": "page-home",
@@ -58,7 +58,7 @@
       "type": "Side",
       "title": "Prosjekter",
       "context": "Portefølje",
-      "description": "Arbeid fra studier, egne tekniske prosjekter og tidligere arbeid med medier og design.",
+      "description": "Foto, grafisk design og medieproduksjon, med plass for kommende tekniske prosjekter fra bachelorstudiet.",
       "keywords": ["portefølje", "BDIGSEC", "medier", "visuell design"],
       "url": "projects/",
       "featured": true,
@@ -67,10 +67,10 @@
     {
       "id": "page-apps",
       "type": "Side",
-      "title": "Apps",
+      "title": "Apper",
       "context": "Apper og verktøy",
       "description": "Apper Andreas har bygget, klare til å åpnes og brukes. Prosjekter er den separate porteføljen.",
-      "keywords": ["apper", "applikasjoner", "verktøy", "app-hub"],
+      "keywords": ["Apps", "apper", "applikasjoner", "verktøy", "app-hub"],
       "url": "apps/",
       "featured": true,
       "priority": 25
@@ -79,7 +79,7 @@
       "id": "app-flow",
       "type": "App",
       "title": "Flow",
-      "context": "Apps · Arbeidstid og oversikt",
+      "context": "Apper · Arbeidstid og oversikt",
       "description": "Faktisk arbeidstid, oppgaver og områder, med historikk, statistikk og eksport.",
       "keywords": ["Flow", "Study", "arbeidstid", "oppgaver", "områder", "statistikk", "eksport", "timer", "pause"],
       "url": "apps/#flow",
@@ -156,10 +156,10 @@
     {
       "id": "page-subjects",
       "type": "Side",
-      "title": "Fag",
+      "title": "Utdanning",
       "context": "Studier",
-      "description": "Aktive fag høsten 2026 og tidligere emner fra første studieår.",
-      "keywords": ["aktive fag", "tidligere fag", "høst 2026", "DCST2001", "EXPH0300", "IDATT2202", "IT2810", "DCST1001", "DCST1002", "HMS0002", "TDT4109", "TMA4412", "DCST1005", "DCST1006", "IDATT2002", "TDT4100", "fagoversikter", "notater"],
+      "description": "Bachelor i Digital infrastruktur og cybersikkerhet ved NTNU, med aktive fag høsten 2026 og tidligere emner fra første studieår.",
+      "keywords": ["utdanning", "fag", "bachelor", "NTNU", "aktive fag", "tidligere fag", "høst 2026", "DCST2001", "EXPH0300", "IDATT2202", "IT2810", "DCST1001", "DCST1002", "HMS0002", "TDT4109", "TMA4412", "DCST1005", "DCST1006", "IDATT2002", "TDT4100", "fagoversikter", "notater"],
       "url": "education/",
       "featured": true,
       "priority": 20

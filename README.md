@@ -115,6 +115,15 @@ app-screenshots. Senere kan egne landskaps-/campusbilder og et ekte Flow-screens
 vurderes etter visuell review. De fire forsidekortene har lik border-prioritet;
 den tidligere dekorative høyreteksten i heroen er fjernet.
 
+## Innholdsdesign – fase 2B av #21
+
+De fire toppnivåsidene bruker nå `.interior-page` for felles intro, typografisk
+hierarki og avsluttende lenker. Side-spesifikk CSS organiserer profil, fagoversikt,
+portefølje og appoversikt. Education- og Projects-reglene er avgrenset til
+`.education-overview` og `.portfolio-page`, slik at dype sider ikke redesignes.
+Prosjektene bruker bare eksisterende previews; Flow presenteres uten falsk app-UI.
+Header, mobilmeny, søk, footer og forsiden fra fase 2A er beholdt.
+
 ## Arkitektur og delt backend
 
 - **andsolste/asinfra** eier `asinfra.no`, det statiske hovednettstedet og canonical

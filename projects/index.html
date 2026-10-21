@@ -65,34 +65,14 @@
             </div>
         </header>
 
-        <main class="site-main content-page" id="main-content" tabindex="-1">
-            <a class="back-link" href="../"><span aria-hidden="true">←</span> Til forsiden</a>
-
-            <header class="page-intro">
-                <h1>Prosjekter</h1>
-                <p>Arbeid fra studier, egne tekniske prosjekter og tidligere arbeid med medier og design.</p>
+        <main class="site-main content-page interior-page portfolio-page" id="main-content" tabindex="-1">
+            <header class="page-intro interior-intro">
+                <p class="interior-kicker">Prosjekter</p>
+                <h1>Teknologi, design og medieproduksjon</h1>
+                <p>Arbeid fra medier og kommunikasjon, med plass for tekniske prosjekter fra bachelorstudiet i Digital infrastruktur og cybersikkerhet.</p>
             </header>
 
-            <section class="portfolio-section portfolio-primary" aria-labelledby="bdigsec-heading">
-                <header class="portfolio-section-header">
-                    <p class="section-kicker">BDIGSEC · NTNU</p>
-                    <h2 id="bdigsec-heading">Digital infrastruktur &amp; cybersikkerhet</h2>
-                    <p class="section-description">Prosjekter fra bachelorstudiet i Digital infrastruktur og cybersikkerhet (BDIGSEC), med plass for arbeid innen nettverk, cybersikkerhet, Linux, servere og infrastruktur, sky, programmering og databaser.</p>
-                </header>
-
-                <div class="project-empty">
-                    <h3>Tekniske prosjekter kommer her</h3>
-                    <p>Ingen BDIGSEC-prosjekter er publisert ennå. Seksjonen er klar for prosjektbeskrivelser, teknologier, perioder og egne prosjektsider.</p>
-                </div>
-
-                <!--
-                    Når et prosjekt er klart, erstattes tomtilstanden med en .project-grid.
-                    Hvert .project-card kan bruke prosjekt-preview, project-meta,
-                    project-tools og project-actions. Elementer uten innhold utelates.
-                -->
-            </section>
-
-            <section class="portfolio-section portfolio-secondary" id="media-design" aria-labelledby="media-design-heading">
+            <section class="portfolio-section portfolio-work" id="media-design" aria-labelledby="media-design-heading">
                 <header class="portfolio-section-header">
                     <p class="section-kicker">Tidligere arbeid</p>
                     <h2 id="media-design-heading">Medier &amp; visuell design</h2>
@@ -101,15 +81,16 @@
 
                 <div class="project-grid project-grid--media">
                     <article class="project-card project-card--media project-card-featured">
-                        <a class="project-preview project-preview--contain" href="media-design/vogue-hemsworth-magasin/" aria-label="Åpne Vogue Hommes – magasinlayout">
+                        <a class="project-preview project-preview--contain project-preview--spread" href="media-design/vogue-hemsworth-magasin/" aria-label="Åpne Vogue Hommes – magasinlayout">
                             <img src="media-design/vogue-hemsworth-magasin/assets/previews/side-01.jpg" alt="Forsiden til et Vogue Hommes-magasin med Christopher Hemsworth" width="1200" height="1800">
+                            <img src="media-design/vogue-hemsworth-magasin/assets/previews/side-03.jpg" alt="Parfyme- og editorialoppslag fra samme konseptmagasin" width="1200" height="1800" loading="lazy">
                         </a>
                         <div class="project-body">
                             <p class="project-meta"><span>Redaksjonell design</span><span>2023</span></p>
                             <h3><a href="media-design/vogue-hemsworth-magasin/">Vogue Hommes – magasinlayout</a></h3>
                             <p>Et sju siders magasinutkast med forside, innholdsfortegnelse og redaksjonelle oppslag.</p>
                             <div class="project-actions">
-                                <a class="card-action" href="media-design/vogue-hemsworth-magasin/">Se prosjekt <span aria-hidden="true">→</span></a>
+                                <a class="content-link" href="media-design/vogue-hemsworth-magasin/">Se prosjekt <span aria-hidden="true">→</span></a>
                             </div>
                         </div>
                     </article>
@@ -123,12 +104,12 @@
                             <h3><a href="media-design/din-stemme-ditt-valg/">Din stemme, ditt valg</a></h3>
                             <p>Plakat om forhåndsstemming og valgdeltakelse blant unge voksne.</p>
                             <div class="project-actions">
-                                <a class="card-action" href="media-design/din-stemme-ditt-valg/">Se prosjekt <span aria-hidden="true">→</span></a>
+                                <a class="content-link" href="media-design/din-stemme-ditt-valg/">Se prosjekt <span aria-hidden="true">→</span></a>
                             </div>
                         </div>
                     </article>
 
-                    <article class="project-card project-card--media">
+                    <article class="project-card project-card--media project-card-cover">
                         <a class="project-preview project-preview--contain" href="media-design/ullern-vgs-forside/" aria-label="Åpne Ullern VGS 2022/2023 – forside">
                             <img src="media-design/ullern-vgs-forside/assets/previews/preview.jpg" alt="Mørk blå forside for Ullern VGS 2022/2023 med turkise bølgelinjer" width="900" height="1200" loading="lazy">
                         </a>
@@ -137,40 +118,57 @@
                             <h3><a href="media-design/ullern-vgs-forside/">Ullern VGS 2022/2023 – forside</a></h3>
                             <p>Forsidedesign bygget rundt bølgende linjegrafikk og en begrenset mørk blå og turkis fargepalett.</p>
                             <div class="project-actions">
-                                <a class="card-action" href="media-design/ullern-vgs-forside/">Se prosjekt <span aria-hidden="true">→</span></a>
+                                <a class="content-link" href="media-design/ullern-vgs-forside/">Se prosjekt <span aria-hidden="true">→</span></a>
                             </div>
                         </div>
                     </article>
 
-                    <article class="project-card project-card--media">
+                    <article class="project-card project-card--media project-card-landscape">
                         <a class="project-preview" href="media-design/tegne-med-lys/" aria-label="Åpne Idrett tegnet med lys">
                             <img src="media-design/tegne-med-lys/assets/previews/bevegelse.jpg" alt="Person i løpepositur omgitt av lysspor mot svart bakgrunn" width="1800" height="1200" loading="lazy">
                         </a>
                         <div class="project-body">
-                            <p class="project-meta"><span>Fotografi</span><span>Lysmaling</span></p>
+                            <p class="project-meta"><span>Fotografi · Lysmaling</span><span>2021</span></p>
                             <h3><a href="media-design/tegne-med-lys/">Idrett tegnet med lys</a></h3>
                             <p>Fotografisk serie som kombinerer sportsbevegelse med tegnede lysspor og lang eksponering.</p>
                             <div class="project-actions">
-                                <a class="card-action" href="media-design/tegne-med-lys/">Se prosjekt <span aria-hidden="true">→</span></a>
+                                <a class="content-link" href="media-design/tegne-med-lys/">Se prosjekt <span aria-hidden="true">→</span></a>
                             </div>
                         </div>
                     </article>
 
-                    <article class="project-card project-card--media">
+                    <article class="project-card project-card--media project-card-wide">
                         <a class="project-preview" href="media-design/oye-makrofoto/" aria-label="Åpne Blå iris">
                             <img src="media-design/oye-makrofoto/assets/previews/preview.jpg" alt="Nærbilde av et blått øye" width="1800" height="1273" loading="lazy">
                         </a>
                         <div class="project-body">
-                            <p class="project-meta"><span>Fotografi</span><span>Nærbilde</span></p>
+                            <p class="project-meta"><span>Fotografi · Nærbilde</span><span>2023</span></p>
                             <h3><a href="media-design/oye-makrofoto/">Blå iris</a></h3>
                             <p>Nærbilde med vekt på irisens struktur, kontrast og refleksjoner.</p>
                             <div class="project-actions">
-                                <a class="card-action" href="media-design/oye-makrofoto/">Se prosjekt <span aria-hidden="true">→</span></a>
+                                <a class="content-link" href="media-design/oye-makrofoto/">Se prosjekt <span aria-hidden="true">→</span></a>
                             </div>
                         </div>
                     </article>
                 </div>
             </section>
+
+            <section class="portfolio-section portfolio-technical" aria-labelledby="bdigsec-heading">
+                <header class="portfolio-section-header">
+                    <p class="interior-kicker">BDIGSEC · NTNU</p>
+                    <h2 class="interior-section-title" id="bdigsec-heading">Digital infrastruktur &amp; cybersikkerhet</h2>
+                    <p class="section-description">Her kommer tekniske prosjekter fra bachelorstudiet, innen blant annet nettverk, sikkerhet, infrastruktur og programmering. Ingen BDIGSEC-prosjekter er publisert ennå.</p>
+                </header>
+                <!-- Legg til en .project-grid når faktiske tekniske prosjekter er klare. -->
+            </section>
+
+            <nav class="interior-next" aria-label="Utforsk mer">
+                <div>
+                    <a class="content-link" href="../apps/">Bruk appene <span aria-hidden="true">→</span></a>
+                    <a class="content-link" href="../education/">Se utdanning <span aria-hidden="true">→</span></a>
+                </div>
+                <a class="content-link" href="../"><span aria-hidden="true">←</span> Til forsiden</a>
+            </nav>
         </main>
 
         <footer class="shell-footer shell-width">© 2026 Andreas Sollie Steffensen</footer>

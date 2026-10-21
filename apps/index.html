@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apps | Andreas Sollie Steffensen</title>
+    <title>Apper | Andreas Sollie Steffensen</title>
     <link rel="stylesheet" href="../assets/css/site.css">
     <link rel="stylesheet" href="../assets/css/shell.css">
     <link rel="stylesheet" href="../assets/css/apps.css">
     <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
     <link rel="canonical" href="https://asinfra.no/apps/">
     <meta name="description" content="Apper og verktøy Andreas har bygget, klare til å åpnes og brukes. Flow gir oversikt over faktisk arbeidstid, oppgaver, områder og statistikk.">
-    <meta property="og:title" content="Apps | Andreas Sollie Steffensen">
+    <meta property="og:title" content="Apper | Andreas Sollie Steffensen">
     <meta property="og:description" content="Apper og verktøy Andreas har bygget, klare til å åpnes og brukes. Flow gir oversikt over faktisk arbeidstid, oppgaver, områder og statistikk.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://asinfra.no/apps/">
@@ -65,24 +65,37 @@
             </div>
         </header>
 
-        <main class="site-main content-page" id="main-content" tabindex="-1">
-            <a class="back-link" href="../"><span aria-hidden="true">←</span> Til forsiden</a>
-
-            <header class="page-intro">
-                <h1>Apps</h1>
-                <p>Apper og verktøy jeg har bygget, klare til å åpnes og brukes. Prosjektbeskrivelser og bakgrunn finner du under <a href="../projects/">Prosjekter</a>.</p>
+        <main class="site-main content-page interior-page apps-page" id="main-content" tabindex="-1">
+            <header class="page-intro interior-intro">
+                <p class="interior-kicker">Apper</p>
+                <h1>Praktiske verktøy</h1>
+                <p>Apper og verktøy jeg har bygget, klare til å åpnes og brukes.</p>
             </header>
 
             <section class="apps-grid" aria-label="Applikasjoner">
-                <!-- Legg til et nytt article med navn, kort beskrivelse og direkte applenke når en ny app er klar. -->
-                <article class="page-card app-card" id="flow" aria-labelledby="flow-title">
-                    <!-- Behold gamle apps/#study-bokmerker uten å endre adresse eller kjøre redirect. -->
-                    <span id="study" aria-hidden="true"></span>
-                    <h2 id="flow-title">Flow</h2>
-                    <p>Få oversikt over faktisk arbeidstid, oppgaver og områder. Se hvor tiden går med historikk og statistikk.</p>
-                    <a class="card-action" href="https://flow.asinfra.no/" target="_blank" rel="noopener noreferrer" aria-label="Åpne Flow (ny fane)">Åpne Flow <span aria-hidden="true">↗</span></a>
+                <!-- Legg til et nytt article med navn, beskrivelse og direkte applenke når en ny app er klar. -->
+                <article class="app-card" id="flow" aria-labelledby="flow-title">
+                    <!-- Behold gamle apps/#study-bokmerker. -->
+                    <span class="app-legacy-anchor" id="study" aria-hidden="true"></span>
+                    <header class="app-identity">
+                        <p class="interior-kicker">Arbeidstid &amp; oversikt</p>
+                        <h2 id="flow-title">Flow</h2>
+                    </header>
+                    <div class="app-description">
+                        <p>Få oversikt over faktisk arbeidstid, oppgaver og områder. Se hvor tiden går med historikk og statistikk.</p>
+                        <div class="app-actions">
+                            <a class="card-action" href="https://flow.asinfra.no/" target="_blank" rel="noopener noreferrer" aria-label="Åpne Flow (ny fane)">Åpne Flow <span aria-hidden="true">↗</span></a>
+                            <span class="app-domain">flow.asinfra.no</span>
+                        </div>
+                    </div>
                 </article>
             </section>
+
+            <p class="apps-context">Her åpner du selve verktøyene. Prosjektbeskrivelser og bakgrunn finner du under <a href="../projects/">Prosjekter</a>.</p>
+            <nav class="interior-next" aria-label="Utforsk mer">
+                <a class="content-link" href="../projects/">Se prosjekter <span aria-hidden="true">→</span></a>
+                <a class="content-link" href="../"><span aria-hidden="true">←</span> Til forsiden</a>
+            </nav>
         </main>
 
         <footer class="shell-footer shell-width">© 2026 Andreas Sollie Steffensen</footer>
