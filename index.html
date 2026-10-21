@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Andreas Sollie Steffensen</title>
     <link rel="stylesheet" href="assets/css/site.css">
+    <link rel="stylesheet" href="assets/css/home.css">
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="canonical" href="https://asinfra.no/">
     <meta name="description" content="Andreas Sollie Steffensens personlige nettside: studier i digital infrastruktur og cybersikkerhet ved NTNU, fagoversikter og prosjekter.">
@@ -13,14 +14,14 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://asinfra.no/">
 </head>
-<body>
+<body class="home-page">
     <a class="skip-link" href="#main-content">Hopp til hovedinnhold</a>
 
     <aside class="sidebar" id="site-sidebar" aria-label="Sidepanel">
         <div class="sidebar-header">
-            <a class="sidebar-brand" href="./" aria-label="Andreas Sollie Steffensen – Forside">
+            <a class="sidebar-brand" href="./" aria-label="ASInfra – Forside">
                 <span class="brand-mark" aria-hidden="true">AS</span>
-                <span class="brand-name">Andreas</span>
+                <span class="brand-name">ASInfra</span>
             </a>
 
             <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-controls="site-sidebar" aria-expanded="true" aria-label="Fold sammen meny" title="Fold sammen meny">
@@ -38,21 +39,21 @@
                     </a>
                 </li>
                 <li>
+                    <a href="education/" data-nav-section="fag" aria-label="Utdanning" title="Utdanning">
+                        <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5c3-.8 5.6-.2 8 1.8v11c-2.4-2-5-2.6-8-1.8zM20 5.5c-3-.8-5.6-.2-8 1.8v11c2.4-2 5-2.6 8-1.8z"></path></svg></span>
+                        <span class="nav-label">Utdanning</span>
+                    </a>
+                </li>
+                <li>
                     <a href="projects/" data-nav-section="projects" aria-label="Prosjekter" title="Prosjekter">
                         <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8.5 8-4 4 4 4M15.5 8l4 4-4 4M13.5 5l-3 14"></path></svg></span>
                         <span class="nav-label">Prosjekter</span>
                     </a>
                 </li>
                 <li>
-                    <a href="education/" data-nav-section="fag" aria-label="Fag" title="Fag">
-                        <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5c3-.8 5.6-.2 8 1.8v11c-2.4-2-5-2.6-8-1.8zM20 5.5c-3-.8-5.6-.2-8 1.8v11c2.4-2 5-2.6 8-1.8z"></path></svg></span>
-                        <span class="nav-label">Fag</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="apps/" data-nav-section="apps" aria-label="Apps" title="Apps">
+                    <a href="apps/" data-nav-section="apps" aria-label="Apper" title="Apper">
                         <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg></span>
-                        <span class="nav-label">Apps</span>
+                        <span class="nav-label">Apper</span>
                     </a>
                 </li>
             </ul>
@@ -63,49 +64,88 @@
 
     <button class="sidebar-scrim" id="sidebar-scrim" type="button" aria-label="Lukk meny" hidden></button>
 
-    <div class="page-shell" id="page-shell">
-        <div class="mobile-bar">
-            <button class="mobile-menu-button" id="mobile-menu-button" type="button" aria-controls="site-sidebar" aria-expanded="false">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
-                <span>Meny</span>
-            </button>
-            <span class="mobile-brand">AS</span>
-        </div>
+    <div class="page-shell home-shell" id="page-shell">
+        <header class="home-header home-width">
+            <a class="home-brand" href="./" aria-label="ASInfra – Forside">
+                <svg viewBox="0 0 40 40" aria-hidden="true"><path d="m5 34 8-15m-2 15 9-17 9 17m-11-7 4 7m5-19 10 19M16 12l4-7 4 7M3 34h1"></path></svg>
+                <span>ASInfra</span>
+            </a>
 
-        <main class="site-main" id="main-content">
-            <header class="intro">
-                <span class="intro-rule" aria-hidden="true"></span>
-                <h1>Andreas Sollie Steffensen</h1>
-                <p class="study-line">Digital Infrastruktur og Cybersikkerhet • NTNU</p>
-            </header>
+            <nav class="home-nav" aria-label="Hovedområder">
+                <a href="about/">Om meg</a>
+                <a href="education/">Utdanning</a>
+                <a href="projects/">Prosjekter</a>
+                <a href="apps/">Apper</a>
+            </nav>
 
-            <section class="section-links" aria-label="Innhold på nettsiden">
-                <article class="page-card card-about">
-                    <p class="card-number" aria-hidden="true">01</p>
-                    <h2>Om meg</h2>
-                    <p>Kort informasjon om erfaring, interesser og utdanning.</p>
-                    <a class="card-action" href="about/">Om meg <span aria-hidden="true">→</span></a>
-                </article>
-                <article class="page-card card-projects">
-                    <p class="card-number" aria-hidden="true">02</p>
-                    <h2>Prosjekter</h2>
-                    <p>Samling av fagprosjekter, labber og tekniske writeups.</p>
-                    <a class="card-action" href="projects/">Se prosjekter <span aria-hidden="true">→</span></a>
-                </article>
-                <article class="page-card card-subjects">
-                    <p class="card-number" aria-hidden="true">03</p>
-                    <div>
-                        <h2>Fag</h2>
-                        <p>Notater, pensum og ressurser samlet for hvert fag.</p>
+            <div class="home-header-actions">
+                <button class="home-search" id="home-search-button" type="button" aria-label="Søk på nettsiden" aria-haspopup="dialog" aria-controls="site-search-overlay" hidden>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.75" cy="10.75" r="6.25"></circle><path d="m15.5 15.5 4.25 4.25"></path></svg>
+                </button>
+                <a class="home-flow-link" href="https://flow.asinfra.no/">Gå til Flow <span aria-hidden="true">→</span></a>
+                <button class="mobile-menu-button home-menu-button" id="mobile-menu-button" type="button" aria-controls="site-sidebar" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+                    <span>Meny</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="home-main home-width" id="main-content" tabindex="-1">
+            <section class="home-hero" aria-labelledby="home-title">
+                <div class="home-hero-copy">
+                    <p class="home-eyebrow">Infrastruktur <span aria-hidden="true">/</span> Sikkerhet <span aria-hidden="true">/</span> Verktøy</p>
+                    <h1 id="home-title">Andreas Sollie Steffensen</h1>
+                    <p class="home-study">Student i Digital infrastruktur og cybersikkerhet · NTNU</p>
+                    <p class="home-description">Prosjekter innen infrastruktur, sikkerhet og praktiske verktøy.</p>
+                    <div class="home-actions">
+                        <a class="home-button home-button-primary" href="projects/">Se arbeid <span aria-hidden="true">→</span></a>
+                        <a class="home-button home-button-secondary" href="https://flow.asinfra.no/">Gå til Flow <span aria-hidden="true">↗</span></a>
                     </div>
-                    <a class="card-action" href="education/">Se fag <span aria-hidden="true">→</span></a>
+                </div>
+                <p class="home-aside" aria-hidden="true">Systemer<br>Mennesker<br>Bedre løsninger</p>
+            </section>
+
+            <section class="home-cards" aria-label="Utforsk ASInfra">
+                <article class="home-card home-card-about" aria-labelledby="home-about-title">
+                    <p class="home-card-label"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="3.25"></circle><path d="M4 21v-2c0-4 3-6 8-6s8 2 8 6v2Z"></path></svg>Om meg</p>
+                    <h2 id="home-about-title">Teknologi med<br>et større perspektiv</h2>
+                    <p class="home-card-description">Jeg studerer ved NTNU med interesse for infrastruktur og cybersikkerhet. Bakgrunnen min omfatter også ledererfaring og visuell design.</p>
+                    <a class="home-card-link" href="about/">Bli bedre kjent <span aria-hidden="true">→</span></a>
                 </article>
+
+                <article class="home-card home-card-projects" aria-labelledby="home-projects-title">
+                    <p class="home-card-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 10 5v10l-10 5-10-5V7Zm0 10 10-5M12 12 2 7m10 5v10M7 4.5l10 5"></path></svg>Prosjekter</p>
+                    <h2 id="home-projects-title">Infrastruktur,<br>sikkerhet og mer</h2>
+                    <p class="home-card-description">Foto, grafisk design og medieproduksjon, med plass til tekniske prosjekter fra studiene.</p>
+                    <a class="home-card-link" href="projects/">Se alle prosjekter <span aria-hidden="true">→</span></a>
+                </article>
+
+                <article class="home-card home-card-education" aria-labelledby="home-education-title">
+                    <p class="home-card-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m1 8 11-5 11 5-11 5Zm4 2v7c4 3 10 3 14 0v-7m4-2v9"></path></svg>Utdanning</p>
+                    <h2 id="home-education-title">Digital infrastruktur<br>og cybersikkerhet</h2>
+                    <p class="home-card-description">Bachelor ved NTNU med fag innen nettverk, sikkerhet, operativsystemer og webutvikling.</p>
+                    <a class="home-card-link" href="education/">Les mer om utdanning <span aria-hidden="true">→</span></a>
+                </article>
+
+                <article class="home-card home-card-apps" aria-labelledby="home-apps-title">
+                    <p class="home-card-label"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="7" height="7" rx="1"></rect><rect x="15" y="2" width="7" height="7" rx="1"></rect><rect x="2" y="15" width="7" height="7" rx="1"></rect><rect x="15" y="15" width="7" height="7" rx="1"></rect></svg>Apper</p>
+                    <h2 id="home-apps-title">Praktiske verktøy<br>for hverdagen</h2>
+                    <p class="home-card-description">Små verktøy som kan brukes. Flow gir oversikt over faktisk arbeidstid, oppgaver og områder.</p>
+                    <a class="home-card-link" href="apps/">Se apper <span aria-hidden="true">→</span></a>
+                    <span class="home-flow-wordmark" aria-hidden="true">Flow</span>
+                </article>
+            </section>
+
+            <section class="home-statement" aria-label="Et perspektiv på teknologi">
+                <p>«Bedre systemer skaper frihet – for mennesker, ideer og muligheter.»</p>
+                <div class="home-signature"><span>ASInfra</span><span>Andreas Sollie Steffensen</span></div>
             </section>
         </main>
 
-        <footer class="site-footer">© 2026 Andreas Sollie Steffensen</footer>
+        <footer class="home-footer home-width">© 2026 Andreas Sollie Steffensen</footer>
     </div>
 
     <script src="assets/js/site.js"></script>
+    <script src="assets/js/home.js"></script>
 </body>
 </html>

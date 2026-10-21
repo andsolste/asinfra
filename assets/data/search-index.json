@@ -1,13 +1,13 @@
 {
-  "version": 17,
+  "version": 18,
   "entries": [
     {
       "id": "page-home",
       "type": "Side",
       "title": "Forside",
       "context": "Andreas Sollie Steffensen",
-      "description": "Personlig nettside med navigasjon til Om meg, Prosjekter, Fag og Apps.",
-      "keywords": ["Digital Infrastruktur og Cybersikkerhet", "NTNU", "fagprosjekter", "labber", "tekniske writeups", "notater", "pensum", "studieressurser"],
+      "description": "ASInfra: Andreas Sollie Steffensen, NTNU-studier og innganger til Om meg, Utdanning, Prosjekter, Apper og Flow.",
+      "keywords": ["ASInfra", "Digital infrastruktur og cybersikkerhet", "NTNU", "infrastruktur", "sikkerhet", "utdanning", "prosjekter", "apper", "Flow"],
       "url": "./",
       "featured": true,
       "priority": 40
