@@ -10,80 +10,74 @@
     <base href="/">
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="stylesheet" href="assets/css/site.css">
+    <link rel="stylesheet" href="assets/css/shell.css">
 </head>
-<body>
+<body class="asinfra-page">
     <a class="skip-link" href="#main-content">Hopp til hovedinnhold</a>
 
-    <aside class="sidebar" id="site-sidebar" aria-label="Sidepanel">
+    <aside class="sidebar" id="site-sidebar" aria-label="Meny">
         <div class="sidebar-header">
-            <a class="sidebar-brand" href="./" aria-label="Andreas Sollie Steffensen – Forside">
-                <span class="brand-mark" aria-hidden="true">AS</span>
-                <span class="brand-name">Andreas</span>
+            <a class="sidebar-brand shell-brand" href="./" aria-label="ASInfra – Forside">
+                <img src="assets/images/asinfra-mark.svg" width="30" height="34" alt="" aria-hidden="true">
+                <span>ASInfra</span>
             </a>
-
-            <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-controls="site-sidebar" aria-expanded="true" aria-label="Fold sammen meny" title="Fold sammen meny">
-                <svg class="collapse-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"></path></svg>
+            <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-controls="site-sidebar" aria-expanded="false" aria-label="Lukk meny" title="Lukk meny">
                 <svg class="close-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
             </button>
         </div>
-
         <nav class="sidebar-nav" id="primary-navigation" aria-label="Hovednavigasjon">
             <ul>
-                <li>
-                    <a href="about/" data-nav-section="about" aria-label="Om meg" title="Om meg">
-                        <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.25"></circle><path d="M5.5 20c.7-4 3-6 6.5-6s5.8 2 6.5 6"></path></svg></span>
-                        <span class="nav-label">Om meg</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="projects/" data-nav-section="projects" aria-label="Prosjekter" title="Prosjekter">
-                        <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8.5 8-4 4 4 4M15.5 8l4 4-4 4M13.5 5l-3 14"></path></svg></span>
-                        <span class="nav-label">Prosjekter</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="education/" data-nav-section="fag" aria-label="Utdanning" title="Utdanning">
-                        <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5c3-.8 5.6-.2 8 1.8v11c-2.4-2-5-2.6-8-1.8zM20 5.5c-3-.8-5.6-.2-8 1.8v11c2.4-2 5-2.6 8-1.8z"></path></svg></span>
-                        <span class="nav-label">Utdanning</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="apps/" data-nav-section="apps" aria-label="Apper" title="Apper">
-                        <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg></span>
-                        <span class="nav-label">Apper</span>
-                    </a>
-                </li>
+                <li><a href="about/" data-nav-section="about">Om meg</a></li>
+                <li><a href="education/" data-nav-section="fag">Utdanning</a></li>
+                <li><a href="projects/" data-nav-section="projects">Prosjekter</a></li>
+                <li><a href="apps/" data-nav-section="apps">Apper</a></li>
             </ul>
         </nav>
-
-        <div class="sidebar-footer">NTNU · 2026</div>
+        <a class="shell-drawer-flow" href="https://flow.asinfra.no/">Gå til Flow <span aria-hidden="true">→</span></a>
     </aside>
 
     <button class="sidebar-scrim" id="sidebar-scrim" type="button" aria-label="Lukk meny" hidden></button>
 
     <div class="page-shell" id="page-shell">
-        <div class="mobile-bar">
-            <button class="mobile-menu-button" id="mobile-menu-button" type="button" aria-controls="site-sidebar" aria-expanded="false">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
-                <span>Meny</span>
-            </button>
-            <span class="mobile-brand">AS</span>
-        </div>
+        <header class="shell-header shell-width">
+            <a class="shell-brand" href="./" aria-label="ASInfra – Forside">
+                <img src="assets/images/asinfra-mark.svg" width="30" height="34" alt="" aria-hidden="true">
+                <span>ASInfra</span>
+            </a>
+            <nav class="shell-nav" aria-label="Hovedområder">
+                <a href="about/" data-nav-section="about">Om meg</a>
+                <a href="education/" data-nav-section="fag">Utdanning</a>
+                <a href="projects/" data-nav-section="projects">Prosjekter</a>
+                <a href="apps/" data-nav-section="apps">Apper</a>
+            </nav>
+            <div class="shell-header-actions">
+                <button class="shell-search" id="header-search-button" type="button" aria-label="Søk på nettsiden" aria-haspopup="dialog" aria-controls="site-search-overlay" aria-expanded="false" hidden>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.75" cy="10.75" r="6.25"></circle><path d="m15.5 15.5 4.25 4.25"></path></svg>
+                </button>
+                <a class="shell-flow-link" href="https://flow.asinfra.no/">Gå til Flow <span aria-hidden="true">→</span></a>
+                <button class="mobile-menu-button shell-menu-button" id="mobile-menu-button" type="button" aria-controls="site-sidebar" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+                    <span>Meny</span>
+                </button>
+            </div>
+        </header>
 
-        <main class="site-main" id="main-content">
-            <header class="page-intro">
-                <p class="study-line">404</p>
+        <main class="site-main content-page interior-page" id="main-content" tabindex="-1">
+            <header class="page-intro interior-intro">
+                <p class="interior-kicker">404</p>
                 <h1>404 – ingen route til denne siden</h1>
                 <p>Pakken kom frem til domenet, men denne destinasjonen finnes ikke i rutetabellen. Bruk søket eller gå tilbake til forsiden.</p>
             </header>
-            <nav class="error-links" aria-label="Veier videre">
-                <a class="card-action" href="./">Forsiden →</a>
-                <a class="card-action" href="projects/">Prosjekter →</a>
-                <a class="card-action" href="education/">Utdanning →</a>
+            <nav class="interior-next" aria-label="Veier videre">
+                <div>
+                    <a class="content-link" href="./">Forsiden <span aria-hidden="true">→</span></a>
+                    <a class="content-link" href="projects/">Prosjekter <span aria-hidden="true">→</span></a>
+                    <a class="content-link" href="education/">Utdanning <span aria-hidden="true">→</span></a>
+                </div>
             </nav>
         </main>
 
-        <footer class="site-footer">© 2026 Andreas Sollie Steffensen</footer>
+        <footer class="shell-footer shell-width">© 2026 Andreas Sollie Steffensen</footer>
     </div>
 
     <script src="assets/js/legacy-paths.js"></script>

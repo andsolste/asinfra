@@ -1,6 +1,6 @@
 /* Shared opt-in ASInfra shell for overview, education and project pages.
  * Content components stay in their existing stylesheets; these aliases
- * harmonize shared colors. The 404 page retains its site.css navigation. */
+ * harmonize shared colors, including on the 404 page. */
 .asinfra-page {
     --shell-background: #061017;
     --shell-surface: #0b1820;

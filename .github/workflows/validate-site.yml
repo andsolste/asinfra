@@ -22,8 +22,8 @@ jobs:
           node-version: '24'
           cache: npm
           cache-dependency-path: supabase/package-lock.json
-      - name: Test legacy Flow redirect locally
-        run: node --test scripts/test-flow-redirect.mjs
+      - name: Test static frontend behavior locally
+        run: node --test scripts/test-flow-redirect.mjs scripts/test-home-parallax.mjs
       - name: Install backend test dependencies
         working-directory: supabase
         run: npm ci
