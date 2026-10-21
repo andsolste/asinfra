@@ -89,19 +89,16 @@ Forsiden bruker `assets/css/home.css` og en liten søkeknapp-bro i
 uendret. Desktop har toppnavigasjon; mobil bruker eksisterende sidebar/søk.
 Det finnes ingen temabryter i dagens felles kode, så ingen uvirksom kontroll er lagt til.
 
-Et rent hero-bilde er **ikke levert ennå**. Referanseskjermbildet brukes ikke som
-asset; mørk CSS-fallback vises uten forespørsel til en manglende bildefil.
-Legg et tekstfritt nordlys-/fjord-/fjellmotiv i
-`assets/images/home-hero-aurora.webp` (anbefalt 2880 × 1800 px, minst 2560 × 1440 px,
-helst under 500 kB). Hold venstre side rolig/mørk, med fjord, fjell og varme lys
-mot midten/høyre. Motivet må tåle `cover`-beskjæring på mobil.
-Bytt deretter `--home-hero-image: none` i `home.css` til
-`--home-hero-image: url("../images/home-hero-aurora.webp")`.
-`--home-hero-position` styrer focal point separat på desktop og mobil; overlay
-ligger på eget lag og kan justeres uten å redigere bildet.
+Heroen bruker `assets/images/home-hero-aurora.webp` (2880 × 1800 px, ca. 378 kB)
+via `--home-hero-image: url("../images/home-hero-aurora.webp")` i `home.css`.
+Bildet publiseres uendret; referanseskjermbildet er ikke et produksjonsasset.
+`cover` og `--home-hero-position` styrer utsnittet: desktop `58% 64%`, mobil
+`78% 50%`. Bildelaget har egen høyde (`--home-scene-height`), slik at fjord og
+nordlys ikke strekkes over alle kortene på mobil. Overlay ligger separat og
+fader motivet inn i den mørke sidebakgrunnen uten å redigere bildefilen.
 
 Prosjektkortet gjenbruker det faktiske Ullern-forsidearbeidet fra porteføljen.
-De andre kortene har bevisste, mørke fallbackflater, ikke stock eller falske
+De andre kortene har transparente, mørke flater, ikke stock eller falske
 app-screenshots. Senere kan egne landskaps-/campusbilder og et ekte Flow-screenshot
 vurderes etter visuell review. Denne fasen etablerer ikke et globalt designsystem.
 

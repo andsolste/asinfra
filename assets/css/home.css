@@ -6,8 +6,8 @@ body.home-page {
     --home-accent: #9ce4e0;
     --home-muted: #b1c0ca;
     --home-hero-image: url("../images/home-hero-aurora.webp");
-    /* Once supplied: url("../images/home-hero-aurora.webp"). See README. */
-    --home-hero-position: 62% 38%;
+    --home-hero-position: 58% 64%;
+    --home-scene-height: clamp(600px, 50vw, 840px);
     --home-gutter: clamp(1.25rem, 4.6vw, 5.5rem);
     background: var(--home-background);
     color: #f1f5f7;
@@ -27,6 +27,9 @@ body.home-page {
     position: absolute;
     z-index: -1;
     inset: 0;
+    bottom: auto;
+    height: var(--home-scene-height);
+    max-height: 100%;
     pointer-events: none;
     content: "";
 }
@@ -40,8 +43,8 @@ body.home-page {
 }
 
 .home-shell::after {
-    background: linear-gradient(90deg, rgb(3 10 16 / 75%), rgb(3 10 16 / 12%) 80%),
-        linear-gradient(0deg, #061017 0%, rgb(6 16 23 / 78%) 30%, rgb(6 16 23 / 6%) 90%);
+    background: linear-gradient(90deg, rgb(3 10 16 / 62%), rgb(3 10 16 / 24%) 48%, rgb(3 10 16 / 8%)),
+        linear-gradient(0deg, #061017, rgb(6 16 23 / 28%) 24%, rgb(6 16 23 / 10%) 70%, rgb(6 16 23 / 18%));
 }
 
 .home-width {
@@ -295,12 +298,12 @@ body.home-page {
     overflow: hidden;
     border: 1px solid var(--home-line);
     border-radius: 7px;
-    background: rgb(8 20 28 / 84%);
+    background: rgb(8 20 28 / 68%);
 }
 
 .home-card-projects {
     border-color: #8dcfce;
-    background: #091d27;
+    background: rgb(9 29 39 / 72%);
 }
 
 .home-card-projects::before {
@@ -309,15 +312,16 @@ body.home-page {
     inset: 0;
     background: linear-gradient(90deg, #07141cf5 15%, #07141c96),
         url("../../projects/media-design/ullern-vgs-forside/assets/previews/preview.jpg") center 45% / cover;
+    opacity: .7;
     content: "";
 }
 
 .home-card-education {
-    background: rgb(12 25 35 / 86%);
+    background: rgb(12 25 35 / 68%);
 }
 
 .home-card-apps {
-    background: rgb(8 17 23 / 90%);
+    background: rgb(8 17 23 / 72%);
 }
 
 .home-card-label {
@@ -477,7 +481,9 @@ body.home-page .skip-link {
 
 @media (max-width: 820px) {
     body.home-page {
-        --home-hero-position: 70% 30%;
+        --home-hero-position: 78% 50%;
+        /* Keep the scene above the fold instead of stretching it over all cards. */
+        --home-scene-height: 760px;
     }
 
     body.home-page .sidebar {
