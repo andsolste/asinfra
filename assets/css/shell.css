@@ -1,6 +1,6 @@
-/* Phase 2A: opt-in shell for the five top-level pages only.
- * Deep pages retain site.css and its sidebar. Content components stay in their
- * existing stylesheets; these aliases only harmonize their shared colors. */
+/* Shared opt-in ASInfra shell for overview and education pages.
+ * Project detail pages retain site.css and its sidebar. Content components
+ * stay in their existing stylesheets; these aliases harmonize shared colors. */
 .asinfra-page {
     --shell-background: #061017;
     --shell-surface: #0b1820;
@@ -246,8 +246,7 @@
     .shell-search { transition: background-color .15s ease, border-color .15s ease, color .15s ease; }
 }
 
-/* Phase 2B: shared content rhythm, opt-in on the four overview pages.
- * Header/footer, homepage and deep pages are deliberately unaffected. */
+/* Shared interior content rhythm; the homepage keeps its own layout. */
 .asinfra-page .interior-page {
     --shell-content-width: 1160px;
     padding-top: clamp(2rem, 3.5vw, 3rem);
@@ -331,4 +330,66 @@
 
 @media (max-width: 540px) {
     .interior-next { flex-direction: column; }
+}
+
+/* Education detail pages reuse the interior rhythm without changing their
+ * course-specific structure, anchors or responsive table layouts. */
+.asinfra-page .education-detail,
+.asinfra-page .education-history {
+    max-width: none;
+    overflow-wrap: anywhere;
+}
+
+.education-detail .back-link,
+.education-history .back-link {
+    margin-bottom: 1.5rem;
+    color: var(--shell-muted);
+    font-size: .85rem;
+    font-weight: 500;
+}
+
+.education-detail .back-link:hover,
+.education-history .back-link:hover {
+    color: var(--shell-accent);
+}
+
+.education-detail .interior-intro {
+    padding-bottom: 0;
+}
+
+.education-detail :is(.course-map-lede, .it2810-course-lede) {
+    max-width: 68ch;
+    margin-top: 1.3rem;
+    font-size: 1.05rem;
+    line-height: 1.75;
+}
+
+.education-detail :is(.section-kicker, .it2810-section-kicker, .it2810-project-label),
+.education-history .section-kicker {
+    color: var(--shell-accent);
+    font-size: .68rem;
+    font-weight: 550;
+    letter-spacing: .18em;
+}
+
+.education-detail :is(h2, h3),
+.education-history :is(h2, h3, h4) {
+    font-weight: 550;
+}
+
+.education-detail .content-card {
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    border-color: var(--shell-border);
+    border-radius: var(--shell-radius);
+    background: var(--shell-surface);
+}
+
+.education-detail .content-card h2 {
+    font-size: 1.5rem;
+}
+
+.education-detail .ntnu-link,
+.education-history .ntnu-link {
+    font-size: .85rem;
+    font-weight: 500;
 }

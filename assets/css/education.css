@@ -1,6 +1,6 @@
 /*
  * Fagkomponenter.
- * Grunnstil, fargevariabler, sidebar og sideoppsett kommer fra assets/css/site.css.
+ * Grunnstil kommer fra site.css; ASInfra-rammen og fargene fra shell.css.
  */
 
 /* Felles introduksjon og metadata */
@@ -327,8 +327,8 @@
 }
 
 .it2810-section {
-    margin-top: 4rem;
-    padding-top: 3rem;
+    margin-top: clamp(2.75rem, 5vw, 4rem);
+    padding-top: clamp(1.5rem, 3vw, 2.25rem);
     border-top: 1px solid var(--border);
 }
 
@@ -342,7 +342,7 @@
     margin: 0 0 .45rem;
     color: var(--blue-light);
     font-size: .76rem;
-    font-weight: 800;
+    font-weight: 550;
     letter-spacing: .09em;
     line-height: 1.45;
     text-transform: uppercase;
@@ -350,7 +350,7 @@
 
 .it2810-section-header h2 {
     margin: 0;
-    font-size: clamp(1.55rem, 3vw, 2rem);
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
     line-height: 1.25;
 }
 
@@ -380,7 +380,7 @@
     color: var(--blue);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     font-size: .78rem;
-    font-weight: 800;
+    font-weight: 550;
 }
 
 .it2810-competency h3 {
@@ -431,7 +431,7 @@
     grid-template-columns: 2rem minmax(0, 1fr);
     gap: .8rem;
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: var(--shell-radius);
     background: var(--surface);
 }
 
@@ -469,8 +469,8 @@
 .it2810-cross-cutting {
     padding: 1.45rem 1.5rem;
     border: 1px solid var(--border);
-    border-left: 3px solid var(--amber);
-    border-radius: 10px;
+    border-left: 2px solid var(--shell-border);
+    border-radius: var(--shell-radius);
     background: var(--surface-subtle);
 }
 
@@ -489,7 +489,7 @@
 
 .it2810-cross-cutting-topics {
     margin: 1rem 0 0;
-    color: var(--amber-light);
+    color: var(--shell-muted);
 }
 
 .it2810-project-path {
@@ -601,7 +601,7 @@
 .it2810-assessment dd {
     margin: 0;
     color: var(--purple-light);
-    font-weight: 800;
+    font-weight: 550;
     white-space: nowrap;
 }
 
@@ -610,8 +610,8 @@
     margin-top: 2rem;
     padding: 1.25rem 1.4rem;
     border: 1px solid var(--border);
-    border-left: 3px solid var(--amber);
-    border-radius: 10px;
+    border-left: 2px solid var(--shell-border);
+    border-radius: var(--shell-radius);
     background: var(--surface-subtle);
 }
 
@@ -836,8 +836,8 @@ th {
     }
 }
 
-/* Phase 2B: overview-only treatment. Earlier/deep courses keep the rules above. */
-.education-overview .course-switcher {
+/* Shared overview switcher; active course rows stay overview-scoped. */
+:is(.education-overview, .education-history) .course-switcher {
     width: fit-content;
     max-width: 100%;
     margin-bottom: 2.5rem;
@@ -849,7 +849,7 @@ th {
     background: transparent;
 }
 
-.education-overview .course-switcher-tab {
+:is(.education-overview, .education-history) .course-switcher-tab {
     min-height: 44px;
     padding: .7rem 0;
     flex: none;
@@ -861,7 +861,7 @@ th {
     font-weight: 500;
 }
 
-.education-overview .course-switcher-tab[aria-current="page"] {
+:is(.education-overview, .education-history) .course-switcher-tab[aria-current="page"] {
     border-bottom-color: var(--shell-accent);
     background: transparent;
     color: var(--shell-accent);
@@ -942,6 +942,60 @@ th {
 
 @media (max-width: 760px) {
     .it2810-topic-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Previous courses: quieter surfaces, same metadata and semester grouping. */
+.education-history .previous-courses-panel {
+    max-width: none;
+}
+
+.education-history .course-panel-header h2 {
+    font-size: 1.6rem;
+}
+
+.education-history .course-panel-header > p {
+    font-size: .85rem;
+}
+
+.education-history .semester-heading h3 {
+    font-size: 1.2rem;
+}
+
+.education-history .previous-course-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .85rem;
+}
+
+.education-history .previous-course-card {
+    grid-column: auto;
+    padding: 1.5rem;
+    border-radius: var(--shell-radius);
+    background: var(--shell-surface);
+}
+
+.education-history .previous-course-card:hover {
+    border-color: var(--shell-border);
+}
+
+.education-history .course-code {
+    color: var(--shell-muted);
+    font-size: .72rem;
+    font-weight: 550;
+}
+
+.education-history .course-card-zero {
+    background: transparent;
+}
+
+.education-history .course-credit {
+    padding: 0;
+    border: 0;
+}
+
+@media (max-width: 760px) {
+    .education-history .previous-course-grid {
         grid-template-columns: minmax(0, 1fr);
     }
 }
