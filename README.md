@@ -217,6 +217,12 @@ schemaendringer følger vedlikeholdsprosedyren nedenfor.
 
 ## Backendtester og migrasjoner
 
+Native periodekorreksjon (#34C) ligger i den additive migrasjonen
+`20261022170000_add_flow_segment_correction.sql`. RPC-en korrigerer start, slutt,
+område og oppgave med forventet segmenttilstand; dagidentitet/grenser og gamle
+RPC-er beholdes. Se [kontrakt, tester og deployrekkefølge](supabase/README.md#native-periodekorreksjon-34c).
+Backend må deployes før den nye frontend-editoren; ingen hosted migration kjøres av CI.
+
 Flow v1-fundamentet er additivt og gjennomgås separat fra produksjons-Study:
 se [supabase/README.md](supabase/README.md) for native tabeller, område-bridge,
 bevart legacy-historikk, logiske 04:00-dager og review/deployrekkefølge.
@@ -241,7 +247,8 @@ npm test
 `tests/database.test.mjs`, `tests/sessions-database.test.mjs` og
 `tests/history-database.test.mjs`, `tests/flow-database.test.mjs` og
 `tests/flow-workday.test.mjs`, `tests/flow-tasks.test.mjs` og
-`tests/flow-history-statistics.test.mjs` og `tests/flow-export.test.mjs` kjører
+`tests/flow-history-statistics.test.mjs`, `tests/flow-export.test.mjs` og
+`tests/flow-segment-correction.test.mjs` kjører
 canonical migrations i isolert PostgreSQL/WASM (PGlite). De kontrollerer grants,
 RLS mellom to brukere, foreign keys, constraints, atomiske RPC-er, retry og
 recovery, samt historikk, periodeoverlapp og korreksjon/sletting av ferdige økter.
