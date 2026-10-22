@@ -295,7 +295,8 @@ forventet opprinnelig tilknytning beskytter stale skjemaer. Identisk ønsket ver
 er idempotent. Eksisterende guards håndhever egne area/task og sammenheng mellom
 dem, også arkiverte områder/fullførte oppgaver for historisk korreksjon. Ingen
 native start, slutt, logisk dato, zone, boundary eller cutoff kan redigeres her;
-native sletting/reåpning tilbys ikke. Dette er den bevisst smale korreksjonsflaten.
+native sletting/reåpning tilbys ikke. RPC-en beholdes for kompatibilitet; den nye
+samlede periodeeditoren bruker #34C-kontrakten nedenfor.
 
 `flow_history_edit_legacy` bruker den eksisterende atomiske editoren, men avviser
 i tillegg overlapp med andre positive legacy-/native perioder. Feil ruller tilbake
@@ -413,6 +414,53 @@ frontend → frontend README sin konkrete 24-punkts eksportkontroll (CSV-import,
 rapporter, A4/Letter/PDF, mobil, store eksporter, feil/avbrudd og to testbrukere).
 Ingen merge, hosted migration eller lukking av #7 er utført. #19 offentlig Flow,
 #14 domeneovergang, deling og cloud upload er ikke en del av eksporten.
+
+## Native periodekorreksjon (#34C)
+
+Ny additiv migration: `20261022170000_add_flow_segment_correction.sql`.
+Ingen gamle migrations, tabeller eller data endres ved installasjon.
+
+`flow_work_segment_correct` tar segment-ID, work-day-ID og to separate sett med
+`started_at`, `ended_at`, `area_id`, `task_id`: `p_expected_*` og nye `p_*`.
+Responsen er et canonical `flow_work_day_snapshot` for samme dag. Funksjonen
+krever `auth.uid()`, bruker advisory brukerlås seed 9 og eierbegrenset radlås,
+`SECURITY INVOKER`, tom `search_path` og execute kun for `authenticated`.
+
+Cutoff avstemmes **før** expected-state-sammenligning. Alle fire originalverdier
+sammenlignes NULL-sikkert. Endret periode gir `40001`, utilgjengelig/feil eier
+`42501`. Hvis nøyaktig ønsket tilstand allerede finnes, bekreftes den uten ny
+write (trygg gjentakelse etter mistet svar); andre endringer rebases aldri.
+Ved exception rulles hele kallet tilbake, også eventuell cutoff-avstemming;
+en etterfølgende fersk snapshot-lesing avstemmer før nytt eksplisitt forsøk.
+
+Start/slutt må være finite og ikke-null; start må ligge fra dagstart til før
+cutoff, slutt fra start til min(cutoff, lagret dagslutt), aldri etter servernåtid.
+Lik start/slutt gir 0 min uten DELETE. Dagens identitet, logiske dato, tidssone,
+boundary, cutoff og start er urørt. Canonical tabelltriggere er fortsatt siste
+forsvar mot overlapp, ugyldig attribution og legacy-cutover; kjente overlap-feil
+oversettes til `23P01`, attribution til `23503`, tidsgrenser til `22023/22008`.
+Uendret historisk attribution beholdes selv etter flytting/arkivering/fullføring;
+endret task må passe eget område. Ingen RLS-regler endres.
+
+Et fortsatt åpent segment kan få en eksplisitt historisk slutt. Dagen forblir
+pauset: ingen ny periode og ingen automatisk Fortsett. Et nytt segment i en annen
+fane kan ikke treffes av den gamle identiteten. Gap/checkpoint fra frontend er
+aldri autoritativ sluttid. `flow_history_attribute` beholdes kompatibel.
+
+Historikk, statistikk, task-total og nye rapporter/eksporter bruker samme
+oppdaterte segment; ingen korrigerte sidetotaler lagres. Et eksportmanifest fra
+før korreksjonen må fortsatt avvises som endret grunnlag.
+
+`tests/flow-segment-correction.test.mjs` kjører hele migrationkjeden med to eiere,
+grants/auth/RLS, åpne/lukkede perioder, tidsgrenser/overlapp/0 min, alle expected-
+felt, cutoff, endret aktivitet, retry, attribution, mikrosekunder og canonical
+history/statistics/task/export. PGlite har stubbet Auth og klokke; dette erstatter
+ikke ekte JWT/Data API eller flerforbindelses-smoke i test-Supabase.
+
+Utrulling: review/merge backend → kontroller project-ref og migration list →
+`supabase db push --dry-run` → særskilt godkjent `supabase db push` → smoke-test
+RPC/RLS og gammel frontend → merge/deploy frontend. Ingen hosted migration kjøres
+av denne PR-en eller Pages; frontend må vente til RPC-en er deployet.
 
 ## Sikkerhet, tester og review
 
