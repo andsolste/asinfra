@@ -57,7 +57,8 @@ test('native corrections: canonical SQL, full expected state, recovery and two-o
     await fixture(); const row = await native(), before = await result('select to_jsonb(d) as result from public.flow_work_days d where id=$1', [row.work_day_id])
     const snapshot = await correct(row, fields), actual = snapshot.segments.find(s => s.id === row.id)
     for (const [key, value] of Object.entries(fields)) assert.equal(Date.parse(actual[key]), Date.parse(value))
-    assert.deepEqual(snapshot.work_day, before); assert.equal(snapshot.segments.length, 1)
+    assert.deepEqual({ ...snapshot.work_day, started_at: before.started_at }, before)
+    assert.equal(snapshot.work_day.started_at, snapshot.segments[0].started_at); assert.equal(snapshot.segments.length, 1)
   })
   await t.test('open forgotten period closes at explicit historical end; day remains paused and resume is explicit', async () => {
     await fixture(); const row = await native('2026-10-22T18:00Z', null)
@@ -77,7 +78,7 @@ test('native corrections: canonical SQL, full expected state, recovery and two-o
   })
   for (const [name, fields, code] of [
     ['future', { ended_at: '2026-10-22T23:00Z' }, '22008'],
-    ['before day', { started_at: '2026-10-22T17:59Z', ended_at: '2026-10-22T20:00Z' }, '22023'],
+    ['before logical boundary', { started_at: '2026-10-22T03:59Z', ended_at: '2026-10-22T20:00Z' }, '22023'],
     ['after cutoff', { ended_at: '2026-10-23T04:01Z' }, '22023'],
     ['at cutoff start', { started_at: '2026-10-23T04:00Z', ended_at: '2026-10-23T04:00Z' }, '22023'],
     ['negative', { ended_at: '2026-10-22T17:00Z' }, '22023'],
@@ -92,11 +93,12 @@ test('native corrections: canonical SQL, full expected state, recovery and two-o
     await denied(correct(row, { ended_at: '2026-10-21T20:30Z' }), '23P01')
     await correct(row, { ended_at: '2026-10-21T20:00Z' })
   })
-  await t.test('closed day end and original work-day identity cannot be bypassed', async () => {
+  await t.test('closed lifecycle end stays fixed while correction can extend work; day identity cannot be bypassed', async () => {
     await fixture(); const row = await native('2026-10-21T18:00Z', '2026-10-21T22:00Z', null, null, [], '2026-10-21T22:00Z')
-    await denied(correct(row, { ended_at: '2026-10-21T22:01Z' }), '22023')
+    const extended = await correct(row, { ended_at: '2026-10-21T22:01Z' })
+    assert.equal(Date.parse(extended.work_day.ended_at), Date.parse('2026-10-21T22:00Z'))
     await denied(correct({ ...row, work_day_id: randomUUID() }, { ended_at: '2026-10-21T20:00Z' }), '42501')
-    assert.deepEqual(await segment(row.id), row)
+    assert.equal(Date.parse((await segment(row.id)).ended_at), Date.parse('2026-10-21T22:01Z'))
   })
   await t.test('new activity after observation cannot be paused by an old open expected state', async () => {
     await fixture(); const row = await native('2026-10-22T18:00Z', null), next = randomUUID()

@@ -433,10 +433,12 @@ write (trygg gjentakelse etter mistet svar); andre endringer rebases aldri.
 Ved exception rulles hele kallet tilbake, også eventuell cutoff-avstemming;
 en etterfølgende fersk snapshot-lesing avstemmer før nytt eksplisitt forsøk.
 
-Start/slutt må være finite og ikke-null; start må ligge fra dagstart til før
-cutoff, slutt fra start til min(cutoff, lagret dagslutt), aldri etter servernåtid.
+Start/slutt må være finite og ikke-null. Med den additive migrasjonen nedenfor
+ligger start fra `boundary_at` til før `cutoff_at`, slutt fra start til og med
+`cutoff_at`, aldri etter servernåtid.
 Lik start/slutt gir 0 min uten DELETE. Dagens identitet, logiske dato, tidssone,
-boundary, cutoff og start er urørt. Canonical tabelltriggere er fortsatt siste
+boundary og cutoff er urørt. Dagsstart avledes fra segmentene som beskrevet nedenfor.
+Canonical tabelltriggere er fortsatt siste
 forsvar mot overlapp, ugyldig attribution og legacy-cutover; kjente overlap-feil
 oversettes til `23P01`, attribution til `23503`, tidsgrenser til `22023/22008`.
 Uendret historisk attribution beholdes selv etter flytting/arkivering/fullføring;
@@ -461,6 +463,48 @@ Utrulling: review/merge backend → kontroller project-ref og migration list →
 `supabase db push --dry-run` → særskilt godkjent `supabase db push` → smoke-test
 RPC/RLS og gammel frontend → merge/deploy frontend. Ingen hosted migration kjøres
 av denne PR-en eller Pages; frontend må vente til RPC-en er deployet.
+
+### Korrigering gjennom hele den logiske dagen
+
+`20261103180000_expand_flow_segment_correction_bounds.sql` utvider den samme
+RPC-en; ingen gammel migrasjon endres og installasjonen backfiller ingen data.
+
+- `flow_guard_work_segment` validerer lagret `boundary_at`/`cutoff_at`, fremtid,
+  eierskap og overlapp. Et AFTER-trigger avleder `flow_work_days.started_at` fra
+  minste segmentstart, også når den første perioden flyttes senere enn en annen.
+  Dag-triggeren tillater kun denne eksakte avledede verdien, ingen flagg-/GUC-
+  eller SECURITY DEFINER-bypass. Første aktivitet må fortsatt opprettes atomisk
+  med dagen. Eksisterende ikke-avledede starter normaliseres først ved ny endring.
+- ID, eier, logisk dato, lagret IANA-sone, boundary og cutoff er fortsatt frosset.
+  `ended_at` er en uforanderlig lukkemarkør etter lukking, ikke en grense som
+  klipper historisk korrigert arbeid. Korrigering kan derfor legge arbeid etter
+  markøren eller flytte første aktivitet forbi den uten å endre/gjenåpne dagen.
+  Vanlig snapshot-recovery lukker fortsatt utløpte aktive dager ved lagret cutoff.
+- `flow_timer_cutovers.activated_at` forblir det opprinnelige pensjoneringstidspunktet.
+  Bare lukkede native UPDATE-korreksjoner kan ligge før markøren, innenfor samme
+  lagrede dag og uten overlapp med faktisk legacy-arbeid. Legacy-guarden kontrollerer
+  også overlapp mot native perioder: gamle klienter kan ikke senere skrive inn i
+  korrigert Flow-arbeid. Markøren flyttes ikke, og gamle timere kan ikke gjenåpnes.
+- Brukerlås seed 9, RLS, grants og alle fire frosne expected-verdier beholdes.
+  Identisk desired-state bekrefter tapt-svar-retry uten ny write; avvik gir konflikt.
+  Pågående perioder må pauses før full redigering. 34B sin eksisterende finish-only
+  avslutning beholder original start/aktivitet og oppretter ingen ny periode.
+- Canonical statistikk, område-/oppgavetid og eksport bruker allerede segmenter
+  klippet til cutoff/servernåtid. Frontend må også bruke faktisk segmentutstrekning
+  fremfor å klippe ved lukkemarkøren. Eksisterende eksportmanifest avviser endret
+  grunnlag etter korreksjonen.
+
+`tests/flow-correction-bounds.test.mjs` dekker installasjon med eksisterende data,
+avledet start, lukket/aktiv dag, midnight/cutoff, 23/25 timers DST, mikrosekunder,
+0 min, begge retninger av legacy-overlapp, retry/stale, rollback og canonical
+statistikk/eksport. Isolert PGlite stubber Auth/klokke; hosted JWT/Data API og
+reell flerforbindelses-concurrency må verifiseres ved godkjent utrulling.
+
+Deploy backend før frontend: merge/review → kontroller project-ref/historikk →
+`db push --linked --dry-run --skip-vault` → separat godkjent push av kun denne
+migrasjonen → hosted verifisering → frontend. Ingen hosted deployment inngår her.
+Etter første utvidede korreksjon kan eldre frontendversjoner avvise/klippe data;
+rollback må beholde støtten for den nye lesemodellen.
 
 ## Ukentlig oppgaveplanlegging
 
