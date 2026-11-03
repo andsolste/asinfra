@@ -462,6 +462,32 @@ Utrulling: review/merge backend → kontroller project-ref og migration list →
 RPC/RLS og gammel frontend → merge/deploy frontend. Ingen hosted migration kjøres
 av denne PR-en eller Pages; frontend må vente til RPC-en er deployet.
 
+## Ukentlig oppgaveplanlegging
+
+`20261103120000_add_flow_task_week_planning.sql` legger kun til metadata på
+`flow_tasks`: valgfri `week_start` (ISO-ukens mandag som `date`) og `priority`
+(`high`, `normal`, `low`, standard `normal`). Eksisterende oppgaver beholder alle
+felt, status og revisjoner; de får ingen uke. Ingen automatisk flytting mellom uker.
+Ukeplanlegging følger kalenderuker, uavhengig av frister og timerens 04:00-grense.
+
+Den eksisterende seksarguments `flow_task_save` beholdes. Et åttearguments
+overload uten defaults tar også `p_week_start` og `p_priority`, og gjenbruker den
+opprinnelige lagringen i samme transaksjon. Ugyldig planlegging ruller tilbake
+hele lagringen. Create-ID er fortsatt et retry-token; `p_expected_updated_at`
+beskytter alle endringer. En ekstra trigger øker revisjonen også ved direkte
+planleggingsendringer, uten å erstatte eksisterende oppgave-/timerguard.
+`flow_task_status`, RLS, `auth.uid()`, invoker og brukerens advisory-lås beholdes.
+
+`tests/flow-task-planning.test.mjs` tester bevaring ved migrasjon, begge API-
+signaturer, ISO-årsskifte, rollback, stale revisjoner, retry, to eiere og timer.
+Testene bruker isolert PGlite, ikke hosted brukerdata.
+
+Utrulling: merge backend etter review → verifiser canonical prosjekt og historikk →
+`db push --linked --dry-run --skip-vault` → særskilt godkjent push av kun denne
+migrasjonen → verifiser schema/grants og eksisterende Flow → merge/deploy frontend.
+Frontendens kataloglesing krever de nye feltene. Migrasjonen er **ikke deployet**
+som del av denne implementasjonen; Pages deployer aldri backend.
+
 ## Sikkerhet, tester og review
 
 Alle native tabeller har RLS via `auth.uid()`, select/insert/update for egen bruker,
