@@ -12,13 +12,13 @@ eller `authenticated` har tilgang til skjemaet. Det skal ikke eksponeres i
 Supabase API-innstillingene. Ingen Storage-bucket eller offentlig asset-URL brukes.
 
 `public.exam_attempts` og `public.exam_responses` har RLS med `auth.uid()` og
-SELECT for eier. Direkte writes er sperret. De åtte `public.exam_*`-RPC-ene er
+SELECT for eier. Direkte writes er sperret. De ni `public.exam_*`-RPC-ene er
 `SECURITY DEFINER` med tom `search_path`, sperret for PUBLIC/anon og med eksplisitt
 kontroll av innlogging, eier og innholdstilgang. Denne avgrensede definer-modellen
 trengs fordi vanlig klienttilgang til svarnøklene ville avsløre fasiten.
 
 Vanlige lesekall returnerer aldri nøkler eller sensorbilder. Prompt-RPC-en kan
-bare levere figurer merket `prompt`. Sensorveiledning krever at oppgaven er låst
+bare levere figurer merket `prompt`. Både lettvekts svarfeedback (`exam_feedback`) og sensorveiledning krever at oppgaven er låst
 i underveis-modus, eller at hele forsøket er levert i sluttmodus. Klienten kan
 ikke velge seg ut av denne regelen. Egenvurdering er bare tilgjengelig etter låsing.
 
@@ -80,12 +80,36 @@ del av implementeringen. Etter PR-gjennomgang og eksplisitt godkjenning:
 
 ## Poeng og kvalitet
 
-Automatisk retting gir full original poengsum når alle felter og hele valgsettet
-er riktig, ellers 0. Det trekkes ikke under 0. Dette er uttrykkelig en forenklet
-øvingsregel; PDF-en dokumenterer ikke en eksakt offisiell delpoeng-/trekkformel.
-Langsvar og uverifiserte oppgaver egenvurderes full/halv/ingen eller ikke vurdert.
-Automatiske poeng, egenvurderte poeng og ubesvarte/ikke-vurderte vises separat.
-Ingen samlet prosent eller AI-sensur presenteres.
+Poengregelen er låst per forsøk i `exam_attempts.scoring_version`:
+
+- **v1:** Alle riktige felt/valg gir full uttelling, ellers 0. Alle eksisterende
+  forsøk, også påbegynte, beholder v1. Lagrede poeng og svar skrives ikke om.
+- **v2:** Nye forsøk fordeler maks poeng proporsjonalt på alle riktige alternativer
+  i oppgaver som kun har flervalgsfelt. Ett feilaktig valgt alternativ trekker
+  1 poeng. Uvalgte riktige gir ingen positiv uttelling. Resultatet begrenses til
+  0–maks og avkortes til fire desimaler. Hele riktige valgsettet uten feil gir
+  eksakt opprinnelig maks. Flere flervalgsfelt deler samme poengbudsjett.
+  Andre automatiske oppgavetyper beholder alle-felt-riktige-regelen.
+
+Formel: `maks × antall riktige valgte / antall riktige totalt − antall feil valgte`.
+Syntetisk eksempel: maks 2 og tre riktige alternativer gir 0,6666 for ett riktig
+valg, 1,3333 for to og 2 for alle tre. Ingen delmengde gir full uttelling.
+Originalens informasjon bekrefter trekk og gulv på 0, men ikke den eksakte
+fordelingen/trekkstørrelsen. Dette er vår dokumenterte **øvingsregel**, ikke en
+påstand om identisk offisiell sensur. Langsvar/oppgave 41 får ingen automatisk fasit.
+
+`exam_feedback` returnerer lagret poengsum, regelversjon, fasit-ID-er og antall
+riktige felt/valg etter den samme serverporten som `exam_guidance`. Ingen bilder
+følger med. Vanlig get/autosave lekker fortsatt ikke nøkler. Frontend sammenligner
+bare de tillatte fasit-ID-ene med svaret; den beregner ikke poeng.
+
+`exam_guidance` følger `keys.guide_assets` med ordinality, aldri alfabetisk
+asset-ID-sortering. Utsnitt går i pakkens kontrollerte PDF-leserekkefølge.
+Ingen bilder, oppgavetekster eller importerte nøkler endres av migrasjonen.
+
+Deploy den nye feedback-/poengmigrasjonen etter separat godkjenning før tilhørende
+frontend. Ikke kjør ny innholdsimport eller rescore gamle forsøk. Testene bruker
+syntetiske data og dekker v1-bevaring, v2-delpoeng, begge fasitporter, RLS og rekkefølge.
 
 Se [kontrolloversikten for alle 41 oppføringer](dcst2001-h25-audit.md). Oppgave 41
 venter på faglig bekreftelse. Komplekse koblinger bruker nedtrekk. Sensorveiledning
