@@ -338,6 +338,10 @@ på Study-redirecten. Runbooken beholdes som historikk og rollback-dokumentasjon
 
 ## Vedlikehold
 
+Den separate eksamensmotorens canonical skjema, sikkerhetsmodell og private
+innholdsimport er dokumentert i [supabase/exams/README.md](supabase/exams/README.md).
+Flow-frontenden eier UI-et; eksamensmateriale og fasit inngår ikke i Pages-output.
+
 - Aktive fag i sidebaren defineres i `assets/js/site.js`.
 - Globalt søk bruker `assets/data/search-index.json`; oppdater URL-er og ankere når innhold endres.
 - Global stil ligger i `assets/css/site.css`.
