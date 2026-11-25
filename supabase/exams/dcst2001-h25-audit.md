@@ -53,7 +53,8 @@ Kilde: brukerens sensorveiledning, 37 sider. Lokal privat import: 41 oppføringe
 - Oppgave 20 og 41: dra-og-slipp erstattes med menyvalg. Originalfigurer uten inntegnede svarlinjer beholdes. Oppgave 20 bruker kategoristiene fra diagrammet som valgmål.
 - Oppgave 11, 12, 13 og 21: originaltekst og originale alternativrekker med tomme nedtrekksfelt. Riktig alternativs grønne farge er fjernet.
 - Oppgave 26: a/b/c har separate tekstfelt. Original ordlyd beholdes.
-- Automatisk retting krever alle riktige felt/valg for full original poengsum, ellers 0. Dette er en forenklet øvingsregel, ikke en offisiell delpoeng-/trekkformel.
+- Poengregelen er versjonert per forsøk: v1 beholder alle-riktige/ellers-0; v2 gir proporsjonale delpoeng og −1 per feilvalg på flervalg. Begge er øvingsregler, ikke bekreftet offisiell sensur. Se README.
 - Sensorveiledningen vises som kildebelagte, beskyttede PDF-utsnitt etter levering. Ingen AI-utarbeidede forklaringer eller AI-sensur er inkludert.
 - Visuell kontroll er gjennomført mot sidene og de separate originalfigurene. OCR er ikke brukt til å gjette uklare svar. Denne kontrollen erstatter ikke en ny faglig gjennomgang av originalmaterialet.
-- Importpakken er lokal og Git-ignorert under supabase/private/exams/; den er ikke publisert eller importert til hosted Supabase. Publiseringsrettigheter og tilgang per bruker må avklares før produksjonsimport.
+- Importpakken er Git-ignorert under supabase/private/exams/. Den godkjente private produksjonsimporten ble verifisert 23. november 2026, med tilgang kun til godkjent eksisterende bruker. Materialet skal fortsatt ikke publiseres i Git, Pages eller offentlige testfixtures.
+- Sensorrekkefølge kontrollert på nytt mot original-PDF: kun oppgave 9 har flere veiledningsbilder, fra PDF-side 9 fulgt av 10. De øvrige utsnittene har ett bilde per oppgave. Bevar guide_assets-rekkefølgen.

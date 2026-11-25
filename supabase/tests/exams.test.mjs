@@ -53,13 +53,13 @@ test('exam engine: real PostgreSQL, private content, versioned attempts, feedbac
     const locked=await save(aid,2,1,{p1:'b'},true);assert.equal(locked.responses[0].auto_points,2)
     await denied(save(aid,2,2,{p1:'a'}),'22023');assert.equal((await rpc('exam_guidance',[aid,2])).correct.p1,'b')
   })
-  await t.test('checkbox exact sets, no invented partial/negative score, long answer and self assessment',async()=>{
+  await t.test('checkbox proportional credit and penalty, long answer and self assessment',async()=>{
     const full=await save(aid,3,0,{p1:['c','a']},true);assert.equal(full.responses.find(r=>r.number===3).auto_points,3)
     await save(aid,4,0,{p1:'My response'},true)
     const rated=await rpc('exam_self_assess',[aid,4,1,'partial',randomUUID()]);assert.equal(rated.responses.find(r=>r.number===4).self_assessment,'partial')
     await denied(rpc('exam_self_assess',[aid,4,1,'full',randomUUID()]),'40001')
     await denied(rpc('exam_self_assess',[aid,2,2,'full',randomUUID()]))
-    const b=await start();const bad=await save(b.attempt.id,3,0,{p1:['a','b']},true);assert.equal(bad.responses[0].auto_points,0)
+    const b=await start();const bad=await save(b.attempt.id,3,0,{p1:['a','b']},true);assert.equal(bad.responses[0].auto_points,.5)
   })
   await t.test('whole attempt gate, stale final submit, blanks, unverified and idempotent final submit',async()=>{
     let b=await start('end');const id=b.attempt.id
